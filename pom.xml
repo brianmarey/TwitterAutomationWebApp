@@ -12,8 +12,6 @@
   </parent>
   
     <dependencies>
-     
-     
      	<!--  <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -54,13 +52,6 @@
 			<scope>test</scope>
 		</dependency>-->
 		
-     
-     
-     
-
-
-
-
 	<dependency>
 		<groupId>log4j</groupId>
 		<artifactId>log4j</artifactId>
@@ -107,12 +98,6 @@
 		<version>4.2.5.RELEASE</version>
 	</dependency>-->
 
-	<!-- <dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-		<version>1.2</version>
-	</dependency> -->
-     
   </dependencies>
   <build>
     <finalName>TwitterAutomation</finalName>
