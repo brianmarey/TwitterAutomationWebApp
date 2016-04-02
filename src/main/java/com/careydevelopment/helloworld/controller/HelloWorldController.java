@@ -13,9 +13,7 @@ public class HelloWorldController {
 	private static final Logger LOGGER = Logger.getLogger(HelloWorldController.class);
  
    @RequestMapping(method = RequestMethod.GET)
-   public String printHello(ModelMap model) {
-	   
-	   LOGGER.debug("I'm in HELLLOWORLD!!!!!!!!!!!!!!!!!!!!!");
+   public String printHello(ModelMap model) {	
 	   
       model.addAttribute("message", "Hello Spring MVC Framework!");
 
