@@ -1,4 +1,4 @@
-package com.careydevelopment.helloworld.controller;
+package com.careydevelopment;
 
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
+//put this in a package root so that it automatically scans all subpackages
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 	
@@ -17,7 +18,6 @@ public class Application extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) throws Exception {
-    	LOGGER.info("Initializing the appliation!!!!\n\n");
         SpringApplication.run(Application.class, args);
     }
 
