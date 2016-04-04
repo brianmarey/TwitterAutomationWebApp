@@ -2,7 +2,8 @@
 		$("#followForm").hide();
 		$("#buttonDiv").hide();
 		$("#statusArea").show();
-		$("#spinnerArea").show();
+		$("#spinnerIcon").show();
+		$("#statusText").show();
 		
 		var tags = $("#tagfield").tagit("tags");
 		for (var i in tags) {
@@ -27,15 +28,19 @@
 			var following = data[ii].following;
 			
 			if (!following) {
-				setTimeout(followTweep,time,id);
+				setTimeout(followTweep,time,id,screenName);
 				time += timeIncrement;
+				break;
 			}
 		}
 	}
 	
-	function followTweep(id) {		
+	function followTweep(id,screenName) {		
 		var url = "http://localhost:8080/TwitterAutomation/followTweep?id=" + id;
-		var notice = "<p>Followed ID:" + id + "</p>";
-		$("#statusArea").append( notice);
-		//alert ("following " + id);
+		$.get(url,function( data ) {			
+			var notice = data.message + "" + screenName + "<br/>";
+			alert(notice);
+			$("#statusResults").append( notice);
+		});
 	}
+	

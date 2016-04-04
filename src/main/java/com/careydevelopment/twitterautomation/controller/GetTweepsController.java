@@ -10,11 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careydevelopment.configuration.MyTwitter;
 import com.careydevelopment.twitterautomation.model.FriendshipLightweight;
+import com.careydevelopment.twitterautomation.util.Constants;
 
 import twitter4j.Friendship;
 import twitter4j.Query;
@@ -26,10 +26,8 @@ import twitter4j.TwitterException;
 import twitter4j.User;
 
 @RestController
-public class GetTweepsController {
+public class GetTweepsController implements Constants {
 	private static final Logger LOGGER = Logger.getLogger(GetTweepsController.class);
-	
-	private static final String DNF_FILE = "/etc/tomcat8/resources/dnf.txt";
 	
 	private Twitter twitter = null;
 	
@@ -58,7 +56,7 @@ public class GetTweepsController {
 			
 			ResponseList<Friendship> friendships = twitter.lookupFriendships(returnedDudes);
 			
-			ships = getLightweights(friendships);
+			ships = getLightweights(friendships,dnfIds);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,16 +70,22 @@ public class GetTweepsController {
      * Translates heavyweight Friendship objets from Twitter4j into lightweight objects
      * Easier for JSON
      */
-    private List<FriendshipLightweight> getLightweights(ResponseList<Friendship> friendships) {
+    private List<FriendshipLightweight> getLightweights(ResponseList<Friendship> friendships, List<Long> dnfIds) {
     	List<FriendshipLightweight> ships = new ArrayList<FriendshipLightweight>();
     	
     	for (Friendship friendship : friendships) {
-    		FriendshipLightweight light = new FriendshipLightweight();
-    		light.setFollowing(friendship.isFollowing());
-    		light.setId(friendship.getId());
-    		light.setScreenName(friendship.getScreenName());
     		
-    		ships.add(light);
+    		//be sure to skip the people who are DNF
+    		if (!dnfIds.contains(friendship.getId())) {
+	    		FriendshipLightweight light = new FriendshipLightweight();
+	    		light.setFollowing(friendship.isFollowing());
+	    		light.setId(friendship.getId());
+	    		light.setScreenName(friendship.getScreenName());
+	    		
+	    		ships.add(light);
+    		} else {
+    			LOGGER.info("Skipping " + friendship.getScreenName() + " because that user is DNF");
+    		}
     	}
     	
     	return ships;
