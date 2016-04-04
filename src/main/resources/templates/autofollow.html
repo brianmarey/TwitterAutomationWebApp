@@ -6,7 +6,8 @@
 
     <script th:src="@{/js/jquery.js}"></script>     
     <script th:src="@{/css/jquery-ui/jquery-ui.js}"></script>  
-    <script th:src="@{/js/tagit.js}"></script>   
+    <script th:src="@{/js/tagit.js}"></script>
+    <script th:src="@{/js/twitter.js}"></script>   
     
     <link th:href="@{/css/tagit-simple-blue.css}" rel="stylesheet"/>   
     <link th:href="@{/css/jquery-ui/jquery-ui.css}" rel="stylesheet"/>
@@ -101,29 +102,16 @@
 		alert(string);
 	}
 	
-	function beginAutoFollow() {
-		var tags = $("#tagfield").tagit("tags");
-		for (var i in tags) {
-			var keyword = encodeURIComponent(tags[i].value);
-			//alert("looking at " + keyword);
-			var url = "http://localhost:8080/TwitterAutomation/getTweeps?keyword=" + keyword;
-			//alert("url is " + url);
-			
-			$.get( url, function( data ) {
-				  //$( ".result" ).html( data );
-				  var tweepsJsonStr = JSON.stringify(data, null, 4);
-				  var tweepsJson = JSON.parse(tweepsJsonStr);
-				  alert(data.length);
-			});
-			break;
-		}
-	}
-	
 	//setTimeout(getVals, 2000);
     
     //setTimeout(appendText, 2000);
     //setTimeout(appendText, 4000);
-	</script>
+	
+    </script>
+    
+    <script>
+
+    </script>
 </head>
 <body>
 <h1>AutoFollow</h1>
@@ -144,10 +132,12 @@
 </div>
 </form>
 
-<div class="ui-widget form-section">
+<div id = "buttonDiv" class="ui-widget form-section">
 <button id="followButton" onclick="beginAutoFollow()">Begin AutoFollow</button>
 </div>
 
+<div id="statusArea" style="display:hidden" class="ui-widget">
+</div>
 
 </body>
 </html>
