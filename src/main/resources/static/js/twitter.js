@@ -2,6 +2,7 @@
 		$("#followForm").hide();
 		$("#buttonDiv").hide();
 		$("#statusArea").show();
+		$("#spinnerArea").show();
 		
 		var tags = $("#tagfield").tagit("tags");
 		for (var i in tags) {

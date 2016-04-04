@@ -11,6 +11,7 @@
     
     <link th:href="@{/css/tagit-simple-blue.css}" rel="stylesheet"/>   
     <link th:href="@{/css/jquery-ui/jquery-ui.css}" rel="stylesheet"/>
+    <link th:href="@{/css/spinner.css}" rel="stylesheet"/>
     
     <style>
 	body{
@@ -136,7 +137,17 @@
 <button id="followButton" onclick="beginAutoFollow()">Begin AutoFollow</button>
 </div>
 
-<div id="statusArea" style="display:hidden" class="ui-widget">
+
+<div id="statusArea" style="display:none" class="ui-widget">
+</div>
+<div id="spinnerArea" style="width:60px;display:none">
+<div class="spinner">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
 </div>
 
 </body>
