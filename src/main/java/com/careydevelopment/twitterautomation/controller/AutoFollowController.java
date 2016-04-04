@@ -9,11 +9,10 @@ import com.careydevelopment.helloworld.controller.HelloWorldController;
 
 @Controller
 public class AutoFollowController {
-	private static final Logger LOGGER = Logger.getLogger(HelloWorldController.class);
+	private static final Logger LOGGER = Logger.getLogger(AutoFollowController.class);
 	 
     @RequestMapping("/autofollow")
     public String hello(Model model) {
-    	LOGGER.info("\n\nIn autofollow!!!!\n\n");
         return "autofollow";
     }
 }
