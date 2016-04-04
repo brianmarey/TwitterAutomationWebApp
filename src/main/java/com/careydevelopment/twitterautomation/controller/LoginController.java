@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.careydevelopment.helloworld.controller.HelloWorldController;
 
 @Controller
-public class AutoFollowController {
-	private static final Logger LOGGER = Logger.getLogger(AutoFollowController.class);
+public class LoginController {
+	private static final Logger LOGGER = Logger.getLogger(LoginController.class);
 	 
-    @RequestMapping("/autofollow")
-    public String hello(Model model) {
-        return "autofollow";
+    @RequestMapping("/login")
+    public String login(Model model) {
+        return "login";
     }
 }
