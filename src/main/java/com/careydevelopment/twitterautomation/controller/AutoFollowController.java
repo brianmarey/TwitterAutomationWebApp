@@ -1,18 +1,20 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.careydevelopment.helloworld.controller.HelloWorldController;
-
 @Controller
 public class AutoFollowController {
-	private static final Logger LOGGER = Logger.getLogger(AutoFollowController.class);
-	 
+	private static final Logger LOGGER = LoggerFactory.getLogger(AutoFollowController.class);
+	
     @RequestMapping("/autofollow")
-    public String hello(Model model) {
+    public String autofollow(Model model) {
+    	
+    	//LOGGER.
+    	
         return "autofollow";
     }
 }

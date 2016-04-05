@@ -1,26 +1,57 @@
-	function beginAutoFollow() {
+	var time = 0;
+	var timeIncrement = 20000;
+	
+	function beginAutoFollow() {		
 		$("#followForm").hide();
 		$("#buttonDiv").hide();
 		$("#statusArea").show();
 		$("#spinnerIcon").show();
 		$("#statusText").show();
 		
+		var runTime = 0;
+		var runTimeIncrement = 3600000;
+		
+		runNumber = 1;
+		
+		var numberOfRuns = $('#runs').val();
+		
+		for (var j=0;j<numberOfRuns;j++) {			
+			setTimeout(beginRun,runTime);
+			runTime+=runTimeIncrement;
+		}
+		
+		setTimeout(completelyFinished, (runTime-runTimeIncrement) + 500);
+	}
+	
+	
+	function completelyFinished() {
+		$("#statusResults").append("Completely finished.<br/>");
+		$("#spinnerIcon").hide();
+	}
+	
+	
+	function beginRun() {
+		time = 0;
+
 		var tags = $("#tagfield").tagit("tags");
+		var tagString = "";
+		
 		for (var i in tags) {
-			var keyword = encodeURIComponent(tags[i].value);
-			//alert("looking at " + keyword);
-			var url = "http://localhost:8080/TwitterAutomation/getTweeps?keyword=" + keyword;
-			//alert("url is " + url);
+			tagString += encodeURIComponent(tags[i].value);
+			tagString += ",";
+		}
+		
+		//var keyword = encodeURIComponent(tags[i].value);
+		//alert("looking at " + tagString);
 			
-			$.get( url, processTweeps);
-			break;
-		}		
+		var url = "http://localhost:8080/TwitterAutomation/getTweeps?keyword=" + tagString;
+		//alert("url is " + url);
+		
+		$.get(url, processTweeps);
 	}
 	
 	function processTweeps(data) {
 		//alert(data.length);
-		var time = 0;
-		var timeIncrement = 2000;
 		for (var ii=0;ii<data.length;ii++) {
 			//alert(data[ii].screenName);
 			var id = data[ii].id;
@@ -29,17 +60,28 @@
 			
 			if (!following) {
 				setTimeout(followTweep,time,id,screenName);
+				//alert("time is " + time);
 				time += timeIncrement;
-				break;
 			}
 		}
+		
+		setTimeout(pauseNotice,(time - timeIncrement)+500);
+		//time += timeIncrement;
+	}
+
+	var runNumber = 1;
+	
+	function pauseNotice() {
+		$("#statusResults").append("Finished run #"+ runNumber + ". Pausing...<br/>");
+		runNumber++;
 	}
 	
+	
 	function followTweep(id,screenName) {		
-		var url = "http://localhost:8080/TwitterAutomation/followTweep?id=" + id;
+		var url = "http://localhost:8080/TwitterAutomation/followTweep?id=" + id + "&screenName=" + screenName;
 		$.get(url,function( data ) {			
 			var notice = data.message + "" + screenName + "<br/>";
-			alert(notice);
+			//alert(notice);
 			$("#statusResults").append( notice);
 		});
 	}

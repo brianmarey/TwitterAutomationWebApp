@@ -3,7 +3,8 @@ package com.careydevelopment.twitterautomation.controller;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,20 +19,20 @@ import twitter4j.Twitter;
 
 @RestController
 public class FollowTweepController implements Constants {
-	private static final Logger LOGGER = Logger.getLogger(FollowTweepController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FollowTweepController.class);
 	
     @RequestMapping(value="/followTweep",method = RequestMethod.GET,produces="application/json")
-    public FollowResult followTweep(@RequestParam(value="id", required=true) String id, Model model) {
+    public FollowResult followTweep(@RequestParam(value="id", required=true) String id, @RequestParam(value="screenName", required=true) String screenName,Model model) {
 		//get the twitter4j Twitter object from the singleton
 		Twitter twitter = MyTwitter.instance().getTwitter();
 		
-		LOGGER.info("id for follow " + id);
+		LOGGER.info("id for follow " + id + " " + screenName);
 				
 		FollowResult followResult = new FollowResult();
 		
 		try {
 			Long twitterId = new Long(id);
-			twitter.createFriendship(twitterId);
+			twitter.createFriendship(screenName);
 		    addToDnf(twitterId);
 		    followResult.setMessage("Followed ");
 		} catch (Exception e) {
