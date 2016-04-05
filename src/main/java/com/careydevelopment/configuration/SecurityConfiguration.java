@@ -1,7 +1,5 @@
 package com.careydevelopment.configuration;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,10 +30,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 	 
 	 @Autowired
 	 public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {    
-	  auth.userDetailsService(userDetailsService).passwordEncoder(passwordencoder());;
-	  
+		 auth.userDetailsService(userDetailsService).passwordEncoder(passwordencoder());;
 	 } 
 
+	 
+	 @Bean(name="passwordEncoder")
+	 public PasswordEncoder passwordencoder(){
+	     return new BCryptPasswordEncoder();
+	 }
+	 
+	 
 	 /*@Autowired
 	 public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 	   auth.jdbcAuthentication().dataSource(dataSource)
@@ -44,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 	  .authoritiesByUsernameQuery(
 	   "select username, role from user_roles where username=?");
 	 } */
+	 
 	 
 	 
 	 @Override
@@ -55,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 			.formLogin()
 				.loginPage("/login")
 				.permitAll(); 
-		 
+		
 		 /*http.authorizeRequests()
 	   //.antMatchers("/resources/static/**").permitAll()
 	  .antMatchers("/**").access("hasRole('ROLE_ADMIN')")  
@@ -70,9 +75,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 	  //.and()
 	    .csrf();*/
 	 }
-	 
-	 @Bean(name="passwordEncoder")
-	 public PasswordEncoder passwordencoder(){
-	     return new BCryptPasswordEncoder();
-	 }
+
+
 }

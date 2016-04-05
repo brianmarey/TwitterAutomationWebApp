@@ -5,7 +5,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,37 +28,49 @@ import twitter4j.User;
 
 @RestController
 public class GetTweepsController implements Constants {
-	private static final Logger LOGGER = Logger.getLogger(GetTweepsController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GetTweepsController.class);
+	
+	private static final int COUNT_SIZE = 100;
 	
 	private Twitter twitter = null;
 	
     @RequestMapping(value="/getTweeps",method = RequestMethod.GET,produces="application/json")
-    public List<FriendshipLightweight> getTweeps(@RequestParam(value="keyword", required=true) String key, Model model) {
+    public List<FriendshipLightweight> getTweeps(@RequestParam(value="keyword", required=true) String keywords, Model model) {
 		//get the twitter4j Twitter object from the singleton
 		twitter = MyTwitter.instance().getTwitter();
 		
-		LOGGER.info("Keyword is " + key);
+		LOGGER.info("Keyword is " + keywords);
 		
 		//fetch the DNF ids
 		List<Long> dnfIds = fetchDnfs();
 		LOGGER.info("length of dnfs is " + dnfIds.size());
 		
+		String[] keys = keywords.split(",");
+		
+		
 		List<FriendshipLightweight> ships = new ArrayList<FriendshipLightweight>();
 		
 		try {
-			Query query = new Query(key).count(10);
-			QueryResult result = twitter.search(query);
-					    
-			String[] returnedDudes = getReturnedDudes(result);		
-			
-			for (String s : returnedDudes) {
-				LOGGER.info(s);
+			for (int i=0;i<keys.length;i++) {
+				String key = keys[i];
+				
+				if (key != null && key.trim().length() > 2) {		
+					LOGGER.info("Now searching for " + key);
+					
+					Query query = new Query(key).count(COUNT_SIZE);
+					QueryResult result = twitter.search(query);
+							    
+					String[] returnedDudes = getReturnedDudes(result);		
+					
+					/*for (String s : returnedDudes) {
+						LOGGER.info(s);
+					}*/
+					
+					ResponseList<Friendship> friendships = twitter.lookupFriendships(returnedDudes);
+					
+					ships.addAll(getLightweights(friendships,dnfIds));
+				}
 			}
-			
-			ResponseList<Friendship> friendships = twitter.lookupFriendships(returnedDudes);
-			
-			ships = getLightweights(friendships,dnfIds);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -90,6 +103,7 @@ public class GetTweepsController implements Constants {
     	
     	return ships;
     }
+    
     
 	/**
 	 * Returns candidates for following
