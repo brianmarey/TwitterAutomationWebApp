@@ -29,16 +29,6 @@ public class AutoFollowController {
     public String autofollow(Model model) {    	
     	model.addAttribute("localhost",getLocalHostPrefix());
     	
-    	List<User> users = userRepository.findAll();
-    	LOGGER.info("users size is " + users.size());
-    	for (User u : users) {
-    		LOGGER.info("User is " + u.getUsername());
-    		LOGGER.info("Password is " + u.getPassword());
-    	}
-    	
-    	User u = userRepository.findByUsername("brianmcarey");
-    	System.err.println(u);
-    	
     	String username = SecurityHelper.getUsername();
     	
     	if (username != null && username.trim().length() > 1) {
