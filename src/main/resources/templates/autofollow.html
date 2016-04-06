@@ -3,6 +3,7 @@
 <head>
     <title>TwitterAutomation : AutoFollow</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
     <script th:src="@{/js/jquery.js}"></script>     
     <script th:src="@{/css/jquery-ui/jquery-ui.js}"></script>  
@@ -12,53 +13,22 @@
     <link th:href="@{/css/tagit-simple-blue.css}" rel="stylesheet"/>   
     <link th:href="@{/css/jquery-ui/jquery-ui.css}" rel="stylesheet"/>
     <link th:href="@{/css/autofollow.css}" rel="stylesheet"/>
-       
     
-    
-    
-    <script type="text/javascript">
-    function appendText(){
-    	$("#msgid").append("<p>This is Hello World by JQuery</p>");
-    }
-    	
-
+    <script>
     $(function () {
     	//https://github.com/hailwood/jQuery-Tagit
         var availableTags = [];
         $('#tagfield').tagit({tagSource:availableTags, select:true, sortable:true, maxTags:6});
     });
-    
-	function showTags(tags) {
-		alert(tags);
-		/*var string = "Tags (label : value)\r\n";
-		string += "--------\r\n";
-		for (var i in tags)
-			string += tags[i].label + " : " + tags[i].value + "\r\n";
-		alert(string);*/
-	}
-
-	function getVals() {
-		var tags = $("#tagfield").tagit("tags");
-		var string = "";
-		for (var i in tags)
-			string += tags[i].label + " : " + tags[i].value + "\r\n";
-		alert(string);
-	}
-	
-	//setTimeout(getVals, 2000);
-    
-    //setTimeout(appendText, 2000);
-    //setTimeout(appendText, 4000);
-	
-    </script>
-    
-    <script>
-
-    </script>
+    </script> 
 </head>
 <body>
+<div th:include="fragments/header :: header">...</div>
+
+
 <h1>AutoFollow</h1>
 <form id="followForm">
+<input type="hidden" th:value="${localhost}" id="localhost" name="localhost" />
 <div class="ui-widget form-section">
 <div class="form-label"># Of Runs:</div>
 <div><input id="runs" value="7" style="width:50px"/></div>
@@ -66,17 +36,17 @@
 
 <div class="ui-widget form-section">
 <div class="form-label">User:</div>
-<div><input id="twitter-user" value="brianmcarey" style="width:200px"/></div>
+<div><input id="twitteruser" th:value="${username}" style="width:200px"/></div>
 </div>
 
 <div class="ui-widget form-section">
 <div class="form-label">Tags:</div>
-<div><ul id="tagfield" data-name="selectTags" style="width:300px;height:100px"><li>#TrumpTrain</li><li>#tcot</li><li>#nra</li></ul></div>
+<div><ul id="tagfield" data-name="selectTags"><li>#TrumpTrain</li><li>#tcot</li><li>#nra</li></ul></div>
 </div>
 </form>
 
 <div id = "buttonDiv" class="ui-widget form-section">
-<button id="followButton" onclick="beginAutoFollow()">Begin AutoFollow</button>
+<button id="followButton" onclick="beginAutoFollow(localhost)">Begin AutoFollow</button>
 </div>
 
 
@@ -90,5 +60,9 @@ That's quite intentional.
 <img th:src="@{/images/ripple.gif}" id="spinnerIcon"/>
 </div>
 
+<div th:include="fragments/footer :: footer">...</div>
 </body>
+<script>
+var localhost = $('#localhost').val();
+</script>
 </html>
