@@ -1,7 +1,7 @@
 	var time = 0;
 	var timeIncrement = 20000;
-	
 	var theHost = '';
+	var twitterUser = '';
 	
 	function beginAutoFollow(localhost) {
 		theHost = localhost;
@@ -11,6 +11,8 @@
 		$("#statusArea").show();
 		$("#spinnerIcon").show();
 		$("#statusText").show();
+		
+		twitterUser = $("#twitteruser").val();
 		
 		var runTime = 0;
 		var runTimeIncrement = 3600000;
@@ -48,8 +50,9 @@
 		//var keyword = encodeURIComponent(tags[i].value);
 		//alert("looking at " + tagString);
 			
-		var url = theHost + ":8080/TwitterAutomation/getTweeps?keyword=" + tagString;
-		//alert("url is " + url);
+		var url = theHost + ":8080/TwitterAutomation/getTweeps?keyword=" + tagString + "&twitterUser=" + twitterUser;
+		
+		//alert (url);
 		
 		$.get(url, processTweeps);
 	}
@@ -82,7 +85,7 @@
 	
 	
 	function followTweep(id,screenName) {		
-		var url = theHost + ":8080/TwitterAutomation/followTweep?id=" + id + "&screenName=" + screenName;
+		var url = theHost + ":8080/TwitterAutomation/followTweep?id=" + id + "&screenName=" + screenName + "&twitterUser=" + twitterUser;
 		$.get(url,function( data ) {			
 			var notice = data.message + "" + screenName + "<br/>";
 			//alert(notice);

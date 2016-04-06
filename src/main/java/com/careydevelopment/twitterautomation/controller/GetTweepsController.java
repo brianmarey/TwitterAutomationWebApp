@@ -35,11 +35,12 @@ public class GetTweepsController implements Constants {
 	private Twitter twitter = null;
 	
     @RequestMapping(value="/getTweeps",method = RequestMethod.GET,produces="application/json")
-    public List<FriendshipLightweight> getTweeps(@RequestParam(value="keyword", required=true) String keywords, Model model) {
+    public List<FriendshipLightweight> getTweeps(@RequestParam(value="keyword", required=true) String keywords,
+    		@RequestParam(value="twitterUser", required=true) String twitterUser,
+    		Model model) {
+    	
 		//get the twitter4j Twitter object from the singleton
-		twitter = MyTwitter.instance().getTwitter();
-		
-		LOGGER.info("Keyword is " + keywords);
+		twitter = MyTwitter.instance().getTwitter(twitterUser);
 		
 		//fetch the DNF ids
 		List<Long> dnfIds = fetchDnfs();

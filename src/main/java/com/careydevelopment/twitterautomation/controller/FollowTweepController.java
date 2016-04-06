@@ -22,9 +22,12 @@ public class FollowTweepController implements Constants {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FollowTweepController.class);
 	
     @RequestMapping(value="/followTweep",method = RequestMethod.GET,produces="application/json")
-    public FollowResult followTweep(@RequestParam(value="id", required=true) String id, @RequestParam(value="screenName", required=true) String screenName,Model model) {
+    public FollowResult followTweep(@RequestParam(value="id", required=true) String id, 
+    		@RequestParam(value="screenName", required=true) String screenName,
+    		@RequestParam(value="twitterUser", required=true) String twitterUser,
+    		Model model) {
 		//get the twitter4j Twitter object from the singleton
-		Twitter twitter = MyTwitter.instance().getTwitter();
+		Twitter twitter = MyTwitter.instance().getTwitter(twitterUser);
 		
 		LOGGER.info("id for follow " + id + " " + screenName);
 				
