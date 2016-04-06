@@ -57,7 +57,6 @@ public class MyTwitter {
 
 	/**
 	 * Gets the Twitter object based on provided name
-	 * There should be a name that matches a key in the twitters hashmap
 	 */
 	public Twitter getTwitter(String name) {
 		if (thisTwitter == null) {
