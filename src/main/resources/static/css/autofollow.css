@@ -73,8 +73,18 @@
 	.toplogo {
 	}
 	
+	.tagsArea {
+		width:300px !important;
+		height:100px !important;
+	}
+	
 	@media only screen and (max-width:520px) {
 		.toplogo {
-			width: 300px;
+			width: 250px;
+		}
+		
+		.tagsArea {
+			width:250px !important;
+			height:100px !important;
 		}
 	}
