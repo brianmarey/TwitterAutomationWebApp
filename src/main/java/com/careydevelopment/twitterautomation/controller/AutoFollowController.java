@@ -2,16 +2,18 @@ package com.careydevelopment.twitterautomation.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.careydevelopment.twitterautomation.jpa.entity.User;
+import com.careydevelopment.twitterautomation.jpa.repository.UserRepository;
 import com.careydevelopment.twitterautomation.util.SecurityHelper;
 
 @Controller
@@ -20,9 +22,22 @@ public class AutoFollowController {
 	
 	private static final String LOCAL_HOST_FILE = "/etc/tomcat8/resources/localhost.properties";
 	
+	@Autowired
+	UserRepository userRepository;
+	
     @RequestMapping("/autofollow")
     public String autofollow(Model model) {    	
     	model.addAttribute("localhost",getLocalHostPrefix());
+    	
+    	List<User> users = userRepository.findAll();
+    	LOGGER.info("users size is " + users.size());
+    	for (User u : users) {
+    		LOGGER.info("User is " + u.getUsername());
+    		LOGGER.info("Password is " + u.getPassword());
+    	}
+    	
+    	User u = userRepository.findByUsername("brianmcarey");
+    	System.err.println(u);
     	
     	String username = SecurityHelper.getUsername();
     	
