@@ -1,5 +1,5 @@
 	var time = 0;
-	var timeIncrement = 10000;
+	var timeIncrement = 20000;
 	var theHost = '';
 	var twitterUser = '';
 	
@@ -19,7 +19,7 @@
 		
 		runNumber = 1;
 		
-		var numberOfRuns = $('#runs').val();
+		var numberOfRuns = 1; //$('#runs').val();
 		
 		for (var j=0;j<numberOfRuns;j++) {			
 			setTimeout(beginRun,runTime);
