@@ -52,7 +52,7 @@
 			
 		var url = theHost + ":8080/TwitterAutomation/getTweeps?keyword=" + tagString + "&twitterUser=" + twitterUser;
 		
-		alert (url);
+		//alert (url);
 		
 		$.get(url, processTweeps);
 	}
@@ -86,7 +86,7 @@
 	
 	function followTweep(id,screenName) {		
 		var url = theHost + ":8080/TwitterAutomation/followTweep?id=" + id + "&screenName=" + screenName + "&twitterUser=" + twitterUser;
-		alert(url);
+		//alert(url);
 		$.get(url,function( data ) {			
 			var notice = data.message + "" + screenName + "<br/>";
 			//alert(notice);
