@@ -58,7 +58,7 @@ public class GetTweepsController implements Constants {
 				if (key != null && key.trim().length() > 2) {		
 					LOGGER.info("Now searching for " + key);
 					
-					Query query = new Query(key).count(COUNT_SIZE);
+					Query query = new Query(key).count(10);
 					QueryResult result = twitter.search(query);
 							    
 					String[] returnedDudes = getReturnedDudes(result);		

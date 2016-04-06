@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TwitterAutomation : Home</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <script th:src="@{/js/jquery.js}"></script>     
+    <script th:src="@{/css/jquery-ui/jquery-ui.js}"></script>  
+    
+    <link th:href="@{/css/jquery-ui/jquery-ui.css}" rel="stylesheet"/>
+    <link th:href="@{/css/autofollow.css}" rel="stylesheet"/>
+    
+</head>
+<body>
+<div th:include="fragments/header :: header">...</div>
+
+
+<h1>Twitter Automation</h1>
+
+<div id="introText" style="margin-bottom:20px;width:100%;background-color: #e0ebeb; padding: 5px 5px 5px 5px" class="ui-widget">
+This tool automates routine Twitter tasks, such as following and unfollowing people. Get started by selecting one of the tasks below. 
+Just make sure you don't get too exuberant or you could get your account suspended.
+</div>
+<p/>
+<table>
+<thead>
+<tr>
+<th class="ui-widget">Task Name</th>
+<th class="ui-widget">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="ui-widget"><a th:href="@{/autofollow}">Autofollow</a></td>
+<td class="ui-widget">Automatically follows users based on keywords. Be careful about using this one too much.</td>
+</tr>
+</tbody>
+</table>
+
+
+<div th:include="fragments/footer :: footer">...</div>
+</body>
+
+</html>
