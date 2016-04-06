@@ -14,7 +14,7 @@ interface BaseRepository<T, ID extends Serializable> extends Repository<T, ID> {
  
     List<T> findAll();
      
-    Optional<T> findOne(ID id);
+    T findOne(ID id);
  
     T save(T persisted);
 }

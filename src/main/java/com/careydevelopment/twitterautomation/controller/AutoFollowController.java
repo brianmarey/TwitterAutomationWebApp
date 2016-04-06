@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.careydevelopment.twitterautomation.jpa.entity.User;
+import com.careydevelopment.twitterautomation.jpa.entity.FollowRun;
+import com.careydevelopment.twitterautomation.jpa.entity.Followee;
+import com.careydevelopment.twitterautomation.jpa.repository.FollowRunRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.UserRepository;
 import com.careydevelopment.twitterautomation.util.SecurityHelper;
 
@@ -22,8 +24,6 @@ public class AutoFollowController {
 	
 	private static final String LOCAL_HOST_FILE = "/etc/tomcat8/resources/localhost.properties";
 	
-	@Autowired
-	UserRepository userRepository;
 	
     @RequestMapping("/autofollow")
     public String autofollow(Model model) {    	
