@@ -19,14 +19,14 @@
 		
 		runNumber = 1;
 		
-		var numberOfRuns = $('#runs').val();
+		var numberOfRuns = 1; //$('#runs').val();
 		
 		for (var j=0;j<numberOfRuns;j++) {			
 			setTimeout(beginRun,runTime);
 			runTime+=runTimeIncrement;
 		}
 		
-		setTimeout(completelyFinished, (runTime-runTimeIncrement) + 500);
+		setTimeout(completelyFinished, runTime);
 	}
 	
 	
@@ -72,7 +72,7 @@
 			}
 		}
 		
-		setTimeout(pauseNotice,(time - timeIncrement)+500);
+		setTimeout(pauseNotice,time);
 		//time += timeIncrement;
 	}
 
@@ -86,6 +86,7 @@
 	
 	function followTweep(id,screenName) {		
 		var url = theHost + ":8080/TwitterAutomation/followTweep?id=" + id + "&screenName=" + screenName + "&twitterUser=" + twitterUser;
+		//alert(url);
 		$.get(url,function( data ) {			
 			var notice = data.message + "" + screenName + "<br/>";
 			//alert(notice);

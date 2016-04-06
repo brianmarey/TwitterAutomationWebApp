@@ -2,16 +2,20 @@ package com.careydevelopment.twitterautomation.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.careydevelopment.twitterautomation.jpa.entity.FollowRun;
+import com.careydevelopment.twitterautomation.jpa.entity.Followee;
+import com.careydevelopment.twitterautomation.jpa.repository.FollowRunRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.UserRepository;
 import com.careydevelopment.twitterautomation.util.SecurityHelper;
 
 @Controller
@@ -19,6 +23,7 @@ public class AutoFollowController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AutoFollowController.class);
 	
 	private static final String LOCAL_HOST_FILE = "/etc/tomcat8/resources/localhost.properties";
+	
 	
     @RequestMapping("/autofollow")
     public String autofollow(Model model) {    	

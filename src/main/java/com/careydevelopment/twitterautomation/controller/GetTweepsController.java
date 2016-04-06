@@ -5,8 +5,11 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,8 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careydevelopment.configuration.MyTwitter;
+import com.careydevelopment.twitterautomation.jpa.entity.FollowRun;
+import com.careydevelopment.twitterautomation.jpa.entity.User;
+import com.careydevelopment.twitterautomation.jpa.repository.FollowRunRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.UserRepository;
 import com.careydevelopment.twitterautomation.model.FriendshipLightweight;
 import com.careydevelopment.twitterautomation.util.Constants;
+import com.careydevelopment.twitterautomation.util.SecurityHelper;
 
 import twitter4j.Friendship;
 import twitter4j.Query;
@@ -24,7 +32,6 @@ import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.User;
 
 @RestController
 public class GetTweepsController implements Constants {
@@ -34,10 +41,20 @@ public class GetTweepsController implements Constants {
 	
 	private Twitter twitter = null;
 	
+	@Autowired
+	FollowRunRepository followRunRepository;
+	
+	@Autowired
+	UserRepository userRepository;
+	
     @RequestMapping(value="/getTweeps",method = RequestMethod.GET,produces="application/json")
     public List<FriendshipLightweight> getTweeps(@RequestParam(value="keyword", required=true) String keywords,
-    		@RequestParam(value="twitterUser", required=true) String twitterUser,
+    		@RequestParam(value="twitterUser", required=true) String twitterUser, HttpServletRequest request,
     		Model model) {
+    	
+    	FollowRun followRun = logRun();
+    	request.getSession().setAttribute(CURRENT_FOLLOW_RUN, followRun);
+   
     	
 		//get the twitter4j Twitter object from the singleton
 		twitter = MyTwitter.instance().getTwitter(twitterUser);
@@ -79,6 +96,21 @@ public class GetTweepsController implements Constants {
         return ships;
     }
     
+
+    //saves the log of the run to the db
+    private FollowRun logRun() {
+    	FollowRun followRun = new FollowRun();
+    	
+    	String username = SecurityHelper.getUsername();
+    	User user = userRepository.findById(username);
+    	
+    	followRun.setUser(user);
+    	
+    	FollowRun persisted = followRunRepository.save(followRun);
+    	
+    	return persisted;
+    }
+    
     
     /**
      * Translates heavyweight Friendship objets from Twitter4j into lightweight objects
@@ -111,12 +143,12 @@ public class GetTweepsController implements Constants {
 	 */
 	private String[] getReturnedDudes(QueryResult result) throws TwitterException {
 		String[] returnedDudes = new String[result.getCount()];
-		long[] blocks = twitter.getBlocksIDs().getIDs();
+		//long[] blocks = twitter.getBlocksIDs().getIDs();
 
 		int i = 0;
 		
 		for (Status status : result.getTweets()) {
-			User thisUser = status.getUser();
+			/*User thisUser = status.getUser();
 	    	boolean isBlocked = false;
 	    	for (long l : blocks) {
 	    		if (l == thisUser.getId()) {
@@ -124,10 +156,10 @@ public class GetTweepsController implements Constants {
 	    		}
 	    	}
 			
-	    	if (!isBlocked) {
-	    		returnedDudes[i] = thisUser.getScreenName();
+	    	if (!isBlocked) {*/
+	    		returnedDudes[i] = status.getUser().getScreenName();
 			    i++;
-			}
+			//}
 		}
 		
 		return returnedDudes;
