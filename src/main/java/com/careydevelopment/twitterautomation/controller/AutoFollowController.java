@@ -28,6 +28,7 @@ public class AutoFollowController {
     @RequestMapping("/autofollow")
     public String autofollow(Model model) {    	
     	model.addAttribute("localhost",getLocalHostPrefix());
+    	model.addAttribute("autofollowActive", "active");
     	
     	String username = SecurityHelper.getUsername();
     	

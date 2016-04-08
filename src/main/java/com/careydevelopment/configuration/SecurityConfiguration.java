@@ -60,8 +60,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 				.and()
 			.formLogin()
 				.loginPage("/login")
-				.permitAll();
-		
+				.permitAll();		
+	 }
+
 		 /*http.authorizeRequests()
 	   //.antMatchers("/resources/static/**").permitAll()
 	  .antMatchers("/**").access("hasRole('ROLE_ADMIN')")  
@@ -75,7 +76,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 	   //.exceptionHandling().accessDeniedPage("/403")
 	  //.and()
 	    .csrf();*/
-	 }
-
 
 }
