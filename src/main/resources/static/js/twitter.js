@@ -52,7 +52,7 @@
 		//var keyword = encodeURIComponent(tags[i].value);
 		//alert("looking at " + tagString);
 			
-		var url = theHost + ":8080/TwitterAutomation/getTweeps?keyword=" + tagString + "&twitterUser=" + twitterUser;
+		var url = theHost + "/TwitterAutomation/getTweeps?keyword=" + tagString + "&twitterUser=" + twitterUser;
 		
 		//alert (url);
 		
@@ -87,7 +87,7 @@
 	
 	
 	function followTweep(id,screenName) {		
-		var url = theHost + ":8080/TwitterAutomation/followTweep?id=" + id + "&screenName=" + screenName + "&twitterUser=" + twitterUser;
+		var url = theHost + "/TwitterAutomation/followTweep?id=" + id + "&screenName=" + screenName + "&twitterUser=" + twitterUser;
 		//alert(url);
 		$.get(url,function( data ) {			
 			var notice = data.message + "" + screenName + "<br/>";

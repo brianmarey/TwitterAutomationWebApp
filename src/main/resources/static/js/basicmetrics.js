@@ -4,7 +4,7 @@ var thisHost;
 function beginCheck(localhost) {
 	thisHost = localhost;
 	var domain = encodeURIComponent($('#website').val());
-	var url = thisHost + ":8080/MozMetrics/fetchBasicMetrics?domain="+domain;
+	var url = thisHost + "/MozMetrics/fetchBasicMetrics?domain="+domain;
 
 	$('#entryForm').hide();
 	$('#spinner').show();
