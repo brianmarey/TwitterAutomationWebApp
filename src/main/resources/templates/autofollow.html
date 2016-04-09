@@ -32,11 +32,10 @@
             	<div class="row">
                 	<div class="span12">
                         <div class="page-header">
-
-								<h1>AutoFollow</h1>
+							<h1>AutoFollow</h1>
 						</div>
 						<div>
-								<form id="followForm">
+							<form id="followForm">
 								<input type="hidden" th:value="${localhost}" id="localhost" name="localhost" />
 								<!--  <div class="ui-widget form-section">
 								<div class="form-label"># Of Runs:</div>
@@ -44,18 +43,18 @@
 								</div>-->
 								
 								<div class="form-section">
-								<div>User:</div>
-								<div><input id="twitteruser" th:value="${username}" style="width:200px"/></div>
+								<label>User:</label>
+								<div><input id="twitteruser" th:value="${username}" type="text" class="span4"/></div>
 								</div>
 								
 								<div class="form-section">
-								<div >Tags:</div>
-								<div><ul id="tagfield" data-name="selectTags"><li>#TrumpTrain</li><li>#tcot</li><li>#nra</li></ul></div>
+								<label>Tags:</label>
+								<div><ul id="tagfield" data-name="selectTags" style="margin-left:-4px"><li>#TrumpTrain</li><li>#tcot</li><li>#nra</li></ul></div>
 								</div>
-								</form>
+							</form>
 								
 								<div id = "buttonDiv" class="form-section">
-								<button id="followButton" onclick="beginAutoFollow(localhost)">Begin AutoFollow</button>
+								<button id="followButton" class="btn send-btn" onclick="beginAutoFollow(localhost)">Begin AutoFollow</button>
 								</div>
 								
 								
@@ -68,8 +67,13 @@
 								<div id="statusResults"></div>
 								<img th:src="@{/images/ripple.gif}" id="spinnerIcon"/>
 								</div>
+
+                                
+								<div id = "anotherRunButtonDiv" style="display:none" class="form-section">
+									<button id="anotherRunButton" class="btn send-btn" onclick="anotherRun()">Another Run</button>
+								</div>
 							</div>
-						</div>
+						</div>					
 					</div>
 				</div>
 			</div>

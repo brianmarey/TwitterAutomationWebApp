@@ -11,6 +11,7 @@
 		$("#statusArea").show();
 		$("#spinnerIcon").show();
 		$("#statusText").show();
+		$("anotherRunButtonDiv").hide();
 		
 		twitterUser = $("#twitteruser").val();
 		
@@ -33,6 +34,7 @@
 	function completelyFinished() {
 		$("#statusResults").append("Completely finished.<br/>");
 		$("#spinnerIcon").hide();
+		$("anotherRunButtonDiv").show();
 	}
 	
 	
