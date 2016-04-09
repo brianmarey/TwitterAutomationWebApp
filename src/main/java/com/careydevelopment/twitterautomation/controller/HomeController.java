@@ -20,7 +20,7 @@ public class HomeController {
 	
     @RequestMapping("/")
     public String home(Model model) {    	    
-    	LOGGER.info("in home");
+    	model.addAttribute("homeActive", "active");
         return "index";
     }
         
