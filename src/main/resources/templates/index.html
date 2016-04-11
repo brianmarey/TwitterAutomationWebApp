@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-    <link th:href="@{/css/autofollow.css}" rel="stylesheet"/>
+    <link th:href="@{/css/sitestyle.css}" rel="stylesheet"/>
     <script th:src="@{/js/jquery.js}"></script>  
     
 </head>
@@ -29,15 +29,25 @@
 						</div>
 					<div class="service-box">
                     <div class="row">
-                    	<div class="span4">&nbsp;</div>
-                        <div class="span4">
+                    	<div class="span4">
                             <div class="service-icon-wrap">
                                 <div class="big-icon-wrap pull-left img-circle" style="cursor:pointer" onclick="document.location='./autofollow'">
                                     <i class="fa fa-twitter fa-2x"></i>
                                 </div>
                                 <div class="service-txt">
-                                <h3><a href="./autofollow">Autofollow</a></h3>
-                                <p>Automatically follows users based on keywords.</p>
+                                	<h3><a href="./autofollow">Autofollow</a></h3>
+                                	<p>Automatically follows users based on keywords.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="service-icon-wrap">
+                                <div class="big-icon-wrap pull-left img-circle" style="cursor:pointer" onclick="document.location='./autounfollow'">
+                                    <i class="fa fa-twitter fa-2x"></i>
+                                </div>
+                                <div class="service-txt">
+                                	<h3><a href="./autounfollow">AutoUnfollow</a></h3>
+                                	<p>Automatically unfollows users who aren't following you back.</p>
                                 </div>
                             </div>
                         </div>
