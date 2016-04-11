@@ -1,26 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>TwitterAutomation : AutoFollow</title>
+    <title>TwitterAutomation : AutoUnfollow</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
  	<script th:src="@{/js/jquery.js}"></script>  
-    <script th:src="@{/css/jquery-ui/jquery-ui.js}"></script>  
-    <script th:src="@{/js/tagit.js}"></script>
     <script th:src="@{/js/twitter.js}"></script> 
-    
-    <link th:href="@{/css/jquery-ui/jquery-ui.css}" rel="stylesheet"/>
-    
-    <link th:href="@{/css/tagit-simple-blue.css}" rel="stylesheet"/>   
+  
     <link th:href="@{/css/sitestyle.css}" rel="stylesheet"/>
     
-    <script>
-    $(function () {
-    	//https://github.com/hailwood/jQuery-Tagit
-        var availableTags = [];
-        $('#tagfield').tagit({tagSource:availableTags, select:true, sortable:true, maxTags:6});
-    });
-    </script> 
 </head>
 <body class="wide">
 <div th:include="fragments/header :: header">...</div>
@@ -32,15 +20,11 @@
             	<div class="row">
                 	<div class="span12">
                         <div class="page-header">
-							<h1>AutoFollow</h1>
+							<h1>AutoUnfollow</h1>
 						</div>
 						<div>
 							<form id="followForm">
 								<input type="hidden" th:value="${localhost}" id="localhost" name="localhost" />
-								<!--  <div class="ui-widget form-section">
-								<div class="form-label"># Of Runs:</div>
-								<div><input id="runs" value="7" style="width:50px"/></div>
-								</div>-->
 								
 								<div class="form-section">
 								<label>User:</label>
@@ -48,18 +32,18 @@
 								</div>
 								
 								<div class="form-section">
-								<label>Tags:</label>
-								<div><ul id="tagfield" data-name="selectTags" style="margin-left:-4px"><li>#TrumpTrain</li><li>#tcot</li><li>#nra</li></ul></div>
+								<label>Offset:</label>
+								<div><input id="offset" value="5000" type="text" class="span4"/></div>
 								</div>
 							</form>
 								
 								<div id = "buttonDiv" class="form-section">
-								<button id="followButton" class="btn send-btn" onclick="beginAutoFollow(localhost)">Begin AutoFollow</button>
+								<button id="unfollowButton" class="btn send-btn" onclick="beginAutoUnfollow(localhost)">Begin AutoUnfollow</button>
 								</div>
 								
 								
-								<div id="statusText" style="display:none;margin-bottom:20px;width:350px; padding: 5px 5px 5px 5px">
-								Please wait while the system autofollows people based on the keywords you provided. There will be a delay of several seconds between each follow.
+								<div id="statusText" style="display:none;margin-bottom:20px;font-size:12pt;width:300px; font-weight:bold; background-color: #e6f2ff; padding: 5px 5px 5px 5px">
+								Please wait while the system autounfollows people who aren't following you back. There will be a delay of several seconds between each unfollow.
 								That's quite intentional.
 								</div>
 								
@@ -70,7 +54,7 @@
 
                                 
 								<div id = "anotherRunButtonDiv" style="display:none" class="form-section">
-									<button id="anotherRunButton" class="btn send-btn" onclick="anotherRun()">Another Run</button>
+									<button id="anotherRunButton" class="btn send-btn" onclick="anotherUnfollowRun()">Another Run</button>
 								</div>
 							</div>
 						</div>					
