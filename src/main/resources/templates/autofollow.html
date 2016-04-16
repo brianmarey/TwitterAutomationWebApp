@@ -4,22 +4,16 @@
     <title>TwitterAutomation : AutoFollow</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
- 	<script th:src="@{/js/jquery.js}"></script>  
-    <script th:src="@{/css/jquery-ui/jquery-ui.js}"></script>  
-    <script th:src="@{/js/tagit.js}"></script>
-    <script th:src="@{/js/twitter.js}"></script> 
     
-    <link th:href="@{/css/jquery-ui/jquery-ui.css}" rel="stylesheet"/>
+    <link href="/css/jquery-ui/jquery-ui.css" rel="stylesheet"/>
     
-    <link th:href="@{/css/tagit-simple-blue.css}" rel="stylesheet"/>   
-    <link th:href="@{/css/sitestyle.css}" rel="stylesheet"/>
+    <link href="/css/tagit-simple-blue.css" rel="stylesheet"/>   
+    <link href="/css/sitestyle.css" rel="stylesheet"/>
+    
+    <link rel="shortcut icon" href="/images/favicon.ico" />
     
     <script>
-    $(function () {
-    	//https://github.com/hailwood/jQuery-Tagit
-        var availableTags = [];
-        $('#tagfield').tagit({tagSource:availableTags, select:true, sortable:true, maxTags:6});
-    });
+
     </script> 
 </head>
 <body class="wide">
@@ -81,7 +75,21 @@
 
 <div th:include="fragments/footer :: footer">...</div>
 </body>
+ 	<script src="/js/jquery.js"></script>  
+    <script src="/css/jquery-ui/jquery-ui.js"></script>  
+    <script src="/js/tagit.js"></script>
+    <script src="./js/twitter.js"></script> 
 <script>
 var localhost = $('#localhost').val();
+
+
+$(function () {
+	//https://github.com/hailwood/jQuery-Tagit
+    var availableTags = [];
+    $('#tagfield').tagit({tagSource:availableTags, select:true, sortable:true, maxTags:6});
+});
+
+
+
 </script>
 </html>
