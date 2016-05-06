@@ -47,7 +47,7 @@ public class LoginCheckFilter implements Filter {
 				//see if they have the login key
 				String loginKey = (String)((HttpServletRequest)request).getSession().getAttribute(Constants.LOGIN_KEY);
 				
-				if (loginKey == null && !uri.endsWith("/notLoggedIn") && uri.indexOf("/assets/") == -1 && uri.indexOf("/images/") == -1) {
+				if (loginKey == null && uri.indexOf("/twitterCallback") == -1 && !uri.endsWith("/getToken") && !uri.endsWith("/notLoggedIn") && uri.indexOf("/assets/") == -1 && uri.indexOf("/images/") == -1) {
 					LOGGER.warn("USER NOT LOGGED IN!");
 					request.getRequestDispatcher("/notLoggedIn").forward(request, response);
 				} else {

@@ -38,15 +38,16 @@ public class ErrorHandlerFilter implements Filter {
 		try {
 			String uri = ((HttpServletRequest)request).getRequestURI();
 			if (uri == null) uri = "";
-			LOGGER.info(uri);
+			//LOGGER.info(uri);
 			
 			HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper((HttpServletResponse)response); 
 			int statusCode = wrapper.getStatus();
-			LOGGER.info("" + statusCode);
+			//LOGGER.info("" + statusCode);
 			
 			if (statusCode == 404 && !uri.endsWith("/404")) {
 				LOGGER.info("Going to 404 " + uri);
-				//request.getRequestDispatcher("/404").forward(request, wrapper);
+				request.getRequestDispatcher("/404").forward(request, wrapper);
+				//throw new RuntimeException("Here " + uri);
 			} else {
 				chain.doFilter(request, response);	
 			}

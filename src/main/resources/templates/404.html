@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>BlastFollow | Not Logged In</title>
+        <title>BlastFollow | Page Not Found</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="" name="description"></meta>
@@ -49,16 +49,21 @@
                     </div>-->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title"> Not Logged In
+                    <h1 class="page-title"> Page Not Found
                     </h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
-                    <div class="note note-info">
-                        <p> Please login with Twitter to use BlastFollow </p>
+                    <div class="row">
+                        <div class="col-md-12 page-404">
+                            <div class="number font-green"> 404 </div>
+                            <div class="details">
+                                <h3>Oops! You're lost.</h3>
+                                <p> We can't find the page you're looking for.
+                                    <br/>
+                                    <a th:href="@{/}"> Return home </a> or select an item from the side menu.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-							<a href="./getToken"><img th:src="@{/images/sign-in-with-twitter-gray.png}"/></a>
-					</div>
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
