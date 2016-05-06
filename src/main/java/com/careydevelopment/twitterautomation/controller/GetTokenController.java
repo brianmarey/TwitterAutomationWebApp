@@ -65,17 +65,8 @@ public class GetTokenController {
     	String callbackUrl = "";
     	
     	try {
-	    	StringBuilder sb = new StringBuilder();
-	    	
-    		Properties props = PropertiesFactory.getProperties(PropertiesFile.LOCALHOST_PROPERTIES);
-			
-			String prefix = props.getProperty("localhost.prefix");
-			sb.append(prefix);
-			sb.append("/TwitterAutomation/twitterCallback");
-			
-			callbackUrl = sb.toString();
-			
-			//LOGGER.info("Callback URL is " + callbackUrl);
+    		Properties props = PropertiesFactory.getProperties(PropertiesFile.CALLBACK_PROPERTIES);
+			callbackUrl = props.getProperty("twitter.callback");
     	} catch (PropertiesFactoryException pe) {
     		LOGGER.error("Problem getting localhost properties!",pe);
     	}

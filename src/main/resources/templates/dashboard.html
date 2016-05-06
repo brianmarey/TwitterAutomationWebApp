@@ -52,8 +52,55 @@
                     <h1 class="page-title">Dashboard</h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
-                    <div class="note note-info">
-                        <p> Congratulations! You're logged in as <span th:text="${screenName}"></span>. </p>
+                    <th:block th:if="${twitterUser.newUser}">
+                    	<div class="portlet-body">
+                            <div class="note note-success">
+                                <h4 class="block">Welcome!</h4>
+                                <p>It looks like this is your first time here. Welcome aboard.</p>
+                                <p>You can use this tool to follow, unfollow, and refollow other Twitter users <i>en masse.</i></p>
+                            </div>
+                        </div>
+                    </th:block>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <a class="dashboard-stat dashboard-stat-v2 blue" href="#" style="cursor:default">
+                                <div class="visual">
+                                    <i class="fa fa-users"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="number">
+                                        <span data-counter="counterup" th:data-value="${session.twitterUser.followersCount}" th:text="${session.twitterUser.followersCount}">0</span>
+                                    </div>
+                                    <div class="desc"> Followers </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <a class="dashboard-stat dashboard-stat-v2 red" href="#" style="cursor:default">
+                                <div class="visual">
+                                    <i class="fa fa-users"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="number">
+                                        <span data-counter="counterup" th:data-value="${session.twitterUser.friendsCount}" th:text="${session.twitterUser.friendsCount}">0</span>
+                                    </div>
+                                    <div class="desc"> Following </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <a class="dashboard-stat dashboard-stat-v2 green" href="#" style="cursor:default">
+                                <div class="visual">
+                                    <i class="fa fa-pie-chart"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="number">
+                                        <span data-counter="counterup" th:data-value="${ratio}" th:text="${ratio}">0</span>
+                                    </div>
+                                    <div class="desc"> Ratio </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <!-- END CONTENT BODY -->
