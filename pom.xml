@@ -13,6 +13,12 @@
   </parent>
   
     <dependencies>
+        <dependency>
+	       <groupId>com.careydevelopment</groupId>
+	       <artifactId>properties-support</artifactId>
+	       <version>[1.0,)</version>
+    	</dependency>
+    
        <dependency>
            <groupId>org.twitter4j</groupId>
            <artifactId>twitter4j-core</artifactId>
