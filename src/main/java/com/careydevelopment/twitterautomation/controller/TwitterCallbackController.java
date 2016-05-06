@@ -3,6 +3,7 @@ package com.careydevelopment.twitterautomation.controller;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,9 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.careydevelopment.twitterautomation.domain.Tip;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.TwitterUserRepository;
 import com.careydevelopment.twitterautomation.util.Constants;
+import com.careydevelopment.twitterautomation.util.TipsHelper;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -91,12 +94,17 @@ public class TwitterCallbackController {
     	DecimalFormat df = new DecimalFormat("###.##");
     	df.setRoundingMode(RoundingMode.FLOOR);
     	
-    	double ratio = ((double)user.getFriendsCount())/((double)user.getFollowersCount());
+    	double ratio = ((double)user.getFollowersCount())/((double)user.getFriendsCount());
     	LOGGER.info("ratio is " + ratio);
     	
     	String ratioS = df.format(ratio);
     	model.addAttribute("ratio",ratioS);
+    	
+    	TipsHelper helper = new TipsHelper(user);
+    	List<Tip> tips = helper.getTips();
+    	model.addAttribute("tips",tips);
     }
+    
     
     private void handleLogin(Twitter twitter, Model model) throws TwitterException {
     	//just check to make sure we're happy

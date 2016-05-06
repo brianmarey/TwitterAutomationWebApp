@@ -102,6 +102,41 @@
                             </a>
                         </div>
                     </div>
+                    <th:block th:if="${not #lists.isEmpty(tips)}">
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="caption-subject font-dark bold uppercase">Tips</span>
+                            </div>
+						</div>
+						<th:block th:each="tip,iterationStatus  : ${tips}">
+                        <div class="portlet-body">
+                        	<div class="alert alert-block alert-info fade in">
+                                <h4 class="alert-heading" th:text="${tip.title}">Info!</h4>
+                                	<p th:text="${tip.description}">  </p>
+                            </div>
+                        </div>
+                        </th:block>
+					</div>
+					</th:block>
+					<div class="row">
+					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					    	<div class="portlet light tasks-widget bordered">
+                            	<div class="portlet-title">
+                                	<div class="caption">
+                                    	<span class="caption-subject font-green-haze bold uppercase">What Do You Want To Do?</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body util-btn-margin-bottom-5">
+                                	<div class="clearfix" style="display: flex;justify-content: space-between;">
+								    	<button type="button" class="btn btn-primary">Start Following</button>
+										<button type="button" class="btn btn-primary">Start Unfollowing</button>
+										<button type="button" class="btn btn-primary">Start Refollowing</button>
+									</div>
+								</div>
+							</div>
+                        </div>
+					</div>
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
