@@ -36,12 +36,28 @@ public class LoginCheckFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
+		String uri = ((HttpServletRequest)request).getRequestURI();
+		if (uri == null) uri = "";
 
-		String loginKey = (String)((HttpServletRequest)request).getSession().getAttribute(Constants.LOGIN_KEY);
-		if (loginKey == null) {
-			LOGGER.warn("USER NOT LOGGED IN!");
-		}
+		int lastSlash = uri.lastIndexOf("/");
 		
-		chain.doFilter(request, response);	
+		if (lastSlash > -1) {
+			//looking for a page URL not an image or javascript
+			if (uri.indexOf(".",lastSlash) == -1) {				
+				//see if they have the login key
+				String loginKey = (String)((HttpServletRequest)request).getSession().getAttribute(Constants.LOGIN_KEY);
+				
+				if (loginKey == null && !uri.endsWith("/notLoggedIn") && uri.indexOf("/assets/") == -1 && uri.indexOf("/images/") == -1) {
+					LOGGER.warn("USER NOT LOGGED IN!");
+					request.getRequestDispatcher("/notLoggedIn").forward(request, response);
+				} else {
+					chain.doFilter(request, response);	
+				}	
+			} else {
+				chain.doFilter(request, response);
+			}
+		} else {
+			chain.doFilter(request, response);
+		}
 	}
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>BlastFollow | Not Logged In</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="" name="description"></meta>
+        <meta content="" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h3 class="page-title"> Not Logged In
+                    </h3>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    <div class="note note-info">
+                        <p> Please login with Twitter to use BlastFollow </p>
+                    </div>
+                    <div>
+							<a href="./getToken"><img th:src="@{/images/sign-in-with-twitter-gray.png}"/></a>
+					</div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <!-- END FOOTER -->
+    </body>
+</html>
