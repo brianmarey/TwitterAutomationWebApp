@@ -15,11 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
  
-    /*@Override
+    @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests().antMatchers("/").permitAll();
-    }*/
-	
+    }
 	
 	 /*@Autowired
 	 DataSource dataSource;
@@ -51,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 	 
 	 
 	 
-	 @Override
+	 /*@Override
 	 protected void configure(HttpSecurity http) throws Exception {
 		 http.authorizeRequests().antMatchers("/css/**","/images/**","/js/**").permitAll()
 		 	.and()
@@ -61,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 			.formLogin()
 				.loginPage("/login")
 				.permitAll();		
-	 }
+	 }*/
 
 		 /*http.authorizeRequests()
 	   //.antMatchers("/resources/static/**").permitAll()

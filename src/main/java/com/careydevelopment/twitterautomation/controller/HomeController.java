@@ -21,7 +21,7 @@ public class HomeController {
     @RequestMapping("/")
     public String home(Model model) {    	    
     	model.addAttribute("homeActive", "active");
-        return "index";
+        return "layout_blank_page";
     }
         
 }
