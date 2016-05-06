@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.careydevelopment.twitterautomation.util.Constants;
 
 import twitter4j.Twitter;
+import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
@@ -41,6 +42,9 @@ public class TwitterCallbackController {
             
             //add the access token to the session
             request.getSession().setAttribute(Constants.LOGIN_KEY, token.getToken());
+            
+            User user = twitter.showUser(twitter.getId());
+            request.getSession().setAttribute(Constants.TWITTER_USER, user);
         } catch (Exception e) {
             LOGGER.error("Problem getting token!",e);
             return "redirect:notLoggedIn";
@@ -51,16 +55,10 @@ public class TwitterCallbackController {
 
     
     @RequestMapping("/loggedInPage")
-    public String loggedInPage(HttpServletRequest request, Model model) {
-    	
-    	try {
-	    	Twitter twitter = (Twitter)request.getSession().getAttribute("twitter");	
-	    	String screenName = twitter.getScreenName();
-	    	model.addAttribute("screenName",screenName);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		LOGGER.error("Problem after Twitter login!");
-    	}
+    public String loggedInPage(HttpServletRequest request, Model model) {    	
+    	//Twitter twitter = (Twitter)request.getSession().getAttribute("twitter");	
+    	//String screenName = twitter.getScreenName();
+    	//model.addAttribute("screenName",screenName);
     	
     	return "loggedInPage";
     }
