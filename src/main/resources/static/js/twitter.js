@@ -161,4 +161,21 @@
 		});
 	}
 	
+	function findByHashtag() {
+		$("#hashTagWarning").hide();
+		
+		var hashtag = $("#hashtag").val();
+		alert("Hashtag is " + hashtag);
+		
+		hashtag = hashtag.trim();
+		
+		if (hashtag == '') {
+			$("#hashTagWarning").show();
+			return;
+		}
+		
+		
+	}
+	
+	
 	

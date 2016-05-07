@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>BlastFollow | Follow Users</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="Mass Follow Users" name="description"></meta>
+        <meta content="Carey Development, LLC" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!--  <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>-->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title">Follow Users</h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    <div>
+                    	<div class="portlet-body">
+                    		<div class="note note-info">
+		                    	<h4 class="block">What Does This Do?</h4>
+		                        <p>This tool lets you follow users <i>en masse.</i> Just enter a hashtag used by people on Twitter that you'd like to follow. 
+		                        Then, BlastFollow will automatically follow those users for you. </p>
+		                    </div>
+		                    <div class="note note-danger">
+		                    	<h4 class="block">Be Careful</h4>
+		                        <p>Twitter has been known to suspend accounts for aggressive following. Although BlastFollow will
+		                        add several seconds between each follow, you should avoid following too many people in any one day. Carey Development, LLC
+		                        assumes no responsibility for what happens to your account when you use this tool.</p>
+		                    </div>
+		                    <div class="note note-info">
+		                    	<h4 class="block">Pro-Tip</h4>
+		                        <p>If you aren't sure how many people to follow, it's best to start small and then work your way up. 
+		                        Just follow 10 people today and come back tomorrow.</p>
+		                    </div>
+		                </div>
+		                <div class="portlet light bordered">
+                             <div class="portlet-title">
+                                 <div class="caption">
+                                     <i class="icon-social-twitter font-blue-sharp"></i>
+                                     <span class="caption-subject font-blue-sharp bold uppercase">Let's Get Started</span>
+                                 </div>
+                             </div>
+                             <div class="portlet-body form">
+                             	<form role="form">
+                                     <div class="form-body">
+                                         <div class="form-group">
+                                         	 <div class="well">Enter a hashtag used by people you'd like to follow. For example, if you're into SEO, use the #seo hashtag.
+                                         	 You don't have to enter the hashtag itself (but it's okay if you want to).</div>
+                                             <div class="alert alert-danger" style="display:none" id="hashTagWarning">
+                                        			<strong>Hashtag Required!</strong> Please enter a hashtag.
+                                        	 </div>
+                                             <label>Hashtag</label>
+                                             <div class="input-group" style="margin-bottom:20px">
+                                                 <span class="input-group-addon">
+                                                     <i class="fa fa-anchor"></i>
+                                                 </span>
+                                                 <input type="text" id="hashtag" class="form-control" placeholder="Hashtag"/>
+                                             </div>
+                                             <div class="input-group" style="margin-bottom:20px">
+                                             	<a href="javascript:findByHashtag()"><button type="button" class="btn btn-primary">Find People Using This Hashtag</button></a>
+                                             </div>
+                                             <div class="well">When you click the button above, all you'll do is find people who've tweeted with that hashtag
+                                             recently. You won't be following anyone just yet.</div>
+                                         </div>
+                                     </div>
+                                </form>
+                             </div>
+                       	</div>
+                    </div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <!-- END FOOTER -->
+        <script th:src="@{/js/twitter.js}" type="text/javascript"></script>
+    </body>
+</html>
