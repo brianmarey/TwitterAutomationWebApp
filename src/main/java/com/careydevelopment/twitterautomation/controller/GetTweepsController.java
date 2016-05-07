@@ -131,7 +131,7 @@ public class GetTweepsController implements Constants {
 		    		
 		    		ships.add(light);
     			} else {
-    				LOGGER.info("Skipping " + friendship.getScreenName() + " because that person is already following you.");
+    				//LOGGER.info("Skipping " + friendship.getScreenName() + " because that person is already following you.");
     			}
     		/*} else {
     			LOGGER.info("Skipping " + friendship.getScreenName() + " because that user is DNF");

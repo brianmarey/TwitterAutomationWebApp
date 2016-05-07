@@ -53,9 +53,17 @@
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     <div>
-                    	<div class="portlet-body" id="introSection">
+                    		<div class="portlet-body" id="messagesSection">
+                    			<th:block th:if="${action == 'operationStopped'}">
+	                    		<div class="note note-danger">
+			                    	<h4 class="block">Stopped</h4>
+			                        <p>The operation was stopped at your request.</p>
+			                    </div>
+			                    </th:block>
+		                    </div>
+                    	<!--  <div class="portlet-body" id="introSection">
                     		<div class="note note-info">
-		                    	<h4 class="block">What Does This Do?</h4>
+		                    	<h4 class="block">What Does This Tool Do?</h4>
 		                        <p>This tool lets you follow users <i>en masse.</i> Just enter a hashtag used by people on Twitter that you'd like to follow. 
 		                        Then, BlastFollow will automatically follow those users for you. </p>
 		                    </div>
@@ -70,20 +78,26 @@
 		                        <p>If you aren't sure how many people to follow, it's best to start small and then work your way up. 
 		                        Just follow 10 people today and come back tomorrow.</p>
 		                    </div>
-		                </div>
+		                </div>-->
 		                <div class="portlet light bordered" id="getStartedSection">
                              <div class="portlet-title">
                                  <div class="caption">
                                      <i class="icon-social-twitter font-blue-sharp"></i>
-                                     <span class="caption-subject font-blue-sharp bold uppercase">Let's Get Started</span>
+                                     <span class="caption-subject font-blue-sharp bold uppercase">Enter a Hashtag</span>
                                  </div>
                              </div>
                              <div class="portlet-body form">
                              	<form role="form">
                                      <div class="form-body">
                                          <div class="form-group">
-                                         	 <div class="well">Enter a hashtag used by people you'd like to follow. For example, if you're into SEO, use the #seo hashtag.
+                                         	 <div class="note note-info">Enter a hashtag used by people you'd like to follow. For example, if you're into SEO, use the #seo hashtag.
                                          	 You don't have to enter the hashtag itself (but it's okay if you want to).</div>
+                                         	 <div class="note note-danger">
+						                    	<h4 class="block">Be Careful</h4>
+						                        <p>Twitter has been known to suspend accounts for aggressive following. Although BlastFollow will
+						                        add several seconds between each follow, you should avoid following too many people in any one day. Carey Development, LLC
+						                        assumes no responsibility for what happens to your account when you use this tool.</p>
+						                    </div>
                                              <div class="alert alert-danger" style="display:none" id="hashTagWarning">
                                         			<strong>Hashtag Required!</strong> Please enter a hashtag.
                                         	 </div>
@@ -115,27 +129,66 @@
                                  </div>
                              </div>
                              <div class="portlet-body form">
-                                 <div class="well">I found <span id="tweepsCount"></span> people who tweeted with that hashtag and arent' following you.
+                                 <div class="well">I found <span id="tweepsCount"></span> people who tweeted with that hashtag and aren't following you.
                              	 Select how many of them you want to follow and press the "Follow" button below to begin following them one at a time.</div>
-                                 <div class="alert alert-danger">
+                                 <div class="well">
                             		<strong>Note:</strong> There will be a delay of several seconds between each follow. That's quite intentional.
                             	</div>                             
                              	<form role="form" class="form-horizontal">
                                      <div class="form-body">
                                          <div class="form-group">                                              	
-                                                <label class="col-md-2 control-label">Follow Count</label>
-                                                <div class="col-md-3">
+                                                <label class="col-md-2 control-label">Follow Count:</label>
+                                                <div class="col-md-1">
                                                     <input type="text" id="followCount" class="form-control" placeholder="Follow Count"/>
-                                                    <span class="help-block"> Enter the number of people you want to follow (Max. 100) </span>
                                                 </div>
+                                                <label class="col-md9 control-label" style="text-align:left">Enter the number of people you want to follow (Max. 100)</label>
                                          </div>
                                        	 <div class="input-group" style="margin-bottom:20px;text-align:center">
-                                             	<a href="javascript:startFollowing()"><button type="button" class="btn btn-primary mt-ladda-btn ladda-button" data-style="expand-right"><span class="ladda-label">Follow</span></button></a>
+                                             	<a href="javascript:processTweeps()" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Follow</button></a>
+                                             	<span style="margin-left:20px;margin-right:20px">Or:</span>
+                                             	<a th:href="@{/blastfollow}" style="margin-bottom:5px;margin-right:10px"><button type="button" class="btn btn-success">Try Another Hashtag</button></a>
+                                             	<a th:href="@{/}" style="margin-bottom:5px"><button type="button" class="btn btn-success">Back to Dashboard</button></a>
                                          </div>
-                           				 <div class="alert alert-danger">When you click the button above, you <strong>will</strong> begin following people.</div>
                                      </div>
                                 </form>
                              </div>
+                       	</div>
+     					<div id="statusSection" style="display:none">
+	                       	<div class="portlet light bordered">
+	                             <div class="portlet-title">
+	                                 <div class="caption">
+	                                     <i class="icon-social-twitter font-blue-sharp"></i>
+	                                     <span class="caption-subject font-blue-sharp bold uppercase">Commencing</span>
+	                                 </div>
+	                             </div>
+	                             <div class="portlet-body form">
+	                                 <div class="well">Don't close this page while BlastFollow is running. You can work on other tabs, step away from your PC,
+	                                 or go grab a cup of coffee. Just leave this page open.
+	                                 </div>
+	                             </div>
+	                        </div>
+		                    <div class="row" >
+		                        <div class="col-md-4 ">
+		                            <div class="portlet box blue-hoki">
+		                                <div class="portlet-title">
+		                                    <div class="caption">
+		                                        <i class="fa fa-users"></i>Status </div>
+		                                    <div class="actions">
+		                                        <a th:href="@{/blastfollow?action=operationStopped}" class="btn btn-default btn-sm">
+		                                            <i class="fa fa-hand-stop-o"></i> Stop </a>
+		                                    </div>
+		                                </div>
+		                                <div class="portlet-body">   
+		                                    <div class="scroller" style="height:200px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="#a1b2bd">
+												<div id="statusArea" class="statusArea">
+													<div id="statusResults"></div>
+													<img th:src="@{/images/ripple.gif}" id="spinnerIcon"/>
+									 			</div>
+											</div>
+		                                </div>
+		                            </div>
+		                        </div>
+	                     	</div>
                        	</div>
                     </div>
                 </div>

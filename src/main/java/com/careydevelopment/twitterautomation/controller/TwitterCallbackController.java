@@ -39,6 +39,10 @@ public class TwitterCallbackController {
 	@RequestMapping("/")
 	public String home(HttpServletRequest request, Model model) {
 		Twitter twitter = (Twitter) request.getSession().getAttribute(Constants.TWITTER);
+		
+		if (twitter == null) {
+			return "redirect:notLoggedIn";
+		}
 
         try {
             TwitterUser u = twitterUserRepository.findByScreenName(twitter.getScreenName());

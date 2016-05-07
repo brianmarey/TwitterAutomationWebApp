@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
@@ -17,9 +18,13 @@ public class AutoFollowController {
 	
 	
     @RequestMapping("/blastfollow")
-    public String autofollow(Model model) {    	
+    public String autofollow(@RequestParam(value="action", required=false) String action, Model model) {    	
     	model.addAttribute("localhost",getLocalHostPrefix());
     	model.addAttribute("autofollowActive", "active");
+    	
+    	if (action != null) {
+    		model.addAttribute("action",action);
+    	}
     	
         return "blastfollow";
     }

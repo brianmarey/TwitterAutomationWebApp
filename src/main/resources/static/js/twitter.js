@@ -1,5 +1,5 @@
 	var time = 0;
-	var timeIncrement = 20000;
+	var timeIncrement = 2000;
 	var theHost = '';
 	var twitterUser = '';
 	var unfollowOffset = 0;
@@ -93,19 +93,44 @@
 		$.get(url, processTweeps);
 	}
 	
-	function processTweeps(data) {
-		//alert(data.length);
-		for (var ii=0;ii<data.length;ii++) {
+	var maxFollows = 100;
+	
+	function processTweeps() {
+		//alert(currentFollowSet.length);
+		
+		maxFollows = $("#followCount").val();
+		if (isNaN(maxFollows)) {
+			maxFollows = 10;
+		}
+		
+		if (maxFollows > 100) {
+			maxFollows = 100;
+		}
+		
+		if (maxFollows < 0) {
+			maxFollows = 10;
+		}
+
+		$("#statusSection").show();
+		$("#statusRow").show();
+		$("#foundTweepsSection").hide();
+		
+		var currentCount = 0;
+		
+		for (var ii=0;ii<currentFollowSet.length;ii++) {
 			//alert(data[ii].screenName);
-			var id = data[ii].id;
-			var screenName = data[ii].screenName;
-			var following = data[ii].following;
+			var id = currentFollowSet[ii].id;
+			var screenName = currentFollowSet[ii].screenName;
+			var following = currentFollowSet[ii].following;
 			
 			if (!following) {
 				setTimeout(followTweep,time,id,screenName);
 				//alert("time is " + time);
 				time += timeIncrement;
+				currentCount++;			
 			}
+			
+			if (currentCount >= maxFollows) break;
 		}
 		
 		setTimeout(pauseNotice,time);
@@ -139,9 +164,8 @@
 		runNumber++;
 	}
 	
-	
 	function followTweep(id,screenName) {		
-		var url = theHost + "/TwitterAutomation/followTweep?id=" + id + "&screenName=" + screenName + "&twitterUser=" + twitterUser;
+		var url = context + "/followTweep?id=" + id + "&screenName=" + screenName;
 		//alert(url);
 		$.get(url,function( data ) {			
 			var notice = data.message + "" + screenName + "<br/>";
@@ -177,17 +201,18 @@
 		
 		$("#getTweepsButtonGroup").hide();
 		$("#pleaseWaitSection").show();
+		$("#messagesSection").hide();
 		
 		hashtag = encodeURIComponent(hashtag);
 			
 		var url = context + "/getTweeps?keyword=" + hashtag;
 		
-		alert (url);
+		//alert (url);
 		
 		$.get(url, displayTweeps);
 	}
 	
-	var currentFollowSet;
+	var currentFollowSet = {};
 	
 	function displayTweeps(data) {
 		currentFollowSet = data;

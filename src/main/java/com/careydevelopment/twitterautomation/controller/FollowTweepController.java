@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.careydevelopment.configuration.MyTwitter;
 import com.careydevelopment.twitterautomation.jpa.entity.FollowRun;
 import com.careydevelopment.twitterautomation.jpa.entity.Followee;
 import com.careydevelopment.twitterautomation.jpa.repository.FolloweeRepository;
@@ -27,20 +26,13 @@ import twitter4j.Twitter;
 public class FollowTweepController implements Constants {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FollowTweepController.class);
 	
-	@Autowired
-	FolloweeRepository followeeRepository;
-	
     @RequestMapping(value="/followTweep",method = RequestMethod.GET,produces="application/json")
     public FollowResult followTweep(@RequestParam(value="id", required=true) String id, 
     		@RequestParam(value="screenName", required=true) String screenName,
-    		@RequestParam(value="twitterUser", required=true) String twitterUser,
     		HttpServletRequest request, Model model) {
-		//get the twitter4j Twitter object from the singleton
-		Twitter twitter = MyTwitter.instance().getTwitter(twitterUser);
-		
-		FollowRun followRun =(FollowRun)request.getSession().getAttribute(CURRENT_FOLLOW_RUN);
-		LOGGER.info("Current follow run is " + followRun);
-		
+    	
+		Twitter twitter = (Twitter)request.getSession().getAttribute(Constants.TWITTER);
+				
 		LOGGER.info("id for follow " + id + " " + screenName);
 				
 		FollowResult followResult = new FollowResult();
@@ -49,22 +41,29 @@ public class FollowTweepController implements Constants {
 		Followee followee = new Followee();
 		
 		try {
+			if (twitter == null) {
+				throw new Exception("Twitter is null");
+			}
+		
 			Long twitterId = new Long(id);
 			followee.setTwitterId(twitterId);
-			twitter.createFriendship(screenName);
-		    addToDnf(twitterId);
+			//twitter.createFriendship(screenName);
+		    //addToDnf(twitterId);
 		    followResult.setMessage("Followed ");
+		    LOGGER.info("Successfully followed " + screenName);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.warn("Failed to follow " + screenName,e);
 			followResult.setMessage("Failed to follow ");
 			followResultCode = 2;
 		}
 		
+		/*
 		followee.setFollowRun(followRun);
 		followee.setScreenName(screenName);
 		followee.setStatus(followResultCode);
 		
 		followeeRepository.save(followee);
+		*/
 		
         return followResult;
     }
