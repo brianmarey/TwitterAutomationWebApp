@@ -4,6 +4,7 @@
 	var twitterUser = '';
 	var unfollowOffset = 0;
 	var unfollowMax = 990;
+	var context = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 	
 	function beginAutoFollow(localhost) {
 		theHost = localhost;
@@ -165,7 +166,7 @@
 		$("#hashTagWarning").hide();
 		
 		var hashtag = $("#hashtag").val();
-		alert("Hashtag is " + hashtag);
+		//alert("Hashtag is " + hashtag);
 		
 		hashtag = hashtag.trim();
 		
@@ -174,8 +175,49 @@
 			return;
 		}
 		
+		$("#getTweepsButtonGroup").hide();
+		$("#pleaseWaitSection").show();
 		
+		hashtag = encodeURIComponent(hashtag);
+			
+		var url = context + "/getTweeps?keyword=" + hashtag;
+		
+		alert (url);
+		
+		$.get(url, displayTweeps);
 	}
 	
+	var currentFollowSet;
+	
+	function displayTweeps(data) {
+		currentFollowSet = data;
+		
+		$("#getTweepsButtonGroup").show();
+		$("#pleaseWaitSection").hide();
+		
+		$("#getStartedSection").hide();
+		$("#foundTweepsSection").show();
+		$("#introSection").hide();
+		
+		$("#tweepsCount").html(data.length);
+		$("#followCount").val(data.length);
+		
+		//alert(data.length);
+		/*for (var ii=0;ii<data.length;ii++) {
+			//alert(data[ii].screenName);
+			var id = data[ii].id;
+			var screenName = data[ii].screenName;
+			var following = data[ii].following;
+			
+			if (!following) {
+				setTimeout(followTweep,time,id,screenName);
+				//alert("time is " + time);
+				time += timeIncrement;
+			}
+		}
+		
+		setTimeout(pauseNotice,time);
+		//time += timeIncrement;*/
+	}
 	
 	

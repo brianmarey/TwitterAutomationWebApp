@@ -53,7 +53,7 @@
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     <div>
-                    	<div class="portlet-body">
+                    	<div class="portlet-body" id="introSection">
                     		<div class="note note-info">
 		                    	<h4 class="block">What Does This Do?</h4>
 		                        <p>This tool lets you follow users <i>en masse.</i> Just enter a hashtag used by people on Twitter that you'd like to follow. 
@@ -71,7 +71,7 @@
 		                        Just follow 10 people today and come back tomorrow.</p>
 		                    </div>
 		                </div>
-		                <div class="portlet light bordered">
+		                <div class="portlet light bordered" id="getStartedSection">
                              <div class="portlet-title">
                                  <div class="caption">
                                      <i class="icon-social-twitter font-blue-sharp"></i>
@@ -90,16 +90,49 @@
                                              <label>Hashtag</label>
                                              <div class="input-group" style="margin-bottom:20px">
                                                  <span class="input-group-addon">
-                                                     <i class="fa fa-anchor"></i>
+                                                     #
                                                  </span>
                                                  <input type="text" id="hashtag" class="form-control" placeholder="Hashtag"/>
                                              </div>
-                                             <div class="input-group" style="margin-bottom:20px">
-                                             	<a href="javascript:findByHashtag()"><button type="button" class="btn btn-primary">Find People Using This Hashtag</button></a>
+                                             <div class="input-group" style="margin-bottom:20px;text-align:center" id="getTweepsButtonGroup">
+                                             	<a href="javascript:findByHashtag()"><button type="button" class="btn btn-primary mt-ladda-btn ladda-button" id="findTweepsButton" data-style="expand-right"><span class="ladda-label">Find People Tweeting With That Hashtag</span></button></a>
                                              </div>
+                                             <div class="note note-info" id="pleaseWaitSection" style="display:none">
+                                        		<p style="font-size:14pt">Please Wait... <img style="position:relative;top:-2px" th:src="@{/images/getTweepsSpinner.gif}"/> </p>
+                                    		 </div>
                                              <div class="well">When you click the button above, all you'll do is find people who've tweeted with that hashtag
                                              recently. You won't be following anyone just yet.</div>
                                          </div>
+                                     </div>
+                                </form>
+                             </div>
+                       	</div>
+                      	<div class="portlet light bordered" id="foundTweepsSection" style="display:none">
+                             <div class="portlet-title">
+                                 <div class="caption">
+                                     <i class="icon-social-twitter font-blue-sharp"></i>
+                                     <span class="caption-subject font-blue-sharp bold uppercase">Success</span>
+                                 </div>
+                             </div>
+                             <div class="portlet-body form">
+                                 <div class="well">I found <span id="tweepsCount"></span> people who tweeted with that hashtag and arent' following you.
+                             	 Select how many of them you want to follow and press the "Follow" button below to begin following them one at a time.</div>
+                                 <div class="alert alert-danger">
+                            		<strong>Note:</strong> There will be a delay of several seconds between each follow. That's quite intentional.
+                            	</div>                             
+                             	<form role="form" class="form-horizontal">
+                                     <div class="form-body">
+                                         <div class="form-group">                                              	
+                                                <label class="col-md-2 control-label">Follow Count</label>
+                                                <div class="col-md-3">
+                                                    <input type="text" id="followCount" class="form-control" placeholder="Follow Count"/>
+                                                    <span class="help-block"> Enter the number of people you want to follow (Max. 100) </span>
+                                                </div>
+                                         </div>
+                                       	 <div class="input-group" style="margin-bottom:20px;text-align:center">
+                                             	<a href="javascript:startFollowing()"><button type="button" class="btn btn-primary mt-ladda-btn ladda-button" data-style="expand-right"><span class="ladda-label">Follow</span></button></a>
+                                         </div>
+                           				 <div class="alert alert-danger">When you click the button above, you <strong>will</strong> begin following people.</div>
                                      </div>
                                 </form>
                              </div>

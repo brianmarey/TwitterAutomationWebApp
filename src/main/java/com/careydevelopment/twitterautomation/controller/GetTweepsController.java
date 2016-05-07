@@ -41,36 +41,34 @@ public class GetTweepsController implements Constants {
 	
 	private Twitter twitter = null;
 	
-	@Autowired
-	FollowRunRepository followRunRepository;
-	
-	@Autowired
-	UserRepository userRepository;
-	
     @RequestMapping(value="/getTweeps",method = RequestMethod.GET,produces="application/json")
-    public List<FriendshipLightweight> getTweeps(@RequestParam(value="keyword", required=true) String keywords,
-    		@RequestParam(value="twitterUser", required=true) String twitterUser, HttpServletRequest request,
-    		Model model) {
+    public List<FriendshipLightweight> getTweeps(@RequestParam(value="keyword", required=true) String keyword,
+    		HttpServletRequest request,Model model) {
     	
-    	FollowRun followRun = logRun();
-    	request.getSession().setAttribute(CURRENT_FOLLOW_RUN, followRun);
-   
-    	
-		//get the twitter4j Twitter object from the singleton
-		twitter = MyTwitter.instance().getTwitter(twitterUser);
+    	List<FriendshipLightweight> ships = new ArrayList<FriendshipLightweight>();
+		
+    	//get the twitter4j Twitter object from the singleton
+		twitter = (Twitter)request.getSession().getAttribute(Constants.TWITTER);
+		
+		if (twitter == null) {
+			return ships;
+		}
+		
+		if (keyword == null || keyword.trim().length() == 0) {
+			return ships;
+		}
 		
 		//fetch the DNF ids
-		List<Long> dnfIds = fetchDnfs();
-		LOGGER.info("length of dnfs is " + dnfIds.size());
+		//List<Long> dnfIds = fetchDnfs();
+		//LOGGER.info("length of dnfs is " + dnfIds.size());
 		
-		String[] keys = keywords.split(",");
-		
-		
-		List<FriendshipLightweight> ships = new ArrayList<FriendshipLightweight>();
+		String[] keys = new String[1];//keywords.split(",");
+		keys[0] = keyword;
 		
 		try {
 			for (int i=0;i<keys.length;i++) {
 				String key = keys[i];
+				if (!key.startsWith("#")) key = "#" + key;
 				
 				if (key != null && key.trim().length() > 2) {		
 					LOGGER.info("Now searching for " + key);
@@ -80,13 +78,15 @@ public class GetTweepsController implements Constants {
 							    
 					String[] returnedDudes = getReturnedDudes(result);		
 					
+					if (returnedDudes != null) LOGGER.info("Size of returned dudes is " + returnedDudes.length);
+					
 					/*for (String s : returnedDudes) {
 						LOGGER.info(s);
 					}*/
 					
 					ResponseList<Friendship> friendships = twitter.lookupFriendships(returnedDudes);
 					
-					ships.addAll(getLightweights(friendships,dnfIds));
+					ships.addAll(getLightweights(friendships));
 				}
 			}
 		} catch (Exception e) {
@@ -98,7 +98,7 @@ public class GetTweepsController implements Constants {
     
 
     //saves the log of the run to the db
-    private FollowRun logRun() {
+    /*private FollowRun logRun() {
     	FollowRun followRun = new FollowRun();
     	
     	String username = SecurityHelper.getUsername();
@@ -109,29 +109,33 @@ public class GetTweepsController implements Constants {
     	FollowRun persisted = followRunRepository.save(followRun);
     	
     	return persisted;
-    }
+    }*/
     
     
     /**
      * Translates heavyweight Friendship objets from Twitter4j into lightweight objects
      * Easier for JSON
      */
-    private List<FriendshipLightweight> getLightweights(ResponseList<Friendship> friendships, List<Long> dnfIds) {
+    private List<FriendshipLightweight> getLightweights(ResponseList<Friendship> friendships) {
     	List<FriendshipLightweight> ships = new ArrayList<FriendshipLightweight>();
     	
     	for (Friendship friendship : friendships) {
     		
     		//be sure to skip the people who are DNF
-    		if (!dnfIds.contains(friendship.getId())) {
-	    		FriendshipLightweight light = new FriendshipLightweight();
-	    		light.setFollowing(friendship.isFollowing());
-	    		light.setId(friendship.getId());
-	    		light.setScreenName(friendship.getScreenName());
-	    		
-	    		ships.add(light);
-    		} else {
+    		//if (!dnfIds.contains(friendship.getId())) {
+    			if (!friendship.isFollowedBy()) {
+		    		FriendshipLightweight light = new FriendshipLightweight();
+		    		light.setFollowing(friendship.isFollowing());
+		    		light.setId(friendship.getId());
+		    		light.setScreenName(friendship.getScreenName());
+		    		
+		    		ships.add(light);
+    			} else {
+    				LOGGER.info("Skipping " + friendship.getScreenName() + " because that person is already following you.");
+    			}
+    		/*} else {
     			LOGGER.info("Skipping " + friendship.getScreenName() + " because that user is DNF");
-    		}
+    		}*/
     	}
     	
     	return ships;
