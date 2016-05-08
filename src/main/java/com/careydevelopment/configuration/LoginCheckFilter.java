@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import com.careydevelopment.twitterautomation.util.Constants;
 
-@Component
 public class LoginCheckFilter implements Filter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginCheckFilter.class);
@@ -36,7 +35,7 @@ public class LoginCheckFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
-		String uri = ((HttpServletRequest)request).getRequestURI();
+		/*String uri = ((HttpServletRequest)request).getRequestURI();
 		if (uri == null) uri = "";
 
 		int lastSlash = uri.lastIndexOf("/");
@@ -58,6 +57,8 @@ public class LoginCheckFilter implements Filter {
 			}
 		} else {
 			chain.doFilter(request, response);
-		}
+		}*/
+		
+		chain.doFilter(request, response);
 	}
 }

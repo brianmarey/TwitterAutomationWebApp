@@ -34,31 +34,6 @@ public class TwitterCallbackController {
 	TwitterUserRepository twitterUserRepository;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TwitterCallbackController.class);
-	
-	
-	@RequestMapping("/")
-	public String home(HttpServletRequest request, Model model) {
-		Twitter twitter = (Twitter) request.getSession().getAttribute(Constants.TWITTER);
-		
-		if (twitter == null) {
-			return "redirect:notLoggedIn";
-		}
-
-        try {
-            TwitterUser u = twitterUserRepository.findByScreenName(twitter.getScreenName());
-            model.addAttribute("twitterUser",u);
-            
-            User user = twitter.showUser(twitter.getId());
-            request.getSession().setAttribute(Constants.TWITTER_USER, user);
-            
-            setDisplayAttributes(model,user);
-        } catch (Exception e) {
-            LOGGER.error("Problem getting token!",e);
-            return "redirect:notLoggedIn";
-        }
-        
-        return "dashboard";
-	}
  
 	
     @RequestMapping("/twitterCallback")
@@ -84,29 +59,13 @@ public class TwitterCallbackController {
             User user = twitter.showUser(twitter.getId());
             request.getSession().setAttribute(Constants.TWITTER_USER, user);
             
-            setDisplayAttributes(model,user);
+            //setDisplayAttributes(model,user);
         } catch (Exception e) {
             LOGGER.error("Problem getting token!",e);
             return "redirect:notLoggedIn";
         }
         
-        return "dashboard";
-    }
-
-    
-    private void setDisplayAttributes(Model model, User user) {
-    	DecimalFormat df = new DecimalFormat("###.##");
-    	df.setRoundingMode(RoundingMode.FLOOR);
-    	
-    	double ratio = ((double)user.getFollowersCount())/((double)user.getFriendsCount());
-    	LOGGER.info("ratio is " + ratio);
-    	
-    	String ratioS = df.format(ratio);
-    	model.addAttribute("ratio",ratioS);
-    	
-    	TipsHelper helper = new TipsHelper(user);
-    	List<Tip> tips = helper.getTips();
-    	model.addAttribute("tips",tips);
+        return "redirect:blastfollow";
     }
     
     
@@ -148,7 +107,7 @@ public class TwitterCallbackController {
     	//String screenName = twitter.getScreenName();
     	//model.addAttribute("screenName",screenName);
     	
-    	return "dashboard";
+    	return "blastfollow";
     }
 
 }

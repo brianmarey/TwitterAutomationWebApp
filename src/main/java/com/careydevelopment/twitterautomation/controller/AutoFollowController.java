@@ -2,6 +2,8 @@ package com.careydevelopment.twitterautomation.controller;
 
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -11,14 +13,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
+import com.careydevelopment.twitterautomation.util.Constants;
 
 @Controller
 public class AutoFollowController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AutoFollowController.class);
 	
 	
-    @RequestMapping("/blastfollow")
-    public String autofollow(@RequestParam(value="action", required=false) String action, Model model) {    	
+    @RequestMapping("/autofollow")
+    public String autofollow(@RequestParam(value="action", required=false) String action, 
+    	HttpServletRequest request, Model model) { 
+    	
+    	if (request.getSession().getAttribute(Constants.LOGIN_KEY) == null) {
+    		return "redirect:notLoggedIn";
+    	}
+    	
     	model.addAttribute("localhost",getLocalHostPrefix());
     	model.addAttribute("autofollowActive", "active");
     	
@@ -26,7 +35,7 @@ public class AutoFollowController {
     		model.addAttribute("action",action);
     	}
     	
-        return "blastfollow";
+        return "autofollow";
     }
     
     
