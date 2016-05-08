@@ -34,12 +34,12 @@ public class ErrorHandlerFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
+
+		String uri = ((HttpServletRequest)request).getRequestURI();
+		if (uri == null) uri = "";
+		//LOGGER.info(uri);
 		
 		try {
-			String uri = ((HttpServletRequest)request).getRequestURI();
-			if (uri == null) uri = "";
-			//LOGGER.info(uri);
-			
 			HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper((HttpServletResponse)response); 
 			int statusCode = wrapper.getStatus();
 			//LOGGER.info("" + statusCode);
@@ -52,8 +52,8 @@ public class ErrorHandlerFilter implements Filter {
 				chain.doFilter(request, response);	
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			LOGGER.error("Caught exception!");
+			//ex.printStackTrace();
+			LOGGER.error("Caught exception on uri " + uri,ex);
 			request.setAttribute("errorMessage", ex);
 			//request.getRequestDispatcher("/404").forward(request, response);
 		}

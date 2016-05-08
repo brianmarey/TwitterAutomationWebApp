@@ -52,7 +52,7 @@
                     <h1 class="page-title">Dashboard</h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
-                    <th:block th:if="${twitterUser.newUser}">
+                    <th:block th:if="${twitterUser != null and twitterUser.newUser}">
                     	<div class="portlet-body">
                             <div class="note note-success">
                                 <h4 class="block">Welcome!</h4>
@@ -129,9 +129,9 @@
                                 </div>
                                 <div class="portlet-body util-btn-margin-bottom-5">
                                 	<div class="clearfix" style="display: flex;justify-content: space-between;">
-								    	<a th:href="@{/blastfollow}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Start Following</button></a>
-										<a th:href="@{/blastunfollow}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Start Unfollowing</button></a>
-										<a th:href="@{/blastrefollow}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Start Refollowing</button></a>
+								    	<a th:href="@{/autofollow}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Start Following</button></a>
+										<a th:href="@{/autounfollow}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Start Unfollowing</button></a>
+										<a th:href="@{/autorefollow}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Start Refollowing</button></a>
 									</div>
 								</div>
 							</div>

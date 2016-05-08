@@ -25,12 +25,12 @@
                                 <span class="username username-hide-on-mobile" th:text="${session.twitter.screenName}"> Nick </span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
-                            <!--  <ul class="dropdown-menu dropdown-menu-default">
+                            <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
-                                    <a href="page_user_profile_1.html">
-                                        <i class="icon-user"></i> My Profile </a>
+                                    <a th:href="@{/logout}">
+                                        <i class="icon-key"></i> Logout </a>
                                 </li>
-                                <li>
+                                <!--  <li>
                                     <a href="app_calendar.html">
                                         <i class="icon-calendar"></i> My Calendar </a>
                                 </li>
@@ -54,8 +54,8 @@
                                 <li>
                                     <a href="page_user_login_1.html">
                                         <i class="icon-key"></i> Log Out </a>
-                                </li>
-                            </ul>-->
+                                </li>-->
+                            </ul>
                         </li>
                 	</ul>
                 </div>
