@@ -22,14 +22,12 @@ public class TipsHelper {
 	public List<Tip> getTips() {
 		List<Tip> tips = new ArrayList<Tip>();
 		
-		//if (user.getFollowersCount() < 2000) {
-		if (true) {
+		if (user.getFollowersCount() < 2000) {
 			tips.add(getLessThan2000FollowersTip());
 		}
 		
 		double ratio = ((double)user.getFollowersCount())/((double)user.getFriendsCount());
-		//if (ratio < .7) {
-		if (true) {
+		if (ratio < .7) {
 			tips.add(getRatioTooHighTip());
 		}
 		

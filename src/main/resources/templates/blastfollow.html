@@ -106,7 +106,7 @@
                                                  <span class="input-group-addon">
                                                      #
                                                  </span>
-                                                 <input type="text" id="hashtag" class="form-control" placeholder="Hashtag"/>
+                                                 <input type="text" id="hashtag" class="form-control" maxlength="24" placeholder="Hashtag"/>
                                              </div>
                                              <div class="input-group" style="margin-bottom:20px;text-align:center" id="getTweepsButtonGroup">
                                              	<a href="javascript:findByHashtag()"><button type="button" class="btn btn-primary mt-ladda-btn ladda-button" id="findTweepsButton" data-style="expand-right"><span class="ladda-label">Find People Tweeting With That Hashtag</span></button></a>
@@ -121,6 +121,17 @@
                                 </form>
                              </div>
                        	</div>
+                       	<div class="row" id="noResultsSection" style="display:none">
+                       		<div style="margin-bottom:20px" class="col-md-4">
+			                	<div class="alert alert-danger">
+	                            	<strong>No results!</strong> Sorry, couldn't find anyone tweeting with that hashtag.
+	                            </div>
+	                            <div style="display:flex;justify-content:space-between">
+		                            <a th:href="@{/blastfollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Hashtag</button></a>
+		                            <a th:href="@{/}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Dashboard</button></a>
+	                            </div>
+                             </div>
+                       	</div>                      	
                       	<div class="portlet light bordered" id="foundTweepsSection" style="display:none">
                              <div class="portlet-title">
                                  <div class="caption">
@@ -136,7 +147,7 @@
                             	</div>                             
                              	<form role="form" class="form-horizontal">
                                      <div class="form-body">
-                                         <div class="form-group">                                              	
+                                         <div class="form-group" style="margin-bottom:40px">                                              	
                                                 <label class="col-md-2 control-label">Follow Count:</label>
                                                 <div class="col-md-1">
                                                     <input type="text" id="followCount" class="form-control" placeholder="Follow Count"/>
@@ -169,11 +180,24 @@
 	                        </div>
 		                    <div class="row" >
 		                        <div class="col-md-4 ">
+		                        	<div class="progress progress-striped active" id="progressBarSection">
+                                        <div class="progress-bar progress-bar-success" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        </div>
+                                    </div>
+                                 	<div id="finishedSection" style="display:none;margin-bottom:20px;">
+			                            <div class="alert alert-success" style="margin-bottom:10px">
+	                                        <strong>Success!</strong> Following complete.
+	                                    </div>
+	                                    <div style="display:flex;justify-content: space-between">
+		                                    <a th:href="@{/blastfollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Run</button></a>
+		                                    <a th:href="@{/}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Dashboard</button></a>
+	                                    </div>
+                                    </div>
 		                            <div class="portlet box blue-hoki">
 		                                <div class="portlet-title">
 		                                    <div class="caption">
 		                                        <i class="fa fa-users"></i>Status </div>
-		                                    <div class="actions">
+		                                    <div class="actions" id="actionsButton">
 		                                        <a th:href="@{/blastfollow?action=operationStopped}" class="btn btn-default btn-sm">
 		                                            <i class="fa fa-hand-stop-o"></i> Stop </a>
 		                                    </div>

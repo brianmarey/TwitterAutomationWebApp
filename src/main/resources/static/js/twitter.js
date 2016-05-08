@@ -59,7 +59,9 @@
 	function completelyFinished() {
 		$("#spinnerIcon").hide();
 		$("#statusResults").append("Completely finished.<br/>");
-		$("anotherRunButtonDiv").show();
+		$("#finishedSection").show();
+		$("#progressBarSection").hide();
+		$("#actionsButton").hide();
 	}
 
 	function beginAutoUnfollowRun() {
@@ -97,6 +99,7 @@
 	
 	function processTweeps() {
 		//alert(currentFollowSet.length);
+		actualFollows = 0;
 		
 		maxFollows = $("#followCount").val();
 		if (isNaN(maxFollows)) {
@@ -109,6 +112,14 @@
 		
 		if (maxFollows < 0) {
 			maxFollows = 10;
+		}
+		
+		if (!currentFollowSet) {
+			return;
+		}
+		
+		if (currentFollowSet.length < maxFollows) {
+			maxFollows = currentFollowSet.length;
 		}
 
 		$("#statusSection").show();
@@ -127,14 +138,13 @@
 				setTimeout(followTweep,time,id,screenName);
 				//alert("time is " + time);
 				time += timeIncrement;
-				currentCount++;			
+				currentCount++;		
 			}
 			
 			if (currentCount >= maxFollows) break;
 		}
 		
-		setTimeout(pauseNotice,time);
-		//time += timeIncrement;
+		setTimeout(completelyFinished,time);
 	}
 
 	
@@ -164,6 +174,8 @@
 		runNumber++;
 	}
 	
+	var actualFollows = 0;
+	
 	function followTweep(id,screenName) {		
 		var url = context + "/followTweep?id=" + id + "&screenName=" + screenName;
 		//alert(url);
@@ -171,6 +183,15 @@
 			var notice = data.message + "" + screenName + "<br/>";
 			//alert(notice);
 			$("#statusResults").append( notice);
+			
+			actualFollows++;
+			
+			var percent = parseFloat(Math.round((actualFollows / maxFollows)*100)).toFixed(0);
+			//alert(percent);
+			$("#progressBar").attr("aria-valuenow",percent);
+			
+			var percentStyle = percent + "%";
+			$("#progressBar").width(percentStyle);
 		});
 	}
 	
@@ -215,6 +236,14 @@
 	var currentFollowSet = {};
 	
 	function displayTweeps(data) {
+		if (!data || data.length < 3) {
+			$("#pleaseWaitSection").hide();
+			$("#getStartedSection").hide();
+			$("#introSection").hide();
+			$("#noResultsSection").show();
+			return;
+		}
+		
 		currentFollowSet = data;
 		
 		$("#getTweepsButtonGroup").show();
@@ -226,23 +255,6 @@
 		
 		$("#tweepsCount").html(data.length);
 		$("#followCount").val(data.length);
-		
-		//alert(data.length);
-		/*for (var ii=0;ii<data.length;ii++) {
-			//alert(data[ii].screenName);
-			var id = data[ii].id;
-			var screenName = data[ii].screenName;
-			var following = data[ii].following;
-			
-			if (!following) {
-				setTimeout(followTweep,time,id,screenName);
-				//alert("time is " + time);
-				time += timeIncrement;
-			}
-		}
-		
-		setTimeout(pauseNotice,time);
-		//time += timeIncrement;*/
 	}
 	
 	
