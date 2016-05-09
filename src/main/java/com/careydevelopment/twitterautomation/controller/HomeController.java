@@ -2,18 +2,16 @@ package com.careydevelopment.twitterautomation.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
-import com.careydevelopment.twitterautomation.util.Constants;
-
-import twitter4j.Twitter;
-import twitter4j.User;
-
 @Controller
 public class HomeController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
 	
 	/*@RequestMapping("/")
@@ -42,6 +40,9 @@ public class HomeController {
 	
 	@RequestMapping("/")
 	public String home(HttpServletRequest request, Model model) {
+		model.addAttribute("hideTopMenu",true);
+		
+		LOGGER.info("In the right how");
 		        
         return "home";
 	}
