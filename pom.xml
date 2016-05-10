@@ -14,6 +14,12 @@
   
     <dependencies>
         <dependency>
+			<groupId>com.careydevelopment</groupId>
+			<artifactId>mail-support</artifactId>
+			<version>[1.0,)</version>
+		</dependency>
+		
+        <dependency>
 	       <groupId>com.careydevelopment</groupId>
 	       <artifactId>properties-support</artifactId>
 	       <version>[1.0,)</version>
