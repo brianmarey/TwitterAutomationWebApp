@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
 import com.careydevelopment.twitterautomation.domain.Tip;
+import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.util.Constants;
+import com.careydevelopment.twitterautomation.util.RoleHelper;
 import com.careydevelopment.twitterautomation.util.TipsHelper;
 
 import twitter4j.User;
@@ -32,6 +34,12 @@ public class BlastFollowController {
     	
     	if (user == null) {
     		return "redirect:notLoggedIn";
+    	}
+
+    	TwitterUser twitterUser = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
+    	
+    	if (!RoleHelper.isAuthorized(twitterUser, "Basic")) {
+    		return "redirect:notAuthorized";
     	}
     	
     	model.addAttribute("localhost",getLocalHostPrefix());

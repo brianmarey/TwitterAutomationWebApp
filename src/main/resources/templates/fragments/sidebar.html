@@ -49,19 +49,19 @@
                                         <span class="title">Dashboard</span>
                                     </a>
                                 </li>
-                                <li class="nav-item start ">
+                                <li class="nav-item start " th:classappend="${autofollowActive}">
                                     <a th:href="@{/autofollow}" class="nav-link ">
                                         <i class="icon-arrow-up"></i>
                                         <span class="title">AutoFollow</span>
                                     </a>
                                 </li>
-                                <li class="nav-item start ">
+                                <li class="nav-item start " th:classappend="${autounfollowActive}">
                                     <a th:href="@{/autounfollow}" class="nav-link ">
                                         <i class="icon-arrow-down"></i>
                                         <span class="title">AutoUnfollow</span>
                                     </a>
                                 </li>
-                                <li class="nav-item start ">
+                                <li class="nav-item start " th:classappend="${autorefollowActive}">
                                     <a th:href="@{/autorefollow}" class="nav-link ">
                                         <i class="icon-arrow-right"></i>
                                         <span class="title">AutoRefollow</span>
@@ -69,7 +69,19 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="heading">
+                        <li class="nav-item start ">
+                            <a th:href="@{/contact}" class="nav-link">
+                                <i class="icon-bubbles"></i>
+                                <span class="title">Contact</span>
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a th:href="@{/privacy}" class="nav-link">
+                                <i class="icon-lock"></i>
+                                <span class="title">Privacy</span>
+                            </a>
+                        </li>
+                        <!--  <li class="heading">
                             <h3 class="uppercase">Features</h3>
                         </li>
                         <li class="nav-item  ">
@@ -100,7 +112,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>-->
                     </ul>
                     <!-- END SIDEBAR MENU -->
                     <!-- END SIDEBAR MENU -->

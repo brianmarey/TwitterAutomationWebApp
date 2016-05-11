@@ -37,7 +37,7 @@ public class ErrorHandlerFilter implements Filter {
 
 		String uri = ((HttpServletRequest)request).getRequestURI();
 		if (uri == null) uri = "";
-		LOGGER.info(uri);
+		//LOGGER.info(uri);
 		
 		try {
 			HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper((HttpServletResponse)response); 

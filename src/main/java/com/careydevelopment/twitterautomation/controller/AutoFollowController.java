@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
+import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.util.Constants;
+import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
 public class AutoFollowController {
@@ -24,12 +26,21 @@ public class AutoFollowController {
     public String autofollow(@RequestParam(value="action", required=false) String action, 
     	HttpServletRequest request, Model model) { 
     	
-    	if (request.getSession().getAttribute(Constants.LOGIN_KEY) == null) {
+    	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
+    	
+    	if (user == null) {
     		return "redirect:notLoggedIn";
+    	}
+
+    	if (!RoleHelper.isAuthorized(user, "Basic")) {
+    		return "redirect:notAuthorized";
     	}
     	
     	model.addAttribute("localhost",getLocalHostPrefix());
-    	model.addAttribute("autofollowActive", "active");
+    	
+    	model.addAttribute("blastFollowActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("autoFollowActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("blastFollowArrow", Constants.TWISTIE_OPEN);
     	
     	if (action != null) {
     		model.addAttribute("action",action);

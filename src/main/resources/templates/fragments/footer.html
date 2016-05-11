@@ -1,5 +1,5 @@
 <footer>
-        <div class="page-prefooter">
+        <!--  <div class="page-prefooter">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
@@ -22,9 +22,27 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="page-footer">
-            <div class="page-footer-inner" style="margin-left:10px"> &copy; 2016 <a href="http://careydevelopment.us">Carey Development, LLC.</a>
+        	<div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs12 footer-block">
+                        <div style="font-weight:bold;color:#99ccff;font-size:10pt">Links</div>
+                        <a th:href="@{/}" style="color:#e6e6e6">Home</a><br/>
+                        <a th:href="@{/blastfollow}" style="color:#e6e6e6">BlastFollow</a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
+                        <div style="font-weight:bold;color:#99ccff;font-size:10pt">External</div>
+                        <a href="http://careydevelopment.us" style="color:#e6e6e6">Carey Development, LLC</a><br/>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
+                        <div style="font-weight:bold;color:#99ccff;font-size:10pt">Admin</div>
+                        <a th:href="@{/contact}" style="color:#e6e6e6">Contact</a><br/>
+                        <a th:href="@{/privacy}" style="color:#e6e6e6">Privacy</a>
+                    </div>
+                </div>
             </div>
             <div class="scroll-to-top">
                 <i class="icon-arrow-up"></i>

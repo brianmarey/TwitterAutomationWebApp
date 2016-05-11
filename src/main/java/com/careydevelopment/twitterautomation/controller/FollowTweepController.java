@@ -47,7 +47,7 @@ public class FollowTweepController implements Constants {
 		
 			Long twitterId = new Long(id);
 			followee.setTwitterId(twitterId);
-			//twitter.createFriendship(screenName);
+			twitter.createFriendship(screenName);
 		    //addToDnf(twitterId);
 		    followResult.setMessage("Followed ");
 		    LOGGER.info("Successfully followed " + screenName);

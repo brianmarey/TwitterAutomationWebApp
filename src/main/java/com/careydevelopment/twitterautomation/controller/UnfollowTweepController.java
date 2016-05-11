@@ -70,7 +70,7 @@ public class UnfollowTweepController implements Constants {
 			followResult = attemptUnfollow(rel,user);
 		} catch (Exception e) {
 			LOGGER.error("Problem attempting unfollow",e);
-			followResult = "Problem retrieving user info!";
+			followResult = "Problem retrieving user!";
 		}		
 		
 		LOGGER.info("returning " + followResult);
@@ -89,7 +89,7 @@ public class UnfollowTweepController implements Constants {
 			if (!rel.isSourceFollowedByTarget()) {
 				LOGGER.info(user.getScreenName() + " isn't following me back!");
 				
-				//twitter.destroyFriendship(user.getId());
+				twitter.destroyFriendship(user.getId());
 				followResult = "Unfollowed " + user.getScreenName();
 			} else {
 				LOGGER.info(user.getScreenName() + " is following me");

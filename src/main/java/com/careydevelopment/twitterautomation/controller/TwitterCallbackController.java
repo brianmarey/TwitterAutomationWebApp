@@ -1,7 +1,7 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -15,11 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.careydevelopment.twitterautomation.domain.Tip;
+import com.careydevelopment.twitterautomation.jpa.entity.Role;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
+import com.careydevelopment.twitterautomation.jpa.repository.RoleRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.TwitterUserRepository;
 import com.careydevelopment.twitterautomation.util.Constants;
-import com.careydevelopment.twitterautomation.util.TipsHelper;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -32,6 +32,9 @@ public class TwitterCallbackController {
 	
 	@Autowired
 	TwitterUserRepository twitterUserRepository;
+	
+	@Autowired
+	RoleRepository roleRepository;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TwitterCallbackController.class);
  
@@ -48,7 +51,7 @@ public class TwitterCallbackController {
         	//get the access token
             AccessToken token = twitter.getOAuthAccessToken(requestToken, oauthVerifier);
             
-            handleLogin(twitter,model);
+            handleLogin(twitter,model,request);
             
             //remove the request token from the session
             request.getSession().removeAttribute("requestToken");
@@ -69,7 +72,7 @@ public class TwitterCallbackController {
     }
     
     
-    private void handleLogin(Twitter twitter, Model model) throws TwitterException {
+    private void handleLogin(Twitter twitter, Model model, HttpServletRequest request) throws TwitterException {
     	//just check to make sure we're happy
         String screenName = twitter.getScreenName();
         LOGGER.info("My screen name is " + screenName);
@@ -77,27 +80,44 @@ public class TwitterCallbackController {
         TwitterUser u = twitterUserRepository.findByScreenName(screenName);
         LOGGER.info("Twitter user is " + u);
         if (u == null) {
-        	handleNewUser(model,screenName);
+        	handleNewUser(model,screenName,request);
         } else {
-        	handleUpdateUser(model,u);
+        	handleUpdateUser(model,u,request);
         }
     }
     
     
-    private void handleNewUser(Model model, String screenName) {
+    private void handleNewUser(Model model, String screenName, HttpServletRequest request) {
     	TwitterUser u = new TwitterUser();
     	u.setScreenName(screenName);
     	u.setLastLogin(new Date());
     	u.setNewUser(true);
+    	
     	twitterUserRepository.save(u);
+    	
+    	Role role = new Role();
+    	role.setUser(u);
+    	role.setRoleName("Basic");
+    	Calendar cal = Calendar.getInstance();
+    	cal.add(Calendar.YEAR, 20);
+    	role.setExpires(cal.getTime());
+    	
+    	roleRepository.save(role);
+    	
+    	List<Role> roles = new ArrayList<Role>();
+    	roles.add(role);
+    	u.setRoles(roles);
+    	
     	model.addAttribute(u);
+    	request.getSession().setAttribute(Constants.TWITTER_ENTITY, u);
     }
     
     
-    private void handleUpdateUser(Model model, TwitterUser user) {
+    private void handleUpdateUser(Model model, TwitterUser user, HttpServletRequest request) {
     	user.setLastLogin(new Date());
     	twitterUserRepository.save(user);
-    	model.addAttribute("twitterUser",user);
+    	model.addAttribute("twitterUser",user);   	
+    	request.getSession().setAttribute(Constants.TWITTER_ENTITY, user);
     }
     
     

@@ -18,13 +18,13 @@ import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
-public class AutoUnfollowController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AutoUnfollowController.class);
+public class AutoRefollowController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AutoRefollowController.class);
 	
 	private static final String LOCAL_HOST_FILE = "/etc/tomcat8/resources/localhost.properties";
 	
 	
-    @RequestMapping("/autounfollow")
+    @RequestMapping("/autorefollow")
     public String autounfollow(@RequestParam(value="action", required=false) String action, 
     	HttpServletRequest request, Model model) {
     	
@@ -40,14 +40,14 @@ public class AutoUnfollowController {
 
     	model.addAttribute("localhost",getLocalHostPrefix());
     	model.addAttribute("blastFollowActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("autoUnfollowActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("autoRefollowActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("blastFollowArrow", Constants.TWISTIE_OPEN);
     	
     	if (action != null) {
     		model.addAttribute("action",action);
     	}
     	
-        return "autounfollow";
+        return "autorefollow";
     }
     
     
@@ -66,8 +66,7 @@ public class AutoUnfollowController {
 	    	String localHostPrefix = props.getProperty("localhost.prefix");
 	    	return localHostPrefix;
     	} catch (Exception e) {
-    		e.printStackTrace();
-    		LOGGER.error("Problem reading localhost file!");
+    		LOGGER.error("Problem reading localhost file!",e);
     		throw new RuntimeException("Problem reading localhost file!");
     	}
     }

@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>BlastFollow | AutoUnfollow</title>
+        <title>BlastFollow | AutoRefollow</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="Automatically Unfollow Users" name="description"></meta>
@@ -49,7 +49,7 @@
                     </div>-->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">AutoUnfollow</h1>
+                    <h1 class="page-title">AutoRefollow</h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     <div>
@@ -65,33 +65,28 @@
                              <div class="portlet-title">
                                  <div class="caption">
                                      <i class="icon-social-twitter font-blue-sharp"></i>
-                                     <span class="caption-subject font-blue-sharp bold uppercase">Trim The Fat</span>
+                                     <span class="caption-subject font-blue-sharp bold uppercase">Practice Good Karma</span>
                                  </div>
                              </div>
                              <div class="portlet-body form">
                              	<form role="form">
                                      <div class="form-body">
                                          <div class="form-group">
-                                         	 <div class="note note-info">This tool allows you to automatically unfollow people not following you back.</div>
-                                         	 <div class="note note-danger">
-						                    	<h4 class="block">Be Careful</h4>
-						                        <p>It's not a good idea to unfollow somebody that you just followed. It's best to wait a while after following people to unfollow the ones
-						                        not following you back.</p>
-						                    </div>
+                                         	 <div class="note note-info">This tool allows you to automatically follow people who are following you.</div>
                                              <div class="alert alert-danger" style="display:none" id="numberWarning">
                                         			<strong>Number Required!</strong> Please enter a number.
                                         	 </div>
-                                             <label>Number to Unfollow</label>
+                                             <label>Number to Refollow</label>
                                              <div class="input-group" style="margin-bottom:20px">
-                                                 <input type="text" id="unfollowCount" class="form-control" maxlength="3" value="100"/> <label style="text-align:left">(Max: 100)</label>
+                                                 <input type="text" id="refollowCount" class="form-control" maxlength="3" value="100"/> <label style="text-align:left">(Max: 100)</label>
                                              </div>
                                              <div class="input-group" style="margin-bottom:20px;text-align:center" id="getTweepsButtonGroup">
-                                             	<a href="javascript:beginAutoUnfollow()"><button type="button" class="btn btn-primary mt-ladda-btn ladda-button" id="beginAutoUnfollowButton" data-style="expand-right"><span class="ladda-label">Start Unfollowing</span></button></a>
+                                             	<a href="javascript:beginAutoRefollow()"><button type="button" class="btn btn-primary mt-ladda-btn ladda-button" id="beginAutoRefollowButton" data-style="expand-right"><span class="ladda-label">Start Refollowing</span></button></a>
                                              </div>
                                              <div class="note note-info" id="pleaseWaitSection" style="display:none">
                                         		<p style="font-size:14pt">Please Wait... <img style="position:relative;top:-2px" th:src="@{/images/getTweepsSpinner.gif}"/> </p>
                                     		 </div>
-                                             <div class="well">When you click the button above, you'll start unfollowing people who aren't following you back.</div>
+                                             <div class="well">When you click the button above, you'll start refollowing people who are following you.</div>
                                          </div>
                                      </div>
                                 </form>
@@ -119,10 +114,10 @@
                                     </div>
                                  	<div id="finishedSection" style="display:none;margin-bottom:20px;">
 			                            <div class="alert alert-success" style="margin-bottom:10px">
-	                                        <strong>Success!</strong> Unfollowing complete.
+	                                        <strong>Success!</strong> Refollowing complete.
 	                                    </div>
 	                                    <div style="display:flex;justify-content: space-between">
-		                                    <a th:href="@{/autounfollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Run</button></a>
+		                                    <a th:href="@{/autorefollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Run</button></a>
 		                                    <a th:href="@{/blastfollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Dashboard</button></a>
 	                                    </div>
                                     </div>
@@ -131,7 +126,7 @@
 		                                    <div class="caption">
 		                                        <i class="fa fa-users"></i>Status </div>
 		                                    <div class="actions" id="actionsButton">
-		                                        <a th:href="@{/autounfollow?action=operationStopped}" class="btn btn-default btn-sm">
+		                                        <a th:href="@{/autorefollow?action=operationStopped}" class="btn btn-default btn-sm">
 		                                            <i class="fa fa-hand-stop-o"></i> Stop </a>
 		                                    </div>
 		                                </div>
