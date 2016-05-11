@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.careydevelopment.twitterautomation.util.SecurityHelper;
+import com.careydevelopment.twitterautomation.util.Constants;
 
 @Controller
 public class AutoUnfollowController {
@@ -20,14 +23,18 @@ public class AutoUnfollowController {
 	
 	
     @RequestMapping("/autounfollow")
-    public String autounfollow(Model model) {    	
+    public String autounfollow(@RequestParam(value="action", required=false) String action, 
+    	HttpServletRequest request, Model model) {    	
+    	
+    	if (request.getSession().getAttribute(Constants.TWITTER_USER) == null) {
+    		return "redirect:notLoggedIn";
+    	}
+    	
     	model.addAttribute("localhost",getLocalHostPrefix());
-    	model.addAttribute("autoUnfollowActive", "active");
+    	model.addAttribute("autounfollowActive", "active");
     	
-    	String username = SecurityHelper.getUsername();
-    	
-    	if (username != null && username.trim().length() > 1) {
-    		model.addAttribute("username", username);
+    	if (action != null) {
+    		model.addAttribute("action",action);
     	}
     	
         return "autounfollow";

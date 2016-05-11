@@ -35,11 +35,14 @@ public class UnfollowTweepController implements Constants {
 	
     @RequestMapping(value="/unfollowTweep",method = RequestMethod.GET,produces="application/json")
     public UnfollowResult unfollowTweep(@RequestParam(value="id", required=true) String id, 
-    		@RequestParam(value="twitterUser", required=true) String twitterUser,
     		HttpServletRequest request, Model model) {
 		
     	//get the twitter4j Twitter object from the singleton
-		twitter = MyTwitter.instance().getTwitter(twitterUser);
+		twitter = (Twitter)request.getSession().getAttribute(Constants.TWITTER);
+		if (twitter == null) {
+			LOGGER.error("No Twitter in unfollow!");
+			return new UnfollowResult();
+		}
 		
 		//FollowRun followRun =(FollowRun)request.getSession().getAttribute(CURRENT_FOLLOW_RUN);
 		//LOGGER.info("Current follow run is " + followRun);
@@ -53,7 +56,7 @@ public class UnfollowTweepController implements Constants {
 		
 		//Followee followee = new Followee();
 	
-		whiteList = getWhiteList();
+		//whiteList = getWhiteList();
 
 		String followResult = "";
 		
@@ -66,7 +69,7 @@ public class UnfollowTweepController implements Constants {
 			
 			followResult = attemptUnfollow(rel,user);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Problem attempting unfollow",e);
 			followResult = "Problem retrieving user info!";
 		}		
 		
@@ -84,20 +87,16 @@ public class UnfollowTweepController implements Constants {
 		
     	try {
 			if (!rel.isSourceFollowedByTarget()) {
-				if (!whiteList.contains(user.getScreenName().toLowerCase())) {
-					LOGGER.info(user.getScreenName() + " isn't following me back!");
-					
-					twitter.destroyFriendship(user.getId());
-					followResult = "Unfollowed " + user.getScreenName();
-				} else {
-					followResult = user.getScreenName() + " is whitelisted";
-				}
+				LOGGER.info(user.getScreenName() + " isn't following me back!");
+				
+				//twitter.destroyFriendship(user.getId());
+				followResult = "Unfollowed " + user.getScreenName();
 			} else {
 				LOGGER.info(user.getScreenName() + " is following me");
 				followResult = user.getScreenName() + " is following you";
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Problem attempting unfollow",e);
 			followResult = "Problem unfollowing " + user.getScreenName();
 		}
 

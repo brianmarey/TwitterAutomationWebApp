@@ -32,28 +32,26 @@
 		
 		setTimeout(completelyFinished, runTime);
 	}
-
 	
-	
-	function beginAutoUnfollow(localhost) {
-		theHost = localhost;
-		
-		$("#followForm").hide();
-		$("#buttonDiv").hide();
-		$("#statusArea").show();
-		$("#spinnerIcon").show();
-		$("#statusText").show();
-		$("anotherRunButtonDiv").hide();
-		
-		twitterUser = $("#twitteruser").val();
-		unfollowOffset = $("#offset").val();
-		if (isNaN(unfollowOffset)) {
-			alert("Offset must be a number!");
-			unfollowOffset = 0;
+	function beginAutoUnfollow() {
+		//twitterUser = $("#twitteruser").val();
+		//unfollowOffset = $("#offset").val();
+		var unfollowCount = $("#unfollowCount").val();
+		unfollowCount = unfollowCount.trim();
+		alert(unfollowCount);
+		if (isNaN(unfollowCount)) {
+			$("#numberWarning").show();
 			return;
 		}
+				
+		$("#getStartedSection").hide();
+		//$("#buttonDiv").hide();
+		$("#statusArea").show();
+		$("#spinnerIcon").show();
+		//$("#statusText").show();
+		//$("anotherRunButtonDiv").hide();
 		
-		beginAutoUnfollowRun()
+		beginAutoUnfollowRun(unfollowCount);
 	}
 	
 	function completelyFinished() {
@@ -64,12 +62,12 @@
 		$("#actionsButton").hide();
 	}
 
-	function beginAutoUnfollowRun() {
+	function beginAutoUnfollowRun(count) {
 		time = 0;
 			
-		var url = theHost + "/TwitterAutomation/getUnfollowTweeps?twitterUser=" + twitterUser;
+		var url = context + "/getUnfollowTweeps";
 		
-		//alert (url);
+		alert (url);
 		
 		$.get(url, processUnfollowTweeps);
 	}
@@ -149,21 +147,31 @@
 
 	
 	function processUnfollowTweeps(data) {
-		//alert(data.length);
-		//alert(data[0]);
-		var offset = parseInt(unfollowOffset);
+		alert(data.length);
+		alert(data[0]);
 		
-		for (var ii=offset;ii<offset + unfollowMax;ii++) {
-			//alert(data[ii].screenName);
+		if (data.length < 2) {
+			return;
+		}
+		
+		var offset = Math.round(data.length/2);
+		alert("offset is " + offset);
+		
+		//var offset = parseInt(unfollowOffset);
+		var unfollowCount = parseInt($("#unfollowCount").val());
+		alert("Unfoolow count is " + unfollowCount);
+		
+		for (var ii=offset;ii<offset + unfollowCount;ii++) {
+			alert("ii is " + ii);
 			var id = data[ii];
-			//alert(ii + " " + unfollowOffset + 5);
+			alert("The id is " + id);
 			
 			setTimeout(unfollowTweep,time,id);
 			//alert("time is " + time);
 			time += timeIncrement;
 		}
 		
-		setTimeout(completelyFinished,time);
+		setTimeout(completelyFinishedUnfollow,time);
 		//time += timeIncrement;
 	}
 
@@ -197,10 +205,10 @@
 	
 	
 	function unfollowTweep(id) {		
-		var url = theHost + "/TwitterAutomation/unfollowTweep?id=" + id + "&twitterUser=" + twitterUser;
-		//alert(url);
+		var url = context + "/unfollowTweep?id=" + id;
+		alert(url);
 		$.get(url,function( data ) {
-			//alert(data.followResult)
+			alert(data.followResult)
 			var notice = data.followResult + "<br/>";
 			//alert(notice);
 			$("#statusResults").append( notice);
