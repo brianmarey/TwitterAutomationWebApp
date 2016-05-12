@@ -176,12 +176,14 @@
 		
 		for (var ii=offset;ii<offset + unfollowCount;ii++) {
 			//alert("ii is " + ii);
-			var id = data[ii];
-			//alert("The id is " + id);
-			
-			setTimeout(unfollowTweep,time,id);
-			//alert("time is " + time);
-			time += timeIncrement;
+			if (ii<data.length) {
+				var id = data[ii];
+				//alert("The id is " + id);
+				
+				setTimeout(unfollowTweep,time,id);
+				//alert("time is " + time);
+				time += timeIncrement;
+			}
 		}
 		
 		setTimeout(completelyFinishedUnfollow,time);
@@ -208,13 +210,14 @@
 		if (refollowCount < maxRefollows) maxRefollows = refollowCount;
 		
 		for (var ii=offset;ii<offset + refollowCount;ii++) {
-			//alert("ii is " + ii);
-			var id = data[ii];
-			//alert("The id is " + id);
-			
-			setTimeout(refollowTweep,time,id);
-			//alert("time is " + time);
-			time += timeIncrement;
+			if (ii<data.length) {
+				var id = data[ii];
+				//alert("The id is " + id);
+				
+				setTimeout(refollowTweep,time,id);
+				//alert("time is " + time);
+				time += timeIncrement;
+			}
 		}
 		
 		setTimeout(completelyFinishedRefollow,time);
