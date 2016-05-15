@@ -21,6 +21,7 @@ public class LogoutController {
     	request.getSession().removeAttribute(Constants.LOGIN_KEY);
     	request.getSession().removeAttribute(Constants.TWITTER);
     	request.getSession().removeAttribute(Constants.TWITTER_USER);
+    	request.getSession().removeAttribute(Constants.TWITTER_ENTITY);
     	
         return "notLoggedIn";
     }
