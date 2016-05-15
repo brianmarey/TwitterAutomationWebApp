@@ -23,6 +23,6 @@ public class LogoutController {
     	request.getSession().removeAttribute(Constants.TWITTER_USER);
     	request.getSession().removeAttribute(Constants.TWITTER_ENTITY);
     	
-        return "notLoggedIn";
+        return "home";
     }
 }
