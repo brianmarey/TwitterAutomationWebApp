@@ -68,7 +68,7 @@ public class GetTweepsController implements Constants {
 		try {
 			for (int i=0;i<keys.length;i++) {
 				String key = keys[i];
-				if (!key.startsWith("#")) key = "#" + key;
+				//if (!key.startsWith("#")) key = "#" + key;
 				
 				if (key != null && key.trim().length() > 2) {		
 					LOGGER.info("Now searching for " + key);
@@ -83,7 +83,7 @@ public class GetTweepsController implements Constants {
 					/*for (String s : returnedDudes) {
 						LOGGER.info(s);
 					}*/
-					
+
 					ResponseList<Friendship> friendships = twitter.lookupFriendships(returnedDudes);
 					
 					ships.addAll(getLightweights(friendships));

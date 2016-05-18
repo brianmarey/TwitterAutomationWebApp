@@ -5,11 +5,12 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
+import javax.persistence.PersistenceUnit;
 
-import org.hibernate.cfg.Environment;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -18,14 +19,20 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableJpaRepositories(basePackages = {
-        "com.careydevelopment.twitterautomation.jpa"
-})
+@EnableJpaRepositories(
+		basePackages = "com.careydevelopment.twitterautomation.jpa",
+		entityManagerFactoryRef = "primaryEntityManager", 
+        transactionManagerRef = "primaryTransactionManager"
+)
 @EnableTransactionManagement
+@PersistenceUnit(name="primaryPU")
 class PersistenceContext {
 	   private static final String PROPS_FILE = "/etc/tomcat8/resources/mysql.properties";
 		
+	   
 	   @Bean(name = "dataSource")
+	   @Primary
+	   @ConfigurationProperties(prefix="datasource.primary")
 	   public DriverManagerDataSource dataSource() {
 		   DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 		   
@@ -48,11 +55,11 @@ class PersistenceContext {
 	   }
 
 
-	   
-	    @Bean
-	    LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+	  
+	    @Bean(name="primaryEntityManager")
+	    LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 	        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-	        entityManagerFactoryBean.setDataSource(dataSource);
+	        entityManagerFactoryBean.setDataSource(dataSource());
 	        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 	        entityManagerFactoryBean.setPackagesToScan("com.careydevelopment.twitterautomation.jpa.entity");
 	 
@@ -102,14 +109,12 @@ class PersistenceContext {
 	        return entityManagerFactoryBean;
 	    }
 	    
-	    
-	    @Bean
-	    JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+	   
+	    @Bean (name="primaryTransactionManager")
+	    JpaTransactionManager transactionManager() {
 	        JpaTransactionManager transactionManager = new JpaTransactionManager();
-	        transactionManager.setEntityManagerFactory(entityManagerFactory);
+	        transactionManager.setEntityManagerFactory(this.entityManagerFactory().getObject());
 	        return transactionManager;
 	    }
-	    
-	    
 	    
 }

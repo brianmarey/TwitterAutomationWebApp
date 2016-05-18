@@ -5,6 +5,7 @@
 	var unfollowOffset = 0;
 	var unfollowMax = 990;
 	var context = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+	var maxToFollow = 100;
 	
 	function beginAutoUnfollow() {
 		//twitterUser = $("#twitteruser").val();
@@ -150,6 +151,55 @@
 		setTimeout(completelyFinished,time);
 	}
 
+	
+	function processFollowers() {
+		//alert(currentFollowSet.length);
+		actualFollows = 0;
+		
+		maxFollows = $("#followCount").val();
+		if (isNaN(maxFollows)) {
+			maxFollows = 10;
+		}
+		
+		if (maxFollows > 100) {
+			maxFollows = 100;
+		}
+		
+		if (maxFollows < 0) {
+			maxFollows = 10;
+		}
+		
+		if (!currentFollowSet) {
+			return;
+		}
+		
+		if (currentFollowSet.length < maxFollows) {
+			maxFollows = currentFollowSet.length;
+		}
+
+		$("#statusSection").show();
+		$("#statusRow").show();
+		$("#foundTweepsSection").hide();
+		
+		var currentCount = 0;
+		
+		for (var ii=0;ii<currentFollowSet.length;ii++) {
+			alert(currentFollowSet[ii]);
+			var id = currentFollowSet[ii];
+			
+			setTimeout(followFollower,time,id);
+			//alert("time is " + time);
+			time += timeIncrement;
+			currentCount++;		
+			
+			if (currentCount >= maxFollows) break;
+		}
+		
+		setTimeout(completelyFinished,time);
+	}
+
+	
+	
 	var maxUnfollows = 100;
 	var actualUnfollows = 0;
 	
@@ -254,6 +304,26 @@
 	}
 	
 	
+	function followFollower(id) {		
+		var url = context + "/followFollower?id=" + id;
+		alert(url);
+		$.get(url,function( data ) {			
+			var notice = data.message + "<br/>";
+			//alert(notice);
+			$("#statusResults").append( notice);
+			
+			actualFollows++;
+			
+			var percent = parseFloat(Math.round((actualFollows / maxFollows)*100)).toFixed(0);
+			//alert(percent);
+			$("#progressBar").attr("aria-valuenow",percent);
+			
+			var percentStyle = percent + "%";
+			$("#progressBar").width(percentStyle);
+		});
+	}
+	
+	
 	function unfollowTweep(id) {		
 		var url = context + "/unfollowTweep?id=" + id;
 		//alert(url);
@@ -295,6 +365,33 @@
 			//alert(notice);
 			$("#statusResults").append( notice);
 		});
+	}
+	
+	
+	function findFollowers() {
+		$("#usernameWarning").hide();
+		
+		var username = $("#username").val();
+		//alert("username is " + username);
+		
+		username = username.trim();
+		
+		if (username == '') {
+			$("#usernameWarning").show();
+			return;
+		}
+		
+		$("#getTweepsButtonGroup").hide();
+		$("#pleaseWaitSection").show();
+		$("#messagesSection").hide();
+		
+		username = encodeURIComponent(username);
+			
+		var url = context + "/getFollowers?username=" + username;
+		
+		//alert (url);
+		
+		$.get(url, displayFollowers);
 	}
 	
 	
@@ -343,9 +440,37 @@
 		$("#getStartedSection").hide();
 		$("#foundTweepsSection").show();
 		$("#introSection").hide();
+
+		var followCount = data.length;
+		if (followCount > maxToFollow) followCount = maxToFollow;
 		
 		$("#tweepsCount").html(data.length);
-		$("#followCount").val(data.length);
+		$("#followCount").val(followCount);
 	}
 	
+	
+	function displayFollowers(data) {
+		if (!data || data.length < 3) {
+			$("#pleaseWaitSection").hide();
+			$("#getStartedSection").hide();
+			$("#introSection").hide();
+			$("#noResultsSection").show();
+			return;
+		}
+		
+		currentFollowSet = data;
+		
+		$("#getTweepsButtonGroup").show();
+		$("#pleaseWaitSection").hide();
+		
+		$("#getStartedSection").hide();
+		$("#foundTweepsSection").show();
+		$("#introSection").hide();
+		
+		var followCount = data.length;
+		if (followCount > maxToFollow) followCount = maxToFollow;
+		
+		$("#tweepsCount").html(data.length);
+		$("#followCount").val(followCount);
+	}
 	
