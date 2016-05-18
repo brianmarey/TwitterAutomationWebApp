@@ -36,16 +36,17 @@ public class FollowFollowerController implements Constants {
 				throw new Exception("Twitter is null");
 			}
 		
-			Long twitterId = new Long(id);
-			followee.setTwitterId(twitterId);
+			followee.setScreenName(id);
 			
-			User user = twitter.createFriendship(twitterId);
+			LOGGER.info("creating friendship with " + id);
+			
+			User user = twitter.createFriendship(id);
 		    //addToDnf(twitterId);
-		    followResult.setMessage("Followed " + user.getScreenName());
-		    LOGGER.info("Successfully followed " + user.getScreenName());
+		    followResult.setMessage("Followed " + id);
+		    LOGGER.info("Successfully followed " + id);
 		} catch (Exception e) {
-			LOGGER.warn("Follow attempt failed",e);
-			followResult.setMessage("Follow attempt failed");
+			LOGGER.warn("Failed to follow " + id,e);
+			followResult.setMessage("Failed to follow " + id);
 		}
 		
 		

@@ -184,7 +184,7 @@
 		var currentCount = 0;
 		
 		for (var ii=0;ii<currentFollowSet.length;ii++) {
-			alert(currentFollowSet[ii]);
+			//alert(currentFollowSet[ii]);
 			var id = currentFollowSet[ii];
 			
 			setTimeout(followFollower,time,id);
@@ -306,7 +306,7 @@
 	
 	function followFollower(id) {		
 		var url = context + "/followFollower?id=" + id;
-		alert(url);
+		//alert(url);
 		$.get(url,function( data ) {			
 			var notice = data.message + "<br/>";
 			//alert(notice);

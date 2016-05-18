@@ -119,7 +119,7 @@
                        	<div class="row" id="noResultsSection" style="display:none">
                        		<div style="margin-bottom:20px" class="col-md-4">
 			                	<div class="alert alert-danger">
-	                            	<strong>No results!</strong> Sorry, couldn't find anyone following that user.
+	                            	<strong>No results!</strong> Sorry, couldn't find anyone following that user who you aren't following.
 	                            </div>
 	                            <div style="display:flex;justify-content:space-between">
 		                            <a th:href="@{/followfollowers}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Run</button></a>
@@ -135,7 +135,7 @@
                                  </div>
                              </div>
                              <div class="portlet-body form">
-                                 <div class="note note-info">I found <span id="tweepsCount"></span> people who are following that user.
+                                 <div class="note note-info">I found <span id="tweepsCount"></span> people who you aren't following and are following that user.
                              	 Select how many of them you want to follow and press the "Follow" button below to begin following them one at a time.</div>
                                  <div class="note note-info">
                             		<strong>Note:</strong> There will be a delay of several seconds between each follow. That's quite intentional.
