@@ -57,7 +57,7 @@ public class TwitterHelper {
 			
 			for (Friendship friendship : friendships) {
 				//LOGGER.info(friendship.getScreenName() + " " + friendship.isFollowedBy() + " " + friendship.isFollowing());
-				if (!friendship.isFollowedBy()) {
+				if (!friendship.isFollowing()) {
 					//LOGGER.info("Now adding " + friendship.getScreenName());
 					finalNames.add(friendship.getScreenName());
 				}

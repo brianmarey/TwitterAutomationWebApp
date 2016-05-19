@@ -41,7 +41,7 @@ public class FollowFollowerController implements Constants {
 			LOGGER.info("creating friendship with " + id);
 			
 			User user = twitter.createFriendship(id);
-		    //addToDnf(twitterId);
+
 		    followResult.setMessage("Followed " + id);
 		    LOGGER.info("Successfully followed " + id);
 		} catch (Exception e) {
