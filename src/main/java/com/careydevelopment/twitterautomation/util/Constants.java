@@ -10,4 +10,5 @@ public interface Constants {
 	public static final String MENU_CATEGORY_OPEN = "active open";
 	public static final String TWISTIE_OPEN = "open";
 	public static final int MAX_FOLLOW_SIZE = 100;
+	public static final int RESULTS_PER_PAGE = 12;
 }
