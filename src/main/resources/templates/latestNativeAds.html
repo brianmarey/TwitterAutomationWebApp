@@ -56,14 +56,14 @@
                     <div th:each="data, row: ${nativeAds}" th:with="numList=${ {2,1,0} }" th:if="${row.count % 3 == 0 or row.last}" style="text-align:center" class="row">
 					    <div class="col-md-4 " style="margin-bottom:60px" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.count % 3 == 0}">
 					    	<img style="margin-bottom:10px;max-width:250px;max-height:300px" th:src="${nativeAds[dataIndex].imageUrl}"/><br/>
-					    	<a th:utext="${nativeAds[dataIndex].headline}" th:href="${nativeAds[dataIndex].url}" class="linkText">...</a><br/>
+					    	<a th:utext="${nativeAds[dataIndex].headline}" th:href="${nativeAds[dataIndex].url}" class="linkText" target="_blank">...</a><br/>
 					    	<span style="fontSize:10pt" th:utext="${nativeAds[dataIndex].adCompany.name}"></span><br/>
 				    		<span style="fontSize:10pt" th:utext="${'Last Seen: ' + nativeAds[dataIndex].lastSeenStr}"></span><br/>
 				    		<span style="fontSize:10pt" th:utext="${'Days Seen: ' + nativeAds[dataIndex].daysSeen}"></span>
 					    </div>
 					    <div class="col-md-4 " style="margin-bottom:60px" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.last} and ${row.count % 3 != 0} and ${num &lt; row.count % 3}">
 					    	<img style="margin-bottom:10px;max-width:250px;max-height:300px" th:src="${nativeAds[dataIndex].imageUrl}"/><br/>
-					    	<a th:utext="${nativeAds[dataIndex].headline}" th:href="${nativeAds[dataIndex].url}" class="linkText"></a><br/>
+					    	<a th:utext="${nativeAds[dataIndex].headline}" th:href="${nativeAds[dataIndex].url}" class="linkText" target="_blank"></a><br/>
 					    	<span style="fontSize:10pt" th:utext="${nativeAds[dataIndex].adCompany.name}"></span><br/>
 				    		<span style="fontSize:10pt" th:utext="${'Last Seen: ' + nativeAds[dataIndex].lastSeenStr}"></span><br/>
 				    		<span style="fontSize:10pt" th:utext="${'Days Seen: ' + nativeAds[dataIndex].daysSeen}"></span>

@@ -48,7 +48,12 @@ public class LatestController implements Constants {
     	
     	LOGGER.info("There are " +nads.size() + " native ads");
     	
-        return "hottestNativeAds";
+    	model.addAttribute("nativeAdsActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("latestNativeAdsActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("nativeAdsArrow", Constants.TWISTIE_OPEN);
+
+    	
+        return "latestNativeAds";
     }
     
     

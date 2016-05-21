@@ -94,6 +94,7 @@ public class NativeAd {
 	}
 
 	public int getDaysSeen() {
+		if (daysSeen == 0) daysSeen = 1;
 		return daysSeen;
 	}
 

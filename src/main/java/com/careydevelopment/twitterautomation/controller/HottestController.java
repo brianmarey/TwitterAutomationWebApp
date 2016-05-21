@@ -32,8 +32,6 @@ public class HottestController implements Constants {
 	
     @RequestMapping("/hottestNativeAds")
     public String latest(Model model, @RequestParam(value="pageNum", required=false) String pageNum) {    	    
-    	model.addAttribute("hottestNativeAdsActive", "active");
-
     	int page = PaginationHelper.getPage(pageNum);
     	
     	Pageable pageable = new PageRequest(page,RESULTS_PER_PAGE);
@@ -48,7 +46,11 @@ public class HottestController implements Constants {
     	
     	LOGGER.info("There are " +nads.size() + " native ads");
     	
-        return "latestNativeAds";
+    	model.addAttribute("nativeAdsActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("hottestNativeAdsActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("nativeAdsArrow", Constants.TWISTIE_OPEN);
+    	
+        return "hottestNativeAds";
     }
     
     

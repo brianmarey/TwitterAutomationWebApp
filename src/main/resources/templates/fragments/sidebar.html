@@ -75,6 +75,33 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="heading">
+                        	<h3 class="uppercase">Other Tools</h3>
+                        </li>
+                        <li class="nav-item start " th:classappend="${nativeAdsActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-book-open"></i>
+                                <span class="title">Native Ads</span>
+                                <span class="arrow " th:classappend="${nativeAdsArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${latestNativeAdsActive}">
+                                    <a th:href="@{/latestNativeAds}" class="nav-link ">
+                                        <i class="icon-calendar"></i>
+                                        <span class="title">Latest</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start " th:classappend="${hottestNativeAdsActive}">
+                                    <a th:href="@{/hottestNativeAds}" class="nav-link ">
+                                        <i class="icon-fire"></i>
+                                        <span class="title">Hottest</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>    
+                        <li class="heading">
+                        	<h3 class="uppercase">Admin</h3>
+                        </li>
                         <li class="nav-item start ">
                             <a th:href="@{/contact}" class="nav-link">
                                 <i class="icon-bubbles"></i>
