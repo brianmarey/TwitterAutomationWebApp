@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFactoryException;
 import com.careydevelopment.propertiessupport.PropertiesFile;
+import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.service.TwitterService;
 import com.careydevelopment.twitterautomation.util.Constants;
 
@@ -53,7 +54,7 @@ public class GetTokenController {
 			//now get the authorization URL from the token
 			twitterUrl = requestToken.getAuthorizationURL();
 			
-			LOGGER.info("Authorization url is " + twitterUrl);
+			//LOGGER.info("Authorization url is " + twitterUrl);
 		} catch (Exception e) {
 			LOGGER.error("Problem getting authorization URL!",e);
 		}

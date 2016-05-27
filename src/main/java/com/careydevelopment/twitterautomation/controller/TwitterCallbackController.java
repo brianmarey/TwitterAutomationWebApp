@@ -1,11 +1,5 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,15 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.careydevelopment.twitterautomation.jpa.entity.Role;
-import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
-import com.careydevelopment.twitterautomation.jpa.repository.RoleRepository;
-import com.careydevelopment.twitterautomation.jpa.repository.TwitterUserRepository;
+import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
@@ -33,10 +22,7 @@ import twitter4j.auth.RequestToken;
 public class TwitterCallbackController {
 	
 	@Autowired
-	TwitterUserRepository twitterUserRepository;
-	
-	@Autowired
-	RoleRepository roleRepository;
+	private LoginService loginService;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TwitterCallbackController.class);
  
@@ -53,81 +39,13 @@ public class TwitterCallbackController {
         	//get the access token
             AccessToken token = twitter.getOAuthAccessToken(requestToken, oauthVerifier);
             
-            handleLogin(twitter,model,request);
-            
-            //remove the request token from the session
-            request.getSession().removeAttribute("requestToken");
-            
-            //add the access token to the session
-            request.getSession().setAttribute(Constants.LOGIN_KEY, token.getToken());
-            
-            User user = twitter.showUser(twitter.getId());
-            request.getSession().setAttribute(Constants.TWITTER_USER, user);
-            
-            Cookie cookie = new Cookie("accessToken", token.getToken());
-            cookie.setMaxAge(2592000);
-            response.addCookie(cookie);
-            
-            Cookie cookie2 = new Cookie("accessTokenSecret", token.getTokenSecret());
-            cookie2.setMaxAge(2592000);
-            response.addCookie(cookie2);
-            
-            //setDisplayAttributes(model,user);
+            loginService.login(twitter,model,request,response, token);
         } catch (Exception e) {
             LOGGER.error("Problem getting token!",e);
             return "redirect:notLoggedIn";
         }
         
         return "redirect:blastfollow";
-    }
-    
-    
-    private void handleLogin(Twitter twitter, Model model, HttpServletRequest request) throws TwitterException {
-    	//just check to make sure we're happy
-        String screenName = twitter.getScreenName();
-        LOGGER.info("My screen name is " + screenName);
-        
-        TwitterUser u = twitterUserRepository.findByScreenName(screenName);
-        LOGGER.info("Twitter user is " + u);
-        if (u == null) {
-        	handleNewUser(model,screenName,request);
-        } else {
-        	handleUpdateUser(model,u,request);
-        }
-    }
-    
-    
-    private void handleNewUser(Model model, String screenName, HttpServletRequest request) {
-    	TwitterUser u = new TwitterUser();
-    	u.setScreenName(screenName);
-    	u.setLastLogin(new Date());
-    	u.setNewUser(true);
-    	
-    	twitterUserRepository.save(u);
-    	
-    	Role role = new Role();
-    	role.setUser(u);
-    	role.setRoleName("Basic");
-    	Calendar cal = Calendar.getInstance();
-    	cal.add(Calendar.YEAR, 20);
-    	role.setExpires(cal.getTime());
-    	
-    	roleRepository.save(role);
-    	
-    	List<Role> roles = new ArrayList<Role>();
-    	roles.add(role);
-    	u.setRoles(roles);
-    	
-    	model.addAttribute(u);
-    	request.getSession().setAttribute(Constants.TWITTER_ENTITY, u);
-    }
-    
-    
-    private void handleUpdateUser(Model model, TwitterUser user, HttpServletRequest request) {
-    	user.setLastLogin(new Date());
-    	twitterUserRepository.save(user);
-    	model.addAttribute("twitterUser",user);   	
-    	request.getSession().setAttribute(Constants.TWITTER_ENTITY, user);
     }
     
     

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -18,30 +19,40 @@ import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
 import com.careydevelopment.twitterautomation.domain.Tip;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
+import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 import com.careydevelopment.twitterautomation.util.TipsHelper;
 
+import twitter4j.Twitter;
 import twitter4j.User;
 
 @Controller
 public class BlastFollowController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BlastFollowController.class);
 	
+	@Autowired
+	private LoginService loginService;
 	
     @RequestMapping("/blastfollow")
     public String blastfollow(HttpServletRequest request, Model model, 
-    	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
-    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) {    	
+    		@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
+        	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) {    	
     	
     	User user = (User)request.getSession().getAttribute(Constants.TWITTER_USER);
-    	
-    	LOGGER.info("\n\n\nREQUEST TOKEN IS " + accessToken);
-    	
-    	
-    	
+
     	if (user == null) {
-    		return "redirect:notLoggedIn";
+    		if (!accessToken.equals("") && !accessTokenSecret.equals("")) {
+        		//this user has cookies and might be able to login
+        		try {
+        			Twitter twitter = loginService.login(model, request, accessToken, accessTokenSecret);
+        			user = twitter.showUser(twitter.getId());
+        		} catch (Exception e) {
+        			return "redirect:notLoggedIn";
+        		}
+        	} else {        	
+        		return "redirect:notLoggedIn";		
+        	}
     	}
 
     	TwitterUser twitterUser = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
@@ -57,6 +68,7 @@ public class BlastFollowController {
     
     	setDisplayAttributes(model,user);
     	
+    	
         return "blastfollow";
     }
     
@@ -64,9 +76,8 @@ public class BlastFollowController {
     private void setDisplayAttributes(Model model, User user) {
     	DecimalFormat df = new DecimalFormat("###.##");
     	df.setRoundingMode(RoundingMode.FLOOR);
-    	
+
     	double ratio = ((double)user.getFollowersCount())/((double)user.getFriendsCount());
-    	LOGGER.info("ratio is " + ratio);
     	
     	String ratioS = df.format(ratio);
     	model.addAttribute("ratio",ratioS);
