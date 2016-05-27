@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +43,7 @@ public class TwitterCallbackController {
 	
     @RequestMapping("/twitterCallback")
     public String twitterCallback(@RequestParam(value="oauth_verifier", required=true) String oauthVerifier,
-    		HttpServletRequest request, Model model) {
+    		HttpServletRequest request, HttpServletResponse response, Model model) {
 
     	//get the objects from the session
     	Twitter twitter = (Twitter) request.getSession().getAttribute(Constants.TWITTER);
@@ -61,6 +63,14 @@ public class TwitterCallbackController {
             
             User user = twitter.showUser(twitter.getId());
             request.getSession().setAttribute(Constants.TWITTER_USER, user);
+            
+            Cookie cookie = new Cookie("accessToken", token.getToken());
+            cookie.setMaxAge(2592000);
+            response.addCookie(cookie);
+            
+            Cookie cookie2 = new Cookie("accessTokenSecret", token.getTokenSecret());
+            cookie2.setMaxAge(2592000);
+            response.addCookie(cookie2);
             
             //setDisplayAttributes(model,user);
         } catch (Exception e) {

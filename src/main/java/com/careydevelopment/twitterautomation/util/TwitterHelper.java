@@ -6,12 +6,21 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import twitter4j.ExtendedMediaEntity;
 import twitter4j.Friendship;
+import twitter4j.MediaEntity;
 import twitter4j.PagableResponseList;
+import twitter4j.Query;
+import twitter4j.QueryResult;
 import twitter4j.ResponseList;
+import twitter4j.Status;
+import twitter4j.Trend;
+import twitter4j.Trends;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import twitter4j.User;
+import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterHelper {
 	
@@ -19,54 +28,72 @@ public class TwitterHelper {
 	
 	private static final int MAX_PER_PAGE = 200;
 	private static final int DEFAULT_SLEEP_TIME = 3000;
-
-	public static void getFollowers(Twitter twitter, List<User> users, String screenName, int iterations) throws TwitterException, InterruptedException {
-		long cursor = -1;
-		
-		for (int i=0;i<iterations;i++) {
-			PagableResponseList<User> tweeps = twitter.getFollowersList(screenName, cursor, MAX_PER_PAGE);
-			
-			for (User user : tweeps) {
-				users.add(user);
-			}
-
-			cursor = tweeps.getNextCursor();
-			if (cursor == 0) break;
-			Thread.sleep(DEFAULT_SLEEP_TIME);
-		}
-	}
+	private static final int COUNT_SIZE = 100;
 	
-	
-	public static List<String> getFriendshipsFromUsers(List<User> users, Twitter twitter) throws TwitterException, InterruptedException {
-		List<String> finalNames = new ArrayList<String>();		
+	public static void main(String[] args) {
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true)
+		  .setOAuthConsumerKey("hP24s2NeWKEaWDZhHxsUQ")
+		  .setOAuthConsumerSecret("ZdwkYshYIUAFi2BYcGMigx6gVqE6mExJWYXkAZrU4")
+		  .setOAuthAccessToken("18305815-VblAe80R1gN67W4taWLMFUaytvFIGkGsSvpYmmcy5")
+		  .setOAuthAccessTokenSecret("fZuoUdqVQsiA9NfC7jR3E8bDM2CkZnzNPlPgvjlNDSnLE");
 		
-		int start = 0;
-		int length = 100;
-		while (finalNames.size() < Constants.MAX_FOLLOW_SIZE && start < users.size() - (length + 1)) {
-			long[] subIds = new long[length];
-			int index = 0;
+		TwitterFactory tf = new TwitterFactory(cb.build());
+		Twitter twitter = tf.getInstance();
+		
+		List<Status> statuses = new ArrayList<Status>();
+		
+		try {
+			/*Trends trends = twitter.trends().getPlaceTrends(23424977);
+			Trend[] trs = trends.getTrends();
 			
-			for (int i=start;i<start+length;i++) {
-				User user = users.get(i);
-				long id = user.getId();
-				subIds[index] = id;
-				index++;
+			int count = 0;
+			
+			for (Trend tr : trs) {
+				Query query = new Query(tr.getQuery()).count(COUNT_SIZE);
+				QueryResult result = twitter.search(query);
+				statuses.addAll(result.getTweets());
+				count++;
+				if(count>6) break;
+				
+				Thread.sleep(5000);
 			}
 			
-			ResponseList<Friendship> friendships = twitter.lookupFriendships(subIds);
-			
-			for (Friendship friendship : friendships) {
-				//LOGGER.info(friendship.getScreenName() + " " + friendship.isFollowedBy() + " " + friendship.isFollowing());
-				if (!friendship.isFollowing()) {
-					//LOGGER.info("Now adding " + friendship.getScreenName());
-					finalNames.add(friendship.getScreenName());
+			for (Status status : statuses) {
+				if (status.getRetweetCount() > 500) {
+					if (status.getMediaEntities().length > 0) {
+						System.err.println(status.getId() + " " + status.getUser().getScreenName() + " " + status.getMediaEntities().length);
+						
+						for (MediaEntity me : status.getMediaEntities()) {
+							System.err.println(me.getURL() + " " + me.getExpandedURL() + " " + me.getMediaURL() + " " + me.getType());
+						}
+					}
+					
+					if (status.getExtendedMediaEntities().length > 0) {
+						System.err.println(status.getId() + " " + status.getUser().getScreenName() + " " + status.getExtendedMediaEntities().length);
+						
+						for (ExtendedMediaEntity me : status.getExtendedMediaEntities()) {
+							System.err.println(me.getURL() + " " + me.getURL() + " " + me.getMediaURL() + " " + me.getType());
+						}
+					}
+					
 				}
-			}
+			}*/
 			
-			start += length;
-			Thread.sleep(3000);
+			long[] ids = new long[1];
+			//ids[0] = 735817451829526529l;
+			ids[0]=735850589263794176l;
+			
+			ResponseList<Status> stats = twitter.lookup(ids);
+			Status st = stats.get(0);
+			System.err.println(st.getText());
+			System.err.println(st.getURLEntities()[0].getExpandedURL());
+			//System.err.println(st.getExtendedMediaEntities().length);
+			//System.err.println(st.getMediaEntities().length);
+			//System.err.println(st.getExtendedMediaEntities()[0].getURL());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		return finalNames;
 	}
 }

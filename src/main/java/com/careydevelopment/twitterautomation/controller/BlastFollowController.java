@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.careydevelopment.propertiessupport.PropertiesFactory;
@@ -29,8 +30,15 @@ public class BlastFollowController {
 	
 	
     @RequestMapping("/blastfollow")
-    public String blastfollow(HttpServletRequest request, Model model) {    	
+    public String blastfollow(HttpServletRequest request, Model model, 
+    	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
+    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) {    	
+    	
     	User user = (User)request.getSession().getAttribute(Constants.TWITTER_USER);
+    	
+    	LOGGER.info("\n\n\nREQUEST TOKEN IS " + accessToken);
+    	
+    	
     	
     	if (user == null) {
     		return "redirect:notLoggedIn";

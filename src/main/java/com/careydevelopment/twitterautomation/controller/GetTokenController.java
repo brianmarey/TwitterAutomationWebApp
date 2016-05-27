@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,17 +15,19 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFactoryException;
 import com.careydevelopment.propertiessupport.PropertiesFile;
+import com.careydevelopment.twitterautomation.service.TwitterService;
+import com.careydevelopment.twitterautomation.util.Constants;
 
 import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
 import twitter4j.auth.RequestToken;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
 
 @Controller
 public class GetTokenController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GetTokenController.class);
+	
+	@Autowired
+	private TwitterService twitterService;
 	
     @RequestMapping("/getToken")
     public RedirectView getToken(HttpServletRequest request,Model model) {
@@ -33,7 +36,7 @@ public class GetTokenController {
     	
 		try {
 			//get the Twitter object
-			Twitter twitter = getTwitter();
+			Twitter twitter = twitterService.getTwitter();
 			
 			//get the callback url so they get back here
 			String callbackUrl = getCallbackUrl();
@@ -45,7 +48,7 @@ public class GetTokenController {
 			request.getSession().setAttribute("requestToken", requestToken);
 			
 			//let's put Twitter in the session as well
-			request.getSession().setAttribute("twitter", twitter);
+			request.getSession().setAttribute(Constants.TWITTER, twitter);
 			
 			//now get the authorization URL from the token
 			twitterUrl = requestToken.getAuthorizationURL();
@@ -73,27 +76,5 @@ public class GetTokenController {
     	
     	return callbackUrl;
     }
-    
-    
-    private Twitter getTwitter() {
-    	Twitter twitter = null;
-    	
-    	try {
-			Properties props = PropertiesFactory.getProperties(PropertiesFile.TWITTER_PROPERTIES);		
-			String consumerKey=props.getProperty("brianmcarey.consumerKey");
-			String consumerSecret=props.getProperty("brianmcarey.consumerSecret");
-	    	
-	    	ConfigurationBuilder builder = new ConfigurationBuilder();
-	    	builder.setOAuthConsumerKey(consumerKey);
-	    	builder.setOAuthConsumerSecret(consumerSecret);
-	    	Configuration configuration = builder.build();
-	    	TwitterFactory factory = new TwitterFactory(configuration);
-	    	twitter = factory.getInstance();
-    	} catch (PropertiesFactoryException pe) {
-    		LOGGER.error("Problem reading propertiesfile!",pe);
-    		throw new RuntimeException ("Problem reading properties file!");
-    	}
-    	
-    	return twitter;
-    }
+  
 }

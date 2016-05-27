@@ -16,17 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.careydevelopment.configuration.MyTwitter;
-import com.careydevelopment.twitterautomation.jpa.entity.FollowRun;
-import com.careydevelopment.twitterautomation.jpa.entity.User;
-import com.careydevelopment.twitterautomation.jpa.repository.FollowRunRepository;
-import com.careydevelopment.twitterautomation.jpa.repository.UserRepository;
 import com.careydevelopment.twitterautomation.model.FriendshipLightweight;
+import com.careydevelopment.twitterautomation.service.TwitterService;
 import com.careydevelopment.twitterautomation.util.Constants;
-import com.careydevelopment.twitterautomation.util.SecurityHelper;
 
 import twitter4j.Friendship;
-import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.ResponseList;
 import twitter4j.Status;
@@ -37,9 +31,8 @@ import twitter4j.TwitterException;
 public class GetTweepsController implements Constants {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GetTweepsController.class);
 	
-	private static final int COUNT_SIZE = 100;
-	
-	private Twitter twitter = null;
+	@Autowired
+	private TwitterService twitterService;
 	
     @RequestMapping(value="/getTweeps",method = RequestMethod.GET,produces="application/json")
     public List<FriendshipLightweight> getTweeps(@RequestParam(value="keyword", required=true) String keyword,
@@ -48,8 +41,8 @@ public class GetTweepsController implements Constants {
     	List<FriendshipLightweight> ships = new ArrayList<FriendshipLightweight>();
 		
     	//get the twitter4j Twitter object from the singleton
-		twitter = (Twitter)request.getSession().getAttribute(Constants.TWITTER);
-		
+		Twitter twitter = (Twitter)request.getSession().getAttribute(Constants.TWITTER);
+
 		if (twitter == null) {
 			return ships;
 		}
@@ -61,36 +54,15 @@ public class GetTweepsController implements Constants {
 		//fetch the DNF ids
 		//List<Long> dnfIds = fetchDnfs();
 		//LOGGER.info("length of dnfs is " + dnfIds.size());
-		
+
 		String[] keys = new String[1];//keywords.split(",");
 		keys[0] = keyword;
 		
 		try {
-			for (int i=0;i<keys.length;i++) {
-				String key = keys[i];
-				//if (!key.startsWith("#")) key = "#" + key;
-				
-				if (key != null && key.trim().length() > 2) {		
-					LOGGER.info("Now searching for " + key);
-					
-					Query query = new Query(key).count(COUNT_SIZE);
-					QueryResult result = twitter.search(query);
-							    
-					String[] returnedDudes = getReturnedDudes(result);		
-					
-					if (returnedDudes != null) LOGGER.info("Size of returned dudes is " + returnedDudes.length);
-					
-					/*for (String s : returnedDudes) {
-						LOGGER.info(s);
-					}*/
-
-					ResponseList<Friendship> friendships = twitter.lookupFriendships(returnedDudes);
-					
-					ships.addAll(getLightweights(friendships));
-				}
-			}
+			ships = twitterService.getFriendshipsByKeyword(twitter, keys);
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOGGER.error("Problem finding tweeps by keyword!",e);
 		}
 		
         return ships;
@@ -110,66 +82,7 @@ public class GetTweepsController implements Constants {
     	
     	return persisted;
     }*/
-    
-    
-    /**
-     * Translates heavyweight Friendship objets from Twitter4j into lightweight objects
-     * Easier for JSON
-     */
-    private List<FriendshipLightweight> getLightweights(ResponseList<Friendship> friendships) {
-    	List<FriendshipLightweight> ships = new ArrayList<FriendshipLightweight>();
-    	
-    	for (Friendship friendship : friendships) {
-    		
-    		//be sure to skip the people who are DNF
-    		//if (!dnfIds.contains(friendship.getId())) {
-    			if (!friendship.isFollowedBy()) {
-		    		FriendshipLightweight light = new FriendshipLightweight();
-		    		light.setFollowing(friendship.isFollowing());
-		    		light.setId(friendship.getId());
-		    		light.setScreenName(friendship.getScreenName());
-		    		
-		    		ships.add(light);
-    			} else {
-    				//LOGGER.info("Skipping " + friendship.getScreenName() + " because that person is already following you.");
-    			}
-    		/*} else {
-    			LOGGER.info("Skipping " + friendship.getScreenName() + " because that user is DNF");
-    		}*/
-    	}
-    	
-    	return ships;
-    }
-    
-    
-	/**
-	 * Returns candidates for following
-	 */
-	private String[] getReturnedDudes(QueryResult result) throws TwitterException {
-		String[] returnedDudes = new String[result.getCount()];
-		//long[] blocks = twitter.getBlocksIDs().getIDs();
 
-		int i = 0;
-		
-		for (Status status : result.getTweets()) {
-			/*User thisUser = status.getUser();
-	    	boolean isBlocked = false;
-	    	for (long l : blocks) {
-	    		if (l == thisUser.getId()) {
-	    			isBlocked = true;
-	    		}
-	    	}
-			
-	    	if (!isBlocked) {*/
-	    		returnedDudes[i] = status.getUser().getScreenName();
-			    i++;
-			//}
-		}
-		
-		return returnedDudes;
-	}
-
-    
     
 	/**
 	 * Reads a list of do-not-follows from the file.
