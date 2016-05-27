@@ -38,6 +38,9 @@ public class LoginService {
 	@Autowired
 	TwitterService twitterService;
 	
+	@Autowired
+	EncryptionService encryptionService;
+	
 	/**
 	 * Handles login for user whose tokens are stored in a cookie
 	 */
