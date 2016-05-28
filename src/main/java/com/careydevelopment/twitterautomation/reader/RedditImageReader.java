@@ -34,12 +34,19 @@ public class RedditImageReader {
 	
 	public RedditImageReader(String url) {
 		JSONObject json = null;
+		int attemptCount = 0;
 		
 		while (json == null) {
 			JsonParser reader = new JsonParser(url);
 			json = reader.getJson();		
 			
 			if (json == null) {
+				attemptCount++;
+				if (attemptCount > 25) {
+					LOGGER.warn("Couldn't get thru to reddit for image downloads. Giving up.");
+					break;
+				}
+				
 				try {
 					LOGGER.info("Problem reading images from reddit - trying again in 10 seconds");
 					Thread.sleep(10000);
@@ -49,7 +56,7 @@ public class RedditImageReader {
 			}
 		}
 		
-		fetchUrls(json);
+		if (json != null) fetchUrls(json);
 	}
 	
 	
@@ -79,7 +86,7 @@ public class RedditImageReader {
             if (u != null && u.getValue() != null) {
             	String image = u.getValue();
 
-            	if (image.indexOf("gif")>-1 || image.indexOf("gifv")>-1 || image.indexOf("jpeg")>-1 || image.indexOf("png")>-1 || image.indexOf("jpg")>-1 || image.indexOf("png")>-1) {
+            	if (image.indexOf("gif")>-1 || image.indexOf("jpeg")>-1 || image.indexOf("png")>-1 || image.indexOf("jpg")>-1 || image.indexOf("png")>-1) {
             		ri.setImageUrl(image);
             	} else {
             		String imageUrl = FacebookImageHelper.getImageFromUrl(image);

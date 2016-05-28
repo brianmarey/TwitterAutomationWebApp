@@ -11,7 +11,7 @@ public class PaginationHelper {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PaginationHelper.class);
 	
-    public static void setPagination (Page<DomainAd> ads, Model model, int page) {
+    public static void setPagination (Page ads, Model model, int page) {
     	model.addAttribute("isFirst", ads.isFirst());
     	model.addAttribute("isLast", ads.isLast());
     	
@@ -27,7 +27,7 @@ public class PaginationHelper {
     }
     
     
-    private static String getShowingResults(Page<DomainAd> ads,int page) {
+    private static String getShowingResults(Page ads,int page) {
     	StringBuilder builder = new StringBuilder();
     	
     	int start = (page * Constants.RESULTS_PER_PAGE) + 1;
@@ -55,6 +55,4 @@ public class PaginationHelper {
     	
     	return page;
     }
-
-
 }
