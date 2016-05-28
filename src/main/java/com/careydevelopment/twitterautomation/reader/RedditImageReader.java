@@ -86,7 +86,7 @@ public class RedditImageReader {
             if (u != null && u.getValue() != null) {
             	String image = u.getValue();
 
-            	if (image.indexOf("gif")>-1 || image.indexOf("jpeg")>-1 || image.indexOf("png")>-1 || image.indexOf("jpg")>-1 || image.indexOf("png")>-1) {
+            	if (image.indexOf(".gifv") == -1 && (image.indexOf("gif")>-1 || image.indexOf("jpeg")>-1 || image.indexOf("png")>-1 || image.indexOf("jpg")>-1)) {
             		ri.setImageUrl(image);
             	} else {
             		String imageUrl = FacebookImageHelper.getImageFromUrl(image);

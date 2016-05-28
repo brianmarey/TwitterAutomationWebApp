@@ -52,7 +52,7 @@ public class FollowTweepController implements Constants {
 		    followResult.setMessage("Followed ");
 		    LOGGER.info("Successfully followed " + screenName);
 		} catch (Exception e) {
-			LOGGER.warn("Failed to follow " + screenName,e);
+			LOGGER.warn(e.getMessage());
 			followResult.setMessage("Failed to follow ");
 			followResultCode = 2;
 		}

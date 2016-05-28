@@ -45,7 +45,7 @@ public class FollowFollowerController implements Constants {
 		    followResult.setMessage("Followed " + id);
 		    LOGGER.info("Successfully followed " + id);
 		} catch (Exception e) {
-			LOGGER.warn("Failed to follow " + id,e);
+			LOGGER.warn(e.getMessage());
 			followResult.setMessage("Failed to follow " + id);
 		}
 		

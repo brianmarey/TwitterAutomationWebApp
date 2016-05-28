@@ -69,7 +69,7 @@ public class RefollowTweepController implements Constants {
 			
 			followResult = attemptRefollow(rel,user);
 		} catch (Exception e) {
-			LOGGER.error("Problem attempting refollow",e);
+			LOGGER.warn(e.getMessage());
 			followResult = "Problem retrieving user!";
 		}		
 		

@@ -69,7 +69,7 @@ public class UnfollowTweepController implements Constants {
 			
 			followResult = attemptUnfollow(rel,user);
 		} catch (Exception e) {
-			LOGGER.error("Problem attempting unfollow",e);
+			LOGGER.warn(e.getMessage());
 			followResult = "Problem retrieving user!";
 		}		
 		
