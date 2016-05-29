@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.careydevelopment.twitterautomation.jpa.entity.RedditImage;
 import com.careydevelopment.twitterautomation.util.FacebookImageHelper;
+import com.careydevelopment.twitterautomation.util.ImageHelper;
 import com.careydevelopment.twitterautomation.util.JsonParser;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONObject;
@@ -91,7 +92,7 @@ public class RedditImageReader {
             	} else {
             		String imageUrl = FacebookImageHelper.getImageFromUrl(image);
             		if (imageUrl != null && !imageUrl.equals("")) {
-            			ri.setImageUrl(imageUrl);
+            			ri.setImageUrl(ImageHelper.stripParameters(imageUrl));
             		}
             	}
             }            

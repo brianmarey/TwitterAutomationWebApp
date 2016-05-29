@@ -93,6 +93,21 @@
                                 </li>
                              </ul>
                         </li>
+                        <li class="nav-item start " th:classappend="${chiveActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="fa fa-circle-thin"></i>
+                                <span class="title">The Chive</span>
+                                <span class="arrow " th:classappend="${chiveArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${chiveImagesActive}">
+                                    <a th:href="@{/chiveImages}" class="nav-link ">
+                                        <i class="fa fa-image"></i>
+                                        <span class="title">Images</span>
+                                    </a>
+                                </li>
+                             </ul>
+                        </li>
                         <li class="heading">
                         	<h3 class="uppercase">Other Tools</h3>
                         </li>

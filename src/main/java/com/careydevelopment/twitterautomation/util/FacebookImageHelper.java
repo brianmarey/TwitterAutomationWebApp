@@ -43,11 +43,7 @@ public class FacebookImageHelper {
 				}	
 			}
 			
-			//get rid of trailing parameters
-			int questionMark = imageUrl.indexOf("?");
-			if (questionMark > -1) {
-				imageUrl = imageUrl.substring(0, questionMark);
-			}
+			imageUrl = ImageHelper.stripParameters(imageUrl);
 		}
 		
 		return imageUrl;

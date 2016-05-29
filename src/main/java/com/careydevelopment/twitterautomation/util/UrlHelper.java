@@ -1,11 +1,15 @@
 package com.careydevelopment.twitterautomation.util;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.InputSource;
 
 public class UrlHelper {
 
@@ -38,5 +42,49 @@ public class UrlHelper {
 		}
         
         return urlContents;
+	}
+	
+	
+	public static InputSource getInputSourceFromUrl(String url) {
+		InputSource ins = new InputSource();
+		InputStream is = null;
+		Reader reader = null;
+		
+		try {
+			URL urlConn = new URL(url);
+			HttpURLConnection httpcon = (HttpURLConnection) urlConn.openConnection();
+		    httpcon.addRequestProperty("User-Agent", "Mozilla/4.76");
+		    
+		    is = httpcon.getInputStream();
+		   
+		    //Reader reader = new InputStreamReader(is,"ISO-8859-1");
+		    //Reader reader = new InputStreamReader(is,"UTF-8");
+		    reader = new InputStreamReader(is,"US-ASCII");
+		    
+		    ins = new InputSource(reader);
+		    //ins.setEncoding("ISO-8859-1");
+		    //ins.setEncoding("UTF-8");
+		    ins.setEncoding("US-ASCII");
+		} catch (Exception e) {
+			LOGGER.error("Problem reading url " + url,e);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (Exception e) {
+					
+				}
+			}
+			
+			if (reader != null) {
+				try {
+					reader.close();
+				}catch (Exception e) {
+					
+				}
+			}
+		}
+		
+		return ins;
 	}
 }
