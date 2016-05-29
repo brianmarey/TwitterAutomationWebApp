@@ -183,7 +183,7 @@ public class TwitterService {
     	Twitter twitter = null;
     	
     	try {
-			Properties props = PropertiesFactory.getProperties(PropertiesFile.TWITTER_PROPERTIES);		
+    		Properties props = PropertiesFactory.getProperties(PropertiesFile.TWITTER_PROPERTIES);		
 			String consumerKey=props.getProperty("brianmcarey.consumerKey");
 			String consumerSecret=props.getProperty("brianmcarey.consumerSecret");
 	    	
