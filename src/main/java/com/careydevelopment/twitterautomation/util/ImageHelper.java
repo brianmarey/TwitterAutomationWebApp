@@ -3,12 +3,10 @@ package com.careydevelopment.twitterautomation.util;
 public class ImageHelper {
 
 	public static String stripParameters(String url) {
-		int questionMark = url.indexOf("?");
-		if (questionMark > -1) {
-			url = url.substring(0, questionMark);
-		}
-		
-		return url;
+		return UrlHelper.stripParameters(url);
 	}
 
+	public static String getImageUrlFromRawHtml(String html) {
+		return UrlHelper.getAttributeValueFromFirstElement(html, "img", "src");
+	}
 }

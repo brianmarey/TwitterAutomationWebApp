@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.careydevelopment.twitterautomation.jpa.entity.RedditImage;
-import com.careydevelopment.twitterautomation.util.FacebookImageHelper;
+import com.careydevelopment.twitterautomation.util.FacebookHelper;
 import com.careydevelopment.twitterautomation.util.ImageHelper;
 import com.careydevelopment.twitterautomation.util.JsonParser;
 import com.sdicons.json.model.JSONArray;
@@ -90,7 +90,7 @@ public class RedditImageReader {
             	if (image.indexOf(".gifv") == -1 && (image.indexOf("gif")>-1 || image.indexOf("jpeg")>-1 || image.indexOf("png")>-1 || image.indexOf("jpg")>-1)) {
             		ri.setImageUrl(image);
             	} else {
-            		String imageUrl = FacebookImageHelper.getImageFromUrl(image);
+            		String imageUrl = FacebookHelper.getImageFromUrl(image);
             		if (imageUrl != null && !imageUrl.equals("")) {
             			ri.setImageUrl(ImageHelper.stripParameters(imageUrl));
             		}

@@ -1,23 +1,22 @@
 package com.careydevelopment.twitterautomation.rss;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 import com.careydevelopment.twitterautomation.util.UrlHelper;
 
 public class Parser {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Parser.class);
 
 	private int maxStories = 10;
+	private boolean mediaAware = false;
 	
 	public Parser() {
 		
@@ -28,16 +27,22 @@ public class Parser {
 		this.maxStories = maxStories;
 	}
 	
+	public Parser(int maxStories, boolean mediaAware) {
+		this.maxStories = maxStories;
+		this.mediaAware = mediaAware;
+	}
 	
 	public List<Story> getStories(String url) {
 		List<Story> stories = new ArrayList<Story>();
 		
+		InputSource ins = null;
+		
 		try {
 			SAXParserFactory parserFactor = SAXParserFactory.newInstance();
 			SAXParser parser = parserFactor.newSAXParser();
-			RssHandler handler = new RssHandler(maxStories);
+			RssHandler handler = new RssHandler(maxStories,mediaAware);
 				
-			InputSource ins = UrlHelper.getInputSourceFromUrl(url);
+			ins = UrlHelper.getInputSourceFromUrl(url);
 				
 			parser.parse(ins, handler); 
 			
@@ -45,7 +50,15 @@ public class Parser {
 				stories.add(story);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Problem reading url " + url,e);
+		} finally {
+			if (ins != null && ins.getCharacterStream() != null) {
+				try {
+					ins.getCharacterStream().close();
+				} catch (Exception e) {
+					
+				}
+			}
 		}
 		
 		return stories;

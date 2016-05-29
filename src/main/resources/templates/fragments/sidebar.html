@@ -93,6 +93,7 @@
                                 </li>
                              </ul>
                         </li>
+                        
                         <li class="nav-item start " th:classappend="${chiveActive}">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="fa fa-circle-thin"></i>
@@ -104,6 +105,22 @@
                                     <a th:href="@{/chiveImages}" class="nav-link ">
                                         <i class="fa fa-image"></i>
                                         <span class="title">Images</span>
+                                    </a>
+                                </li>
+                             </ul>
+                        </li>
+                        
+                        <li class="nav-item start " th:classappend="${blogsActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="fa fa-rss"></i>
+                                <span class="title">Blogs</span>
+                                <span class="arrow " th:classappend="${blogsArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${viralContentFromBlogsActive}">
+                                    <a th:href="@{/viralContentFromBlogs}" class="nav-link ">
+                                        <i class="fa fa-fire"></i>
+                                        <span class="title">Viral Content</span>
                                     </a>
                                 </li>
                              </ul>

@@ -7,6 +7,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.careydevelopment.twitterautomation.util.ImageHelper;
+
 
 
 public class RssHandler extends DefaultHandler {
@@ -16,9 +18,15 @@ public class RssHandler extends DefaultHandler {
 	private String content;
 	private int maxStories = 5;
 	private boolean handleMedia = false;
+	private boolean addedMediaContent = false;
 	
 	public RssHandler(int maxStories) {
 		this.maxStories = maxStories;
+	}
+	
+	public RssHandler(int maxStories, boolean mediaAware) {
+		this.maxStories = maxStories;
+		this.handleMedia = mediaAware;
 	}
 	
 	public void setHandleMedia(boolean b) {
@@ -34,13 +42,34 @@ public class RssHandler extends DefaultHandler {
 			if ("item".equals(qName)) {
 				//System.err.println("we have the item ");
 				story = new Story();
+				addedMediaContent = false;
 			} else if (handleMedia && "media:content".equals(qName)) {
 				String url = attributes.getValue("url");
 				if (story != null) {
 					//System.err.println("adding " + url);
-					story.addMediaUrl(url);
+					if (!story.getMediaUrls().contains(url)) {
+						if (!addedMediaContent) {
+							story.getMediaUrls().add(0,url);
+							addedMediaContent = true;
+						} else {
+							story.addMediaUrl(url);
+						}
+					}
 				}
-			}
+			} else if (handleMedia && "media:thumbnail".equals(qName)) {
+				String url = attributes.getValue("url");
+				if (story != null) {
+					//put this at the front it's probably the right one
+					if (!story.getMediaUrls().contains(url)) {
+						if (!addedMediaContent) {
+							story.getMediaUrls().add(0,url);
+							addedMediaContent = true;
+						} else {
+							story.addMediaUrl(url);
+						}
+					}
+				}
+			} 
 		}
 	}
 	
@@ -89,6 +118,18 @@ public class RssHandler extends DefaultHandler {
 			} else if ("description".equals(qName)) {
 				if (story != null) {
 					story.setDescription(content);
+					
+					if (handleMedia) {
+						String imageUrl = ImageHelper.getImageUrlFromRawHtml(content);
+						if (imageUrl != null && imageUrl.length() > 2) story.addMediaUrl(imageUrl);
+					}
+				}
+			} else if ("content:encoded".equals(qName)) {
+				if (story != null) {
+					if (handleMedia) {
+						String imageUrl = ImageHelper.getImageUrlFromRawHtml(content);
+						if (imageUrl != null && imageUrl.length() > 2) story.addMediaUrl(imageUrl);
+					}
 				}
 			}
 		}

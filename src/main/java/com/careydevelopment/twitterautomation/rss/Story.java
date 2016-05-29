@@ -7,7 +7,7 @@ public class Story {
 
 	private String title;
 	private String url;
-	private List<String> mediaUrls;
+	private List<String> mediaUrls = new ArrayList<String>();
 	private String description;
 	private boolean removeSecure = false;
 
