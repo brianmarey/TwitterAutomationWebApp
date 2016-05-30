@@ -48,7 +48,7 @@ public class BlogReader {
 
 	
 	public List<ViralContent> getStories() {
-		Parser parser = new Parser(20,true);
+		Parser parser = new Parser(40,true);
 		//LOGGER.info("RSS URL is " + blog.getRssUrl());
 			
 		List<Story> stories = parser.getStories(blog.getRssUrl());

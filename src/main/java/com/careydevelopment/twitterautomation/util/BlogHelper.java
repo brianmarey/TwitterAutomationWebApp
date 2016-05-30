@@ -16,6 +16,17 @@ public class BlogHelper {
 		b.setRssUrl("http://feeds.feedburner.com/uproxx/springboard");
 		blogs.add(b);
 		
+		b.setBlogName("PopSugar");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("http://www.popsugar.com/rss");
+		b.setImageFromUrl(true);
+		blogs.add(b);
+		
+		b.setBlogName("BuzzFeed");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("https://www.buzzfeed.com/community/justlaunched.xml");
+		blogs.add(b);
+		
 		b=new Blog();
 		b.setBlogName("BroBible");
 		b.setBlurbStarter("<div class=\"post-body\">");
@@ -52,6 +63,7 @@ public class BlogHelper {
 		b.setBlogName("The Daily Beast");
 		b.setBlurbStarter("article-body-content\">");
 		b.setRssUrl("http://feeds.feedburner.com/thedailybeast/articles");
+		b.setImageFromUrl(true);
 		blogs.add(b);
 		
 		b=new Blog();
@@ -61,12 +73,13 @@ public class BlogHelper {
 		b.setRssUrl("http://feeds.feedburner.com/breitbart");
 		blogs.add(b);
 		
-		b=new Blog();
-		b.setBlogName("Clash Daily");
-		b.setBlurbStarter("class=\"entry-content clearfix\" itemprop=\"articleBody\"");
-		b.setRssUrl("http://clashdaily.com/feed/");
-		b.setImageFromUrl(true);
-		blogs.add(b);		
+		//too tough to get images
+		//b=new Blog();
+		//b.setBlogName("Clash Daily");
+		//b.setBlurbStarter("class=\"entry-content clearfix\" itemprop=\"articleBody\"");
+		//b.setRssUrl("http://clashdaily.com/feed/");
+		//b.setImageFromUrl(true);
+		//blogs.add(b);		
 		
 		b=new Blog();
 		b.setBlogName("Elite Daily");
@@ -439,12 +452,14 @@ public class BlogHelper {
 		b.setRssUrl("http://feeds.feedburner.com/fastcompany/headlines");
 		blogs.add(b);
 		
-		b=new Blog();
-		b.setBlogName("BizPac Review");
-		b.setBlurbStarter("<div class=\"entry-content\">");
-		b.setRssUrl("http://www.bizpacreview.com/feed");
-		b.setImageFromUrl(true);
-		blogs.add(b);
+		
+		//too tough to get images
+		//b=new Blog();
+		//b.setBlogName("BizPac Review");
+		//b.setBlurbStarter("<div class=\"entry-content\">");
+		//b.setRssUrl("http://www.bizpacreview.com/feed");
+		//b.setImageFromUrl(true);
+		//blogs.add(b);
 		
 		//uses captcha
 		//b=new Blog();

@@ -93,7 +93,6 @@
                                 </li>
                              </ul>
                         </li>
-                        
                         <li class="nav-item start " th:classappend="${chiveActive}">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="fa fa-circle-thin"></i>
@@ -109,7 +108,6 @@
                                 </li>
                              </ul>
                         </li>
-                        
                         <li class="nav-item start " th:classappend="${blogsActive}">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="fa fa-rss"></i>
@@ -125,6 +123,28 @@
                                 </li>
                              </ul>
                         </li>
+                        <li class="nav-item start " th:classappend="${twitterActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-social-twitter"></i>
+                                <span class="title">Twitter</span>
+                                <span class="arrow " th:classappend="${twitterArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${twitterViralPhotosActive}">
+                                    <a th:href="@{/viralTweets(category=photo)}" class="nav-link ">
+                                        <i class="fa fa-image"></i>
+                                        <span class="title">Photos</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start " th:classappend="${twitterViralVideosActive}">
+                                    <a th:href="@{/viralTweets(category=video)}" class="nav-link ">
+                                        <i class="fa fa-video-camera"></i>
+                                        <span class="title">Videos</span>
+                                    </a>
+                                </li>
+                             </ul>
+                        </li>
+                        
                         <li class="heading">
                         	<h3 class="uppercase">Other Tools</h3>
                         </li>
