@@ -49,7 +49,7 @@ public class ViralTweetsController implements Constants {
     	Pageable pageable = new PageRequest(page,RESULTS_PER_PAGE);
     	
     	Calendar cal = Calendar.getInstance();
-    	cal.add(Calendar.DAY_OF_MONTH, -1);
+    	cal.add(Calendar.DAY_OF_MONTH, -2);
     	Page<ViralTweet> tweetSet = viralTweetRepository.findLatestByCategory(cal.getTime(), category, pageable);
     	
     	List<ViralTweet> tweets = new ArrayList<ViralTweet>();

@@ -279,7 +279,7 @@ public class TwitterService {
 			if (stats != null && stats.size() == 1) newStatus = stats.get(0);
 			
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(5000);
 			} catch (Exception e) {}
 		}
 		
@@ -337,6 +337,11 @@ public class TwitterService {
 				//LOGGER.info("They're equal");
 				isOriginal = false;
 				break;
+			} else if (st.getText() != null && status.getText() != null && st.getText().equals(status.getText())) {
+				isOriginal = false;
+				break;
+			} else {
+				//LOGGER.info(st.getText() + " is not equal to " + status.getText());
 			}
 		}
 		
@@ -353,28 +358,28 @@ public class TwitterService {
 			if (status.getRetweetCount() > VIRAL_RETWEET_THRESHOLD) {
 				
 				LOGGER.info("Looking at tweet " + status.getId() + " " + status.getText());
-				
-				if (status.isRetweet()) {
-					status = getOriginalStatus(status,twitter);
-				}
-				
-				//we only want tweets from within the last week
-				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.DAY_OF_MONTH, -7);
-				
-				//if (status.getCreatedAt().after(cal.getTime())) {
-				if (status.getLang().equals("en")) {
-					if (isOriginal(viralStatuses,status)) {
+				if (isOriginal(viralStatuses,status)) {					
+					if (status.isRetweet()) {
+						status = getOriginalStatus(status,twitter);
+					}
+					
+					//we only want tweets from within the last week
+					Calendar cal = Calendar.getInstance();
+					cal.add(Calendar.DAY_OF_MONTH, -7);
+					
+					//if (status.getCreatedAt().after(cal.getTime())) {
+					if (status.getLang().equals("en")) {					
 						if (status.getExtendedMediaEntities().length > 0 || status.getMediaEntities().length > 0) {
+							LOGGER.info("Adding tweet " + status.getId() + " " + status.getText());
 							viralStatuses.add(status);
 						} else {
 							LOGGER.info("Skipping because it has no photo or video");
-						}
+							}
 					} else {
-						LOGGER.info("Skipping because it's not original");
+						LOGGER.info("Skipping because it's not English");
 					}
 				} else {
-					LOGGER.info("Skipping because it's not English");
+					LOGGER.info("Skipping because it's not original");
 				}
 				
 				
@@ -420,10 +425,10 @@ public class TwitterService {
 			QueryResult result = twitter.search(query);
 			statuses.addAll(result.getTweets());
 			count++;
-			//if(count>20) break;
+			//if(count>3) break;
 			
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(5000);
 			} catch (InterruptedException ie) {
 				
 			}

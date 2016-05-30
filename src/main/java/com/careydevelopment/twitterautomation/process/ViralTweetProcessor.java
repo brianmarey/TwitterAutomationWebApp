@@ -17,17 +17,14 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-@Component
 public class ViralTweetProcessor extends Thread {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ViralTweetProcessor.class);
 	
 	ViralTweetRepository viralTweetRepository;
-	
 	TwitterService twitterService;
 	
 	private Twitter twitter;
 	
-	@Autowired
 	public ViralTweetProcessor(TwitterService twitterService, ViralTweetRepository viralTweetRepository) {
 		LOGGER.info("Instantiating");
 		this.twitterService = twitterService;
@@ -46,7 +43,13 @@ public class ViralTweetProcessor extends Thread {
 		   LOGGER.info("Looking at tweet " + status.getId() + " " + status.getText() + " " + status.getExtendedMediaEntities().length + " " + status.getMediaEntities().length);
 		   
 		   if (status.getExtendedMediaEntities().length == 1) {
-			   handleTweet("video",status);
+			   LOGGER.info("type is " + status.getExtendedMediaEntities()[0].getType());
+			   
+			   if (status.getExtendedMediaEntities()[0].getType().equals("video")) {
+				   handleTweet("video",status);
+			   } else if (status.getExtendedMediaEntities()[0].getType().equals("photo")) {
+				   handleTweet("photo",status);
+			   }
 		   } else if (status.getMediaEntities().length == 1) {
 			   handleTweet("photo",status);
 		   }
@@ -76,7 +79,7 @@ public class ViralTweetProcessor extends Thread {
 		LOGGER.info("Adding it as " + category);
 		
 		ViralTweet newTweet = new ViralTweet();
-		newTweet.setCategory("video");
+		newTweet.setCategory(category);
 		newTweet.setDateSeen(new Date());
 		newTweet.setRetweets(status.getRetweetCount());
 		newTweet.setTweetId(status.getId());
