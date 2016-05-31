@@ -1,8 +1,5 @@
 package com.careydevelopment.twitterautomation.util;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -11,17 +8,13 @@ import org.slf4j.LoggerFactory;
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
 
-import twitter4j.OEmbed;
-import twitter4j.OEmbedRequest;
-import twitter4j.Query;
-import twitter4j.QueryResult;
+import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Status;
-import twitter4j.Trend;
-import twitter4j.Trends;
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.User;
+import twitter4j.UserList;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -53,6 +46,28 @@ public class TwitterHelper {
 	    	Configuration configuration = builder.build();
 	    	TwitterFactory factory = new TwitterFactory(configuration);
 	    	Twitter twitter = factory.getInstance();
+	    	
+	    	User u = twitter.showUser("brianmcarey");
+	    	ResponseList<UserList> lists = twitter.getUserLists("brianmcarey");
+	    	for (UserList list : lists) {
+	    		long listId = list.getId();
+	    		Paging paging = new Paging (1,100);
+	    		
+	    		for (int i=1;i<10;i++) {
+	    			paging.setPage(i);
+	    			ResponseList<Status> statuses = twitter.getUserListStatuses(listId, paging);
+	    			
+	    			for (Status status : statuses) {
+	    				LOGGER.info(status.getText() + " " + status.getId());
+	    			}
+	    			
+	    			try {
+	    				Thread.sleep(1000);
+	    			} catch(Exception e) {
+	    				e.printStackTrace();
+	    			}
+	    		}
+	    	}
 			
 			/*List<Status> statuses = getPopularTweetsFromTrendingTopics(twitter);
 			LOGGER.info("Size is " + statuses.size());

@@ -25,8 +25,9 @@ public class ViralTweetProcessor extends Thread {
 	
 	private Twitter twitter;
 	
+	
+	
 	public ViralTweetProcessor(TwitterService twitterService, ViralTweetRepository viralTweetRepository) {
-		LOGGER.info("Instantiating");
 		this.twitterService = twitterService;
 		this.viralTweetRepository = viralTweetRepository;
 	}
@@ -37,25 +38,67 @@ public class ViralTweetProcessor extends Thread {
 	   LOGGER.info("Running viral tweet collector");
 	   twitter = twitterService.getFullyCredentialedTwitter();
 	   
-	   List<Status> statuses = getStatuses();
-	   
-	   for (Status status : statuses) {
-		   LOGGER.info("Looking at tweet " + status.getId() + " " + status.getText() + " " + status.getExtendedMediaEntities().length + " " + status.getMediaEntities().length);
-		   
-		   if (status.getExtendedMediaEntities().length == 1) {
-			   LOGGER.info("type is " + status.getExtendedMediaEntities()[0].getType());
-			   
-			   if (status.getExtendedMediaEntities()[0].getType().equals("video")) {
-				   handleTweet("video",status);
-			   } else if (status.getExtendedMediaEntities()[0].getType().equals("photo")) {
-				   handleTweet("photo",status);
-			   }
-		   } else if (status.getMediaEntities().length == 1) {
-			   handleTweet("photo",status);
-		   }
-	   }			   
+	   //processViralVideosAndPhotosFromTrendingTopics();
+	   processViralVideosAndPhotosFromLists();
 	}	
 	
+	
+	private void processViralVideosAndPhotosFromLists() {
+	   LOGGER.info("starting on lists");
+	   List<Status> statuses = getViralVideosAndPhotosFromLists();
+	   LOGGER.info("I have the statuses");
+	   
+	   for (Status status : statuses) {
+		   LOGGER.info("Now proessing " + status.getText());
+		   handleTweetAsPhotoOrVideo(status);
+	   }
+	}
+	
+	
+	private List<Status> getViralVideosAndPhotosFromLists()  {
+		List<Status> statuses = new ArrayList<Status>();
+		
+		String[] users = {"brianmcarey"};
+		
+		for (String username : users) {
+			LOGGER.info("Going with user " +username);
+			try {
+				statuses = twitterService.getTweetsFromUserLists(twitter, username);
+			} catch (Exception e) {
+				LOGGER.error("Problem reading list!",e);
+			}
+		}
+		
+		return statuses;
+	}
+	
+	
+	
+	private void processViralVideosAndPhotosFromTrendingTopics() {
+	   List<Status> statuses = getViralVideosAndPhotosFromTrendingTopics();
+		   
+	   for (Status status : statuses) {
+		   handleTweetAsPhotoOrVideo(status);
+	   }
+	}
+
+	
+	private void handleTweetAsPhotoOrVideo(Status status) {
+	   LOGGER.info("Looking at tweet " + status.getId() + " " + status.getText() + " " + status.getExtendedMediaEntities().length + " " + status.getMediaEntities().length);
+	   
+	   if (status.getExtendedMediaEntities().length == 1) {
+		   LOGGER.info("type is " + status.getExtendedMediaEntities()[0].getType());
+		   
+		   if (status.getExtendedMediaEntities()[0].getType().equals("video")) {
+			   handleTweet("video",status);
+		   } else if (status.getExtendedMediaEntities()[0].getType().equals("photo")) {
+			   handleTweet("photo",status);
+		   }
+	   } else if (status.getMediaEntities().length == 1) {
+		   handleTweet("photo",status);
+	   }
+	}
+
 	
 	private void handleTweet(String category, Status status) {
 		   ViralTweet foundTweet = viralTweetRepository.findByTweetId(status.getId());
@@ -76,7 +119,7 @@ public class ViralTweetProcessor extends Thread {
 	
 	
 	private void addTweet(String category, Status status) {
-		LOGGER.info("Adding it as " + category);
+		LOGGER.info("Adding it as " + category + " " + status.getRetweetCount() + " retweets");
 		
 		ViralTweet newTweet = new ViralTweet();
 		newTweet.setCategory(category);
@@ -95,7 +138,7 @@ public class ViralTweetProcessor extends Thread {
 	}
 	
 	
-	private List<Status> getStatuses() {
+	private List<Status> getViralVideosAndPhotosFromTrendingTopics() {
 		List<Status> statuses = new ArrayList<Status>();
 		   
 		try {

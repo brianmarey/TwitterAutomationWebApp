@@ -1,7 +1,5 @@
 package com.careydevelopment.configuration;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,17 +10,20 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.careydevelopment.twitterautomation.jpa.entity.ViralTweet;
+import com.careydevelopment.twitterautomation.domain.Blog;
+import com.careydevelopment.twitterautomation.jpa.entity.ChiveImage;
+import com.careydevelopment.twitterautomation.jpa.entity.RedditImage;
+import com.careydevelopment.twitterautomation.jpa.entity.ViralContent;
 import com.careydevelopment.twitterautomation.jpa.repository.ChiveImageRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.RedditImageRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralContentRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralTweetRepository;
 import com.careydevelopment.twitterautomation.process.ViralTweetProcessor;
+import com.careydevelopment.twitterautomation.reader.BlogReader;
+import com.careydevelopment.twitterautomation.reader.ChiveReader;
+import com.careydevelopment.twitterautomation.reader.RedditImageReader;
 import com.careydevelopment.twitterautomation.service.TwitterService;
-
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
+import com.careydevelopment.twitterautomation.util.BlogHelper;
 
 @Configuration
 @EnableScheduling
@@ -134,73 +135,9 @@ public class ScheduleTasksConfig {
 	
 	@Scheduled(fixedDelay=7200000)
 	void getViralTweets() {
+		LOGGER.info("Launhing");
 		ViralTweetProcessor proc = new ViralTweetProcessor(twitterService,viralTweetRepository);
-		taskExecutor.execute(proc);
-		
-		/*taskExecutor.execute(new Thread(){
-			public void run() {
-			   LOGGER.info("Running viral tweet collector");
-			   
-			   Twitter twitter = twitterService.getFullyCredentialedTwitter();
-			   List<Status> statuses = new ArrayList<Status>();
-			   
-			   try {
-				   statuses = twitterService.getPopularTweetsFromTrendingTopics(twitter);
-			   } catch(TwitterException te) {
-				   LOGGER.error("Problem getting statuses!",te);
-			   }
-			   
-			   for (Status status : statuses) {
-				   LOGGER.info("Looking at tweet " + status.getId() + " " + status.getText() + " " + status.getExtendedMediaEntities().length + " " + status.getMediaEntities().length);
-				   if (status.getExtendedMediaEntities().length == 1) {
-					   ViralTweet foundTweet = viralTweetRepository.findByTweetId(status.getId());
-					   if (foundTweet == null) {
-						   LOGGER.info("Adding it as video");
-						   ViralTweet newTweet = new ViralTweet();
-						   newTweet.setCategory("video");
-						   newTweet.setDateSeen(new Date());
-						   newTweet.setRetweets(status.getRetweetCount());
-						   newTweet.setTweetId(status.getId());
-						   
-						   try {
-							   String html = twitterService.getEmbedCodeForStatus(status, twitter);
-							   newTweet.setHtml(html);
-							   viralTweetRepository.save(newTweet);
-							   Thread.sleep(10000);
-						   } catch (Exception e) {
-							   LOGGER.error("Problem saving tweet!",e);
-						   }
-					   } else {
-						   LOGGER.info("Already have it");
-						   foundTweet.setRetweets(status.getRetweetCount());
-						   viralTweetRepository.save(foundTweet);
-					   }
-				   } else if (status.getMediaEntities().length == 1) {
-					   ViralTweet foundTweet = viralTweetRepository.findByTweetId(status.getId());
-					   if (foundTweet == null) {
-						   LOGGER.info("Adding it as photo");
-						   ViralTweet newTweet = new ViralTweet();
-						   newTweet.setCategory("photo");
-						   newTweet.setDateSeen(new Date());
-						   newTweet.setRetweets(status.getRetweetCount());
-						   newTweet.setTweetId(status.getId());
-						   
-						   try {
-							   String html = twitterService.getEmbedCodeForStatus(status, twitter);
-							   newTweet.setHtml(html);
-							   viralTweetRepository.save(newTweet);
-							   Thread.sleep(10000);
-						   } catch (Exception e) {
-							   LOGGER.error("Problem saving tweet!",e);
-						   }
-					   } else {
-						   LOGGER.info("Already have it");
-						   foundTweet.setRetweets(status.getRetweetCount());
-						   viralTweetRepository.save(foundTweet);
-					   }
-				   }
-			   }			   
-			}
-		});*/
+		LOGGER.info("it is " + proc);
+		taskExecutor.execute(proc);		
 	}
 }

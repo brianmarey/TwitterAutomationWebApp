@@ -19,7 +19,9 @@ import twitter4j.OEmbed;
 import twitter4j.OEmbedRequest;
 import twitter4j.OEmbedRequest.Align;
 import twitter4j.PagableResponseList;
+import twitter4j.Paging;
 import twitter4j.Query;
+import twitter4j.Query.ResultType;
 import twitter4j.QueryResult;
 import twitter4j.ResponseList;
 import twitter4j.Status;
@@ -29,6 +31,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
+import twitter4j.UserList;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -352,6 +355,14 @@ public class TwitterService {
 	public List<Status> getPopularTweetsFromTrendingTopics(Twitter twitter) throws TwitterException {
 		Trend[] trs = getTrends(twitter); 
 		List<Status> statuses = getStatusesFromTrends(twitter,trs);
+		List<Status> viralStatuses = getViralPhotosAndVideosFromTweetList(twitter,statuses);
+		
+
+		return viralStatuses;
+	}
+
+	
+	private List<Status> getViralPhotosAndVideosFromTweetList(Twitter twitter, List<Status> statuses) throws TwitterException {
 		List<Status> viralStatuses = new ArrayList<Status>();
 		
 		for (Status status : statuses) {
@@ -380,28 +391,10 @@ public class TwitterService {
 					}
 				} else {
 					LOGGER.info("Skipping because it's not original");
-				}
-				
-				
-				/*if (status.getMediaEntities().length > 0) {
-					System.err.println(status.getId() + " " + status.getUser().getScreenName() + " " + status.getMediaEntities().length + " " + status.getExtendedMediaEntities().length);
-					System.err.println("URL IS " + getUrl(status));
-					for (MediaEntity me : status.getMediaEntities()) {
-						System.err.println(me.getURL() + " " + me.getExpandedURL() + " " + me.getMediaURL() + " " + me.getType());
-					}
-				}
-				
-				if (status.getExtendedMediaEntities().length > 0) {
-					System.err.println(status.getId() + " " + status.getUser().getScreenName() + " " + status.getExtendedMediaEntities().length);
-					
-					for (ExtendedMediaEntity me : status.getExtendedMediaEntities()) {
-						System.err.println(me.getURL() + " " + me.getURL() + " " + me.getMediaURL() + " " + me.getType());
-					}
-				}*/
-				
+				}				
 			}
 		}
-
+		
 		return viralStatuses;
 	}
 	
@@ -422,6 +415,7 @@ public class TwitterService {
 			LOGGER.info("Looking at trend " + tr.getName());
 			
 			Query query = new Query(tr.getQuery()).count(COUNT_SIZE);
+			query.setResultType(ResultType.popular);
 			QueryResult result = twitter.search(query);
 			statuses.addAll(result.getTweets());
 			count++;
@@ -441,10 +435,10 @@ public class TwitterService {
 	public Twitter getFullyCredentialedTwitter() {
 		try {
 			Properties props = PropertiesFactory.getProperties(PropertiesFile.TWITTER_PROPERTIES);		
-			String consumerKey=props.getProperty("brianmcarey.consumerKey");
-			String consumerSecret=props.getProperty("brianmcarey.consumerSecret");
-			String accessToken=props.getProperty("brianmcarey.accessToken");
-			String accessSecret=props.getProperty("brianmcarey.accessSecret");
+			String consumerKey=props.getProperty("connews.consumerKey");
+			String consumerSecret=props.getProperty("connews.consumerSecret");
+			String accessToken=props.getProperty("connews.accessToken");
+			String accessSecret=props.getProperty("connews.accessSecret");
 	    	
 	    	ConfigurationBuilder builder = new ConfigurationBuilder();
 	    	builder.setOAuthConsumerKey(consumerKey);
@@ -454,11 +448,62 @@ public class TwitterService {
 	    	Configuration configuration = builder.build();
 	    	TwitterFactory factory = new TwitterFactory(configuration);
 	    	Twitter twitter = factory.getInstance();
+	    	
 	    	return twitter;
 		} catch (Exception e) {
 			LOGGER.error("Problem creating Twitter!",e);
 			throw new RuntimeException(e.getMessage());
 		}
+	}
+	
+	
+	public List<Status> getViralPhotosAndVideosFromUserLists(Twitter twitter, String username) throws TwitterException {
+		List<Status> statuses = getTweetsFromUserLists(twitter, username);
+		List<Status> viralStatuses = getViralPhotosAndVideosFromTweetList(twitter, statuses);
+		return viralStatuses;
+	}
+	
+	
+	public List<Status> getTweetsFromUserLists(Twitter twitter, String username) throws TwitterException {
+		ResponseList<UserList> lists = twitter.getUserLists(username);
+    	List<Status> tweets = new ArrayList<Status>();
+    	
+		for (UserList list : lists) {
+			LOGGER.info("Looking at list " + list.getFullName());
+    		long listId = list.getId();
+    		tweets.addAll(getTweetsFromList(twitter,listId));
+    	}
+		
+		List<Status> viralStatuses = getViralPhotosAndVideosFromTweetList(twitter, tweets);
+		
+		return viralStatuses;
+	}
+	
+	
+	public List<Status> getTweetsFromList(Twitter twitter, long listId) throws TwitterException{
+		Paging paging = new Paging (1,100);
+		List<Status> tweets = new ArrayList<Status>();
+		
+		for (int i=1;i<10;i++) {
+			LOGGER.info("On run " + i);
+			paging.setPage(i);
+			ResponseList<Status> statuses = twitter.getUserListStatuses(listId, paging);
+			
+			for (Status status : statuses) {
+				LOGGER.info("Looking at status " + status.getText());
+				if (isOriginal(tweets, status)) {
+					tweets.add(status);
+				}
+			}
+			
+			try {
+				Thread.sleep(1000);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return tweets;
 	}
 
 }

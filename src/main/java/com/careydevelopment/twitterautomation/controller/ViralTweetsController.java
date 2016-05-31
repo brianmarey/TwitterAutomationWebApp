@@ -66,6 +66,4 @@ public class ViralTweetsController implements Constants {
     	
         return "viralTweets";
     }
-    
-    
 }
