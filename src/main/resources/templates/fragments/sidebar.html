@@ -150,6 +150,27 @@
                                 </li>
                              </ul>
                         </li>
+                        <li class="nav-item start " th:classappend="${facebookActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-social-facebook"></i>
+                                <span class="title">Facebook</span>
+                                <span class="arrow " th:classappend="${facebookArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${facebookViralPhotosActive}">
+                                    <a th:href="@{/viralFacebook(category=added_photos)}" class="nav-link ">
+                                        <i class="fa fa-image"></i>
+                                        <span class="title">Photos</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start " th:classappend="${facebookViralVideosActive}">
+                                    <a th:href="@{/viralFacebook(category=added_video)}" class="nav-link ">
+                                        <i class="fa fa-video-camera"></i>
+                                        <span class="title">Videos</span>
+                                    </a>
+                                </li>
+                             </ul>
+                        </li>
                         
                         <li class="heading">
                         	<h3 class="uppercase">Other Tools</h3>

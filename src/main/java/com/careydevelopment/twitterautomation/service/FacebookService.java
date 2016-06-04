@@ -73,25 +73,39 @@ public class FacebookService {
 	}
 	
 	
-	public String getEmbedCode(String id, String page) {
+	public String getEmbedCode(String id, String page, String category) {
 		StringBuilder builder = new StringBuilder();
 		
-		String url = getUrl(id,page);
+		String url = getUrl(id,page,category);
 		
-		builder.append("<iframe src=\"https://www.facebook.com/plugins/post.php?href=");
-		builder.append(url);
-		builder.append("\" style=\"width:600px;height:600px;border:none;overflow:hidden\" scrolling=\"no\" frameborder=\"0\" allowTransparency=\"true\"></iframe>");
+		if (category != null) {
+			if (category.equals("added_photos")) {
+				builder.append("<iframe src=\"https://www.facebook.com/plugins/post.php?href=");
+				builder.append(url);
+				builder.append("\" style=\"width:600px;height:600px;border:none;overflow:hidden\" scrolling=\"no\" frameborder=\"0\" allowTransparency=\"true\"></iframe>");				
+			} else {
+				builder.append("<iframe src=\"https://www.facebook.com/plugins/video.php?href=");
+				builder.append(url);
+				builder.append("\" style=\"width:600px;height:600px;border:none;overflow:hidden\" scrolling=\"no\" frameborder=\"0\" allowTransparency=\"true\" allowFullScreen=\"true\"></iframe>");
+			}
+		}
+		
 	
 		return builder.toString();
 	}
 	
-	
-	private String getUrl(String id, String page) {
+
+	private String getUrl(String id, String page, String category) {
 		StringBuilder builder = new StringBuilder();
 		
 		builder.append("https://www.facebook.com/");
 		builder.append(page);
-		builder.append("/posts/");
+		
+		if (category.equals("added_video")) {
+			builder.append("/videos/");
+		} else {
+			builder.append("/posts/");
+		}
 
 		String[] ids = id.split("_");
 		builder.append(ids[1]);

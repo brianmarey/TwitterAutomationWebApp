@@ -20,6 +20,15 @@ import twitter4j.Status;
 
 public class ViralFacebookProcessor extends Thread {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ViralFacebookProcessor.class);
+
+	private static final String[] specificPages = {"georgehtakei","mashable","buzzfeed","huffingtonpost","nationalreview",
+		"uproxx","viralhog","ViralNova","stevencrowderofficial","tomilahren","DonaldTrump","cosmopolitan","breitbart",
+		"Gr8estMemes","memecenter","4funsociety","9gag","menshumor","thebackbenchersofficial","loverrzpoint",
+		"BreakingWindowsforaBetterTomorrow","DeceptionExpert","someamazingfacts","TheWallOfComedy","SoFloVideo",
+		"beautifullnaturepic","PosLifeTips","allfamousquotes","roflpot","Expiredbeans","theoatmeal","Humormeetscomics2",
+		"UberFacts","nfl","nba","mlb","dailymail","nypost","cnn","foxnews","msnbc","gawker","kotaku","mediaite",
+		"jezebel"};
+
 	
 	ViralFacebookRepository viralFacebookRepository;
 	FacebookService facebookService;
@@ -44,7 +53,6 @@ public class ViralFacebookProcessor extends Thread {
 	private List<JSONObject> processViralVideosAndPhotosFromPages()  {
 		List<JSONObject> posts = new ArrayList<JSONObject>();
 		
-		String[] specificPages = {"georgehtakei"};
 		
 		for (String page : specificPages) {
 			LOGGER.info("Going with page " + page);
@@ -71,7 +79,7 @@ public class ViralFacebookProcessor extends Thread {
 	   
 	   JSONString id = (JSONString)obj.get("id");
 	   
-	   String embedCode = facebookService.getEmbedCode(id.getValue(),page);
+	   String embedCode = facebookService.getEmbedCode(id.getValue(),page,type);
 	   LOGGER.info(embedCode);
 	   
 	   int shareCount = 0;
