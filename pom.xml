@@ -13,6 +13,12 @@
   </parent>
   
     <dependencies>
+        <dependency>
+        	<groupId>edu.uci.ics</groupId>
+        	<artifactId>crawler4j</artifactId>
+        	<version>4.2</version>
+    	</dependency>
+    
        <dependency>
            <groupId>com.careydevelopment</groupId>
            <artifactId>twitter-laughs</artifactId>
