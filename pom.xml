@@ -13,6 +13,12 @@
   </parent>
   
     <dependencies>
+       <dependency>
+           <groupId>com.careydevelopment</groupId>
+           <artifactId>twitter-laughs</artifactId>
+           <version>[0.2,)</version>
+       </dependency>
+       
     	<dependency>
     		<groupId>com.sdicons.jsontools</groupId>
     		<artifactId>jsontools-core</artifactId>

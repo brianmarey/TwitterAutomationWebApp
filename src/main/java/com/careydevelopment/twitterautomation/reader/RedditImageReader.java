@@ -69,7 +69,7 @@ public class RedditImageReader {
         for (int i=0; i<chil.size();i++) {
         	RedditImage ri = new RedditImage();
         	
-            JSONObject obj = (JSONObject)chil.get(i);            
+        	JSONObject obj = (JSONObject)chil.get(i);            
             JSONObject data = (JSONObject)obj.get("data");
             
             JSONString subredditJson = (JSONString)data.get("subreddit");

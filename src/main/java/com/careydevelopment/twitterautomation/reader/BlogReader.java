@@ -22,10 +22,9 @@ public class BlogReader {
 	
 	public static void main(String[] args) {
 		Blog b = new Blog();
-		b.setBlogName("The Daily Mail");
-		b.setBlurbStarter("DMS.Article.init('top');");
-		b.setRssUrl("http://www.dailymail.co.uk/home/index.rss");
-		b.setImageFromUrl(true);
+		b.setBlogName("BuzzFeed");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("https://www.buzzfeed.com/index.xml");
 		
 		BlogReader gb = new BlogReader(b);
 		List<ViralContent> vs = gb.getStories();

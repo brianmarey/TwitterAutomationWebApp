@@ -11,6 +11,46 @@ public class BlogHelper {
 		List<Blog> blogs = new ArrayList<Blog>();
 		Blog b = new Blog();
 		
+		b.setBlogName("Huffington Post");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("http://www.huffingtonpost.com/feeds/verticals/business/index.xml");
+		blogs.add(b);
+		
+		b.setBlogName("Huffington Post");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("http://www.huffingtonpost.com/feeds/verticals/celebrity/index.xml");
+		blogs.add(b);
+		
+		b.setBlogName("Huffington Post");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("http://www.huffingtonpost.com/feeds/verticals/comedy/index.xml");
+		blogs.add(b);
+		
+		b.setBlogName("Huffington Post");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("http://www.huffingtonpost.com/feeds/verticals/entertainment/index.xml");
+		blogs.add(b);
+		
+		b.setBlogName("Huffington Post");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("http://www.huffingtonpost.com/feeds/verticals/media/index.xml");
+		blogs.add(b);
+		
+		b.setBlogName("Huffington Post");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("http://www.huffingtonpost.com/feeds/verticals/politics/index.xml");
+		blogs.add(b);
+		
+		b.setBlogName("Huffington Post");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("http://www.huffingtonpost.com/feeds/verticals/technology/index.xml");
+		blogs.add(b);
+		
+		b.setBlogName("Huffington Post");
+		b.setBlurbStarter("class=\"post-body\">");
+		b.setRssUrl("http://www.huffingtonpost.com/feeds/verticals/weird-news/index.xml");
+		blogs.add(b);
+		
 		b.setBlogName("UPROXX");
 		b.setBlurbStarter("class=\"post-body\">");
 		b.setRssUrl("http://feeds.feedburner.com/uproxx/springboard");
@@ -24,7 +64,7 @@ public class BlogHelper {
 		
 		b.setBlogName("BuzzFeed");
 		b.setBlurbStarter("class=\"post-body\">");
-		b.setRssUrl("https://www.buzzfeed.com/community/justlaunched.xml");
+		b.setRssUrl("https://www.buzzfeed.com/index.xml");
 		blogs.add(b);
 		
 		b=new Blog();
@@ -276,6 +316,7 @@ public class BlogHelper {
 		b.setBlogName("The Daily Dot");
 		b.setBlurbStarter("<div class=\"article-body\">");
 		b.setRssUrl("http://www.dailydot.com/feed/summary/latest/");
+		b.setImageFromUrl(true);
 		blogs.add(b);
 		
 		b=new Blog();
@@ -300,6 +341,7 @@ public class BlogHelper {
 		b.setBlogName("Laughing Squid");
 		b.setBlurbStarter("<main class=\"content\" id=\"main-content\">");
 		b.setRssUrl("http://laughingsquid.com/feed/");
+		b.setImageFromUrl(true);
 		blogs.add(b);
 		
 		b=new Blog();
@@ -409,6 +451,7 @@ public class BlogHelper {
 		b.setBlogName("The Federalist");
 		b.setBlurbStarter("<div class=\"entry-content");
 		b.setRssUrl("http://thefederalist.com/feed/");
+		b.setImageFromUrl(true);
 		blogs.add(b);
 		
 		b=new Blog();

@@ -1,22 +1,18 @@
 package com.careydevelopment.twitterautomation.util;
 
+import java.math.BigInteger;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.careydevelopment.propertiessupport.PropertiesFactory;
+import com.careydevelopment.propertiessupport.PropertiesFactoryException;
 import com.careydevelopment.propertiessupport.PropertiesFile;
-
-import twitter4j.Paging;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
-import twitter4j.UserList;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONInteger;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
 
 public class TwitterHelper {
 	
@@ -32,7 +28,17 @@ public class TwitterHelper {
 
 		
 		try {
-			Properties props = PropertiesFactory.getProperties(PropertiesFile.TWITTER_PROPERTIES);		
+			//https://graph.facebook.com/search?q=coffee&%20type=place&%20center=37.76,-122.427&%20distance=1000&access_token=216862972019284|oOkloD11dq4nmqUU9kS99yL1lE0
+			//https://graph.facebook.com/v2.6/1575049072?access_token=216862972019284|oOkloD11dq4nmqUU9kS99yL1lE0
+			//https://graph.facebook.com/mrbrianmcarey?access_token=216862972019284|oOkloD11dq4nmqUU9kS99yL1lE0
+			//https://graph.facebook.com/223697104492609/feed?access_token=216862972019284|oOkloD11dq4nmqUU9kS99yL1lE0
+			//223697104492609_483177508544566/likes?fields=total_count&summary=true
+			//223697104492609_483177508544566?fields=shares
+			//oauth token is found at https://developers.facebook.com/tools/accesstoken/
+			//<iframe src="https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/georgehtakei/posts/1587818511247596" style="width:600px;height:600px;border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+			
+			
+			/*Properties props = PropertiesFactory.getProperties(PropertiesFile.TWITTER_PROPERTIES);		
 			String consumerKey=props.getProperty("brianmcarey.consumerKey");
 			String consumerSecret=props.getProperty("brianmcarey.consumerSecret");
 			String accessToken=props.getProperty("brianmcarey.accessToken");
@@ -68,7 +74,7 @@ public class TwitterHelper {
 	    			}
 	    		}
 	    	}
-			
+			*/
 			/*List<Status> statuses = getPopularTweetsFromTrendingTopics(twitter);
 			LOGGER.info("Size is " + statuses.size());
 			for (Status status : statuses) {
@@ -106,6 +112,5 @@ public class TwitterHelper {
 			e.printStackTrace();
 		}
 	}
-	
 	
 }

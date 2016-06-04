@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFactoryException;
@@ -36,6 +37,7 @@ import twitter4j.auth.AccessToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
+@Component
 public class TwitterService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TwitterService.class);
@@ -472,6 +474,25 @@ public class TwitterService {
 			LOGGER.info("Looking at list " + list.getFullName());
     		long listId = list.getId();
     		tweets.addAll(getTweetsFromList(twitter,listId));
+    	}
+		
+		List<Status> viralStatuses = getViralPhotosAndVideosFromTweetList(twitter, tweets);
+		
+		return viralStatuses;
+	}
+	
+	
+	public List<Status> getTweetsFromUserList(Twitter twitter, String[] listPair) throws TwitterException {
+		ResponseList<UserList> lists = twitter.getUserLists(listPair[0]);
+    	List<Status> tweets = new ArrayList<Status>();
+    	
+		for (UserList list : lists) {
+			LOGGER.info("Looking at list " + list.getFullName());
+			
+			if (list.getFullName().indexOf(listPair[1]) > -1) {
+	    		long listId = list.getId();
+	    		tweets.addAll(getTweetsFromList(twitter,listId));				
+			}
     	}
 		
 		List<Status> viralStatuses = getViralPhotosAndVideosFromTweetList(twitter, tweets);

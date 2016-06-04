@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.careydevelopment.twitterautomation.jpa.entity.ViralTweet;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralTweetRepository;
 import com.careydevelopment.twitterautomation.service.TwitterService;
+import com.careydevelopment.twitterlaughs.TwitterLaughs;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -37,10 +38,33 @@ public class ViralTweetProcessor extends Thread {
 	public void run() {
 	   LOGGER.info("Running viral tweet collector");
 	   twitter = twitterService.getFullyCredentialedTwitter();
-	   
-	   //processViralVideosAndPhotosFromTrendingTopics();
+
+	   processFunnyTweets();
 	   processViralVideosAndPhotosFromLists();
+	   processViralVideosAndPhotosFromTrendingTopics();
 	}	
+	
+	
+	private void processFunnyTweets() {
+		try {
+			List<Status> tweets = TwitterLaughs.getInstance().getLaughs();
+			
+			for (Status tweet : tweets) {
+				ViralTweet foundTweet = viralTweetRepository.findByTweetId(tweet.getId());
+				
+				if (foundTweet == null) {
+					LOGGER.info("Adding " + tweet.getText());
+					addTweet("funny", tweet);
+				} else {
+					LOGGER.info("Already have " + tweet.getText());
+					foundTweet.setRetweets(tweet.getRetweetCount());
+					viralTweetRepository.save(foundTweet);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("Problem getting funny tweets!",e);
+		}
+	}
 	
 	
 	private void processViralVideosAndPhotosFromLists() {
@@ -58,17 +82,29 @@ public class ViralTweetProcessor extends Thread {
 	private List<Status> getViralVideosAndPhotosFromLists()  {
 		List<Status> statuses = new ArrayList<Status>();
 		
-		String[] users = {"brianmcarey"};
+		String[][] specificLists = {{"verified","verified-accounts"}};
 		
-		for (String username : users) {
-			LOGGER.info("Going with user " +username);
+		for (String[] list : specificLists) {
+			LOGGER.info("Going with list " + list[0] + " " + list[1]);
 			try {
-				statuses = twitterService.getTweetsFromUserLists(twitter, username);
+				statuses.addAll(twitterService.getTweetsFromUserList(twitter, list));
 			} catch (Exception e) {
 				LOGGER.error("Problem reading list!",e);
 			}
 		}
+
 		
+		String[] users = {"brianmcarey","TheJDLR",};
+		
+		for (String username : users) {
+			LOGGER.info("Going with user " +username);
+			try {
+				statuses.addAll(twitterService.getTweetsFromUserLists(twitter, username));
+			} catch (Exception e) {
+				LOGGER.error("Problem reading list!",e);
+			}
+		}
+				
 		return statuses;
 	}
 	

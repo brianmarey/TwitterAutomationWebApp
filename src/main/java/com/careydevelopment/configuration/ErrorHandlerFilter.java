@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Component
 public class ErrorHandlerFilter implements Filter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandlerFilter.class);
@@ -37,12 +36,12 @@ public class ErrorHandlerFilter implements Filter {
 
 		String uri = ((HttpServletRequest)request).getRequestURI();
 		if (uri == null) uri = "";
-		//LOGGER.info(uri);
+		LOGGER.info(uri);
 		
 		try {
 			HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper((HttpServletResponse)response); 
 			int statusCode = wrapper.getStatus();
-			//LOGGER.info("" + statusCode);
+			LOGGER.info("" + statusCode);
 			
 			if (statusCode == 404 && !uri.endsWith("/404")) {
 				LOGGER.info("Going to 404 " + uri);

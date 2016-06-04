@@ -38,6 +38,9 @@ public class ViralTweetsController implements Constants {
     	if (category.equals("photo")) {
     		model.addAttribute("twitterViralPhotosActive", Constants.MENU_CATEGORY_OPEN);
     		model.addAttribute("title","Viral Photos From Twitter");
+    	} else if (category.equals("funny")) {
+    		model.addAttribute("twitterViralFunnyActive", Constants.MENU_CATEGORY_OPEN);
+    		model.addAttribute("title","Funny Tweets");
     	} else {
     		model.addAttribute("twitterViralVideosActive", Constants.MENU_CATEGORY_OPEN);
     		model.addAttribute("title","Viral Videos From Twitter");
