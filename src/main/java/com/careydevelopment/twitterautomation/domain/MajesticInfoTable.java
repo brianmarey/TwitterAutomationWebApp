@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name="DataTable")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class IndexItemInfoTable {
+public class MajesticInfoTable {
 
 	@XmlElements(
 			@XmlElement(name="Row",type=String.class)

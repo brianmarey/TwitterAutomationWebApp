@@ -7,16 +7,16 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name="DataTables")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class IndexItemInfoTables {
+public class MajesticInfoTables {
 
 	@XmlElement(name="DataTable")
-	private IndexItemInfoTable dataTable;
+	private MajesticInfoTable dataTable;
 
-	public IndexItemInfoTable getDataTable() {
+	public MajesticInfoTable getDataTable() {
 		return dataTable;
 	}
 
-	public void setDataTable(IndexItemInfoTable dataTable) {
+	public void setDataTable(MajesticInfoTable dataTable) {
 		this.dataTable = dataTable;
 	}
 	

@@ -23,13 +23,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Result")
-public class IndexItemInfoResults {
+public class MajesticResults {
 
 	@XmlElement(name="GlobalVars")
 	private String globalVars;
 	
 	@XmlElement(name="DataTables")
-	private IndexItemInfoTables tables;
+	private MajesticInfoTables tables;
 	
 	
 
@@ -41,11 +41,11 @@ public class IndexItemInfoResults {
 		this.globalVars = globalVars;
 	}
 
-	public IndexItemInfoTables getTables() {
+	public MajesticInfoTables getTables() {
 		return tables;
 	}
 
-	public void setTables(IndexItemInfoTables tables) {
+	public void setTables(MajesticInfoTables tables) {
 		this.tables = tables;
 	}
 	
