@@ -41,7 +41,8 @@ public class HomeController {
 	@RequestMapping("/")
 	public String home(HttpServletRequest request, Model model) {
 		model.addAttribute("hideTopMenu",true);
-		        
+		LOGGER.info("Test");
+		
         return "home";
 	}
 }
