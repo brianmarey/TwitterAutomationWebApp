@@ -43,20 +43,27 @@ public class GetUnfollowTweepsController implements Constants {
 	
 	private Twitter twitter = null;
 	
-	@Autowired
-	UserRepository userRepository;
 	
     @RequestMapping(value="/getUnfollowTweeps",method = RequestMethod.GET,produces="application/json")
-    public List<Long> getUnfollowTweeps(@RequestParam(value="twitterUser", required=true) String twitterUser, 
-    		HttpServletRequest request, Model model) {
+    public List<Long> getUnfollowTweeps(HttpServletRequest request, Model model) {
+
+		List<Long> allFollowees = new LinkedList<Long>();
+
+    	if (request.getSession().getAttribute(Constants.TWITTER_USER) == null) {
+    		LOGGER.error("User not logged in!");
+    		return allFollowees;
+    	}
     	
     	//FollowRun followRun = logRun();
     	//request.getSession().setAttribute(CURRENT_FOLLOW_RUN, followRun);
    
 		//get the twitter4j Twitter object from the singleton
-		twitter = MyTwitter.instance().getTwitter(twitterUser);
-
-		List<Long> allFollowees = new LinkedList<Long>();
+		twitter = (Twitter)request.getSession().getAttribute(Constants.TWITTER);
+		if (twitter == null) {
+			LOGGER.error("No Twitter object!");
+			return allFollowees;
+		}
+		
 		
 		try {
 			long cursor = -1; //1463043556452890873l;
@@ -69,9 +76,11 @@ public class GetUnfollowTweepsController implements Constants {
 				}
 				cursor = ids.getNextCursor();
 				LOGGER.info("next cursor is " + cursor);
+				if (cursor == 0) break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Problem getting friends!",e);
+			return allFollowees;
 		}
 		
 		LOGGER.info("followees length is " + allFollowees.size());

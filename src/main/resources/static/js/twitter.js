@@ -1,60 +1,61 @@
 	var time = 0;
-	var timeIncrement = 2000;
+	var timeIncrement = 20000;
 	var theHost = '';
 	var twitterUser = '';
 	var unfollowOffset = 0;
 	var unfollowMax = 990;
 	var context = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+	var maxToFollow = 100;
 	
-	function beginAutoFollow(localhost) {
-		theHost = localhost;
-		
-		$("#followForm").hide();
-		$("#buttonDiv").hide();
-		$("#statusArea").show();
-		$("#spinnerIcon").show();
-		$("#statusText").show();
-		$("anotherRunButtonDiv").hide();
-		
-		twitterUser = $("#twitteruser").val();
-		
-		var runTime = 0;
-		var runTimeIncrement = 3600000;
-		
-		runNumber = 1;
-		
-		var numberOfRuns = 1; //$('#runs').val();
-		
-		for (var j=0;j<numberOfRuns;j++) {			
-			setTimeout(beginRun,runTime);
-			runTime+=runTimeIncrement;
+	function beginAutoUnfollow() {
+		//twitterUser = $("#twitteruser").val();
+		//unfollowOffset = $("#offset").val();
+		var unfollowCount = $("#unfollowCount").val();
+		unfollowCount = unfollowCount.trim();
+		//alert(unfollowCount);
+		if (isNaN(unfollowCount)) {
+			$("#numberWarning").show();
+			return;
 		}
+				
+		$("#getStartedSection").hide();
+		//$("#buttonDiv").hide();
+		$("#statusSection").show();
+		$("#statusRow").show();
+		$("#spinnerIcon").show();
+		$("#progressBarSection").show();
+		$("#messagesSection").hide();
+		//$("anotherRunButtonDiv").hide();
 		
-		setTimeout(completelyFinished, runTime);
+		window.scrollTo(0,0);
+		
+		beginAutoUnfollowRun(unfollowCount);
 	}
 
 	
-	
-	function beginAutoUnfollow(localhost) {
-		theHost = localhost;
-		
-		$("#followForm").hide();
-		$("#buttonDiv").hide();
-		$("#statusArea").show();
-		$("#spinnerIcon").show();
-		$("#statusText").show();
-		$("anotherRunButtonDiv").hide();
-		
-		twitterUser = $("#twitteruser").val();
-		unfollowOffset = $("#offset").val();
-		if (isNaN(unfollowOffset)) {
-			alert("Offset must be a number!");
-			unfollowOffset = 0;
+	function beginAutoRefollow() {
+		var refollowCount = $("#refollowCount").val();
+		refollowCount = refollowCount.trim();
+		//alert(unfollowCount);
+		if (isNaN(refollowCount)) {
+			$("#numberWarning").show();
 			return;
 		}
+				
+		$("#getStartedSection").hide();
+		//$("#buttonDiv").hide();
+		$("#statusSection").show();
+		$("#statusRow").show();
+		$("#spinnerIcon").show();
+		$("#progressBarSection").show();
+		$("#messagesSection").hide();
+		//$("anotherRunButtonDiv").hide();
 		
-		beginAutoUnfollowRun()
+		window.scrollTo(0,0);
+		
+		beginAutoRefollowRun(refollowCount);
 	}
+
 	
 	function completelyFinished() {
 		$("#spinnerIcon").hide();
@@ -64,37 +65,40 @@
 		$("#actionsButton").hide();
 	}
 
-	function beginAutoUnfollowRun() {
-		time = 0;
-			
-		var url = theHost + "/TwitterAutomation/getUnfollowTweeps?twitterUser=" + twitterUser;
-		
-		//alert (url);
-		
-		$.get(url, processUnfollowTweeps);
-	}
-
-	function beginRun() {
-		time = 0;
-
-		var tags = $("#tagfield").tagit("tags");
-		var tagString = "";
-		
-		for (var i in tags) {
-			tagString += encodeURIComponent(tags[i].value);
-			tagString += ",";
-		}
-		
-		//var keyword = encodeURIComponent(tags[i].value);
-		//alert("looking at " + tagString);
-			
-		var url = theHost + "/TwitterAutomation/getTweeps?keyword=" + tagString + "&twitterUser=" + twitterUser;
-		
-		//alert (url);
-		
-		$.get(url, processTweeps);
+	
+	function completelyFinishedUnfollow() {
+		$("#spinnerIcon").hide();
+		$("#statusResults").append("Completely finished.<br/>");
+		$("#finishedSection").show();
+		$("#progressBarSection").hide();
+		$("#actionsButton").hide();
 	}
 	
+	
+	function completelyFinishedRefollow() {
+		$("#spinnerIcon").hide();
+		$("#statusResults").append("Completely finished.<br/>");
+		$("#finishedSection").show();
+		$("#progressBarSection").hide();
+		$("#actionsButton").hide();
+	}
+	
+	
+	function beginAutoUnfollowRun(count) {
+		time = 0;
+			
+		var url = context + "/getUnfollowTweeps";	
+		//alert (url);
+		$.get(url, processUnfollowTweeps);
+	}
+	
+	function beginAutoRefollowRun(count) {
+		time = 0;		
+		var url = context + "/getRefollowTweeps";
+		//alert (url);
+		$.get(url, processRefollowTweeps);
+	}
+
 	var maxFollows = 100;
 	
 	function processTweeps() {
@@ -148,25 +152,129 @@
 	}
 
 	
-	function processUnfollowTweeps(data) {
-		//alert(data.length);
-		//alert(data[0]);
-		var offset = parseInt(unfollowOffset);
+	function processFollowers() {
+		//alert(currentFollowSet.length);
+		actualFollows = 0;
 		
-		for (var ii=offset;ii<offset + unfollowMax;ii++) {
-			//alert(data[ii].screenName);
-			var id = data[ii];
-			//alert(ii + " " + unfollowOffset + 5);
+		maxFollows = $("#followCount").val();
+		if (isNaN(maxFollows)) {
+			maxFollows = 10;
+		}
+		
+		if (maxFollows > 100) {
+			maxFollows = 100;
+		}
+		
+		if (maxFollows < 0) {
+			maxFollows = 10;
+		}
+		
+		if (!currentFollowSet) {
+			return;
+		}
+		
+		if (currentFollowSet.length < maxFollows) {
+			maxFollows = currentFollowSet.length;
+		}
+
+		$("#statusSection").show();
+		$("#statusRow").show();
+		$("#foundTweepsSection").hide();
+		
+		var currentCount = 0;
+		
+		for (var ii=0;ii<currentFollowSet.length;ii++) {
+			//alert(currentFollowSet[ii]);
+			var id = currentFollowSet[ii];
 			
-			setTimeout(unfollowTweep,time,id);
+			setTimeout(followFollower,time,id);
 			//alert("time is " + time);
 			time += timeIncrement;
+			currentCount++;		
+			
+			if (currentCount >= maxFollows) break;
 		}
 		
 		setTimeout(completelyFinished,time);
+	}
+
+	
+	
+	var maxUnfollows = 100;
+	var actualUnfollows = 0;
+	
+	var maxRefollows = 100;
+	var actualRefollows = 0;
+	
+	function processUnfollowTweeps(data) {
+		//alert(data.length);
+		//alert(data[0]);
+		
+		if (data.length == 0) {
+			return;
+		}
+		
+		var offset = Math.round(data.length/2);
+		//alert("offset is " + offset);
+		
+		//var offset = parseInt(unfollowOffset);
+		var unfollowCount = parseInt($("#unfollowCount").val());
+		//alert("Unfoolow count is " + unfollowCount);
+		
+		if (unfollowCount > maxUnfollows) unfollowCount = maxUnfollows;
+		if (unfollowCount < maxUnfollows) maxUnfollows = unfollowCount;
+		
+		for (var ii=offset;ii<offset + unfollowCount;ii++) {
+			//alert("ii is " + ii);
+			if (ii<data.length) {
+				var id = data[ii];
+				//alert("The id is " + id);
+				
+				setTimeout(unfollowTweep,time,id);
+				//alert("time is " + time);
+				time += timeIncrement;
+			}
+		}
+		
+		setTimeout(completelyFinishedUnfollow,time);
 		//time += timeIncrement;
 	}
 
+	
+	function processRefollowTweeps(data) {
+		//alert(data.length);
+		//alert(data[0]);
+		
+		if (data.length == 0) {
+			return;
+		}
+		
+		var offset = Math.round(data.length/2);
+		//alert("offset is " + offset);
+		
+		//var offset = parseInt(unfollowOffset);
+		var refollowCount = parseInt($("#refollowCount").val());
+		//alert("Unfoolow count is " + unfollowCount);
+		
+		if (refollowCount > maxRefollows) refollowCount = maxRefollows;
+		if (refollowCount < maxRefollows) maxRefollows = refollowCount;
+		
+		for (var ii=offset;ii<offset + refollowCount;ii++) {
+			if (ii<data.length) {
+				var id = data[ii];
+				//alert("The id is " + id);
+				
+				setTimeout(refollowTweep,time,id);
+				//alert("time is " + time);
+				time += timeIncrement;
+			}
+		}
+		
+		setTimeout(completelyFinishedRefollow,time);
+		//time += timeIncrement;
+	}
+	
+	
 	var runNumber = 1;
 	
 	function pauseNotice() {
@@ -196,16 +304,96 @@
 	}
 	
 	
+	function followFollower(id) {		
+		var url = context + "/followFollower?id=" + id;
+		//alert(url);
+		$.get(url,function( data ) {			
+			var notice = data.message + "<br/>";
+			//alert(notice);
+			$("#statusResults").append( notice);
+			
+			actualFollows++;
+			
+			var percent = parseFloat(Math.round((actualFollows / maxFollows)*100)).toFixed(0);
+			//alert(percent);
+			$("#progressBar").attr("aria-valuenow",percent);
+			
+			var percentStyle = percent + "%";
+			$("#progressBar").width(percentStyle);
+		});
+	}
+	
+	
 	function unfollowTweep(id) {		
-		var url = theHost + "/TwitterAutomation/unfollowTweep?id=" + id + "&twitterUser=" + twitterUser;
+		var url = context + "/unfollowTweep?id=" + id;
 		//alert(url);
 		$.get(url,function( data ) {
 			//alert(data.followResult)
 			var notice = data.followResult + "<br/>";
+			
+			actualUnfollows++;
+			
+			var percent = parseFloat(Math.round((actualUnfollows / maxUnfollows)*100)).toFixed(0);
+			//alert(percent);
+			$("#progressBar").attr("aria-valuenow",percent);
+			
+			var percentStyle = percent + "%";
+			$("#progressBar").width(percentStyle);
+			
 			//alert(notice);
 			$("#statusResults").append( notice);
 		});
 	}
+	
+	
+	function refollowTweep(id) {		
+		var url = context + "/refollowTweep?id=" + id;
+		//alert(url);
+		$.get(url,function( data ) {
+			//alert(data.followResult)
+			var notice = data.followResult + "<br/>";
+			
+			actualRefollows++;
+			
+			var percent = parseFloat(Math.round((actualRefollows / maxRefollows)*100)).toFixed(0);
+			//alert(percent);
+			$("#progressBar").attr("aria-valuenow",percent);
+			
+			var percentStyle = percent + "%";
+			$("#progressBar").width(percentStyle);
+			
+			//alert(notice);
+			$("#statusResults").append( notice);
+		});
+	}
+	
+	
+	function findFollowers() {
+		$("#usernameWarning").hide();
+		
+		var username = $("#username").val();
+		//alert("username is " + username);
+		
+		username = username.trim();
+		
+		if (username == '') {
+			$("#usernameWarning").show();
+			return;
+		}
+		
+		$("#getTweepsButtonGroup").hide();
+		$("#pleaseWaitSection").show();
+		$("#messagesSection").hide();
+		
+		username = encodeURIComponent(username);
+			
+		var url = context + "/getFollowers?username=" + username;
+		
+		//alert (url);
+		
+		$.get(url, displayFollowers);
+	}
+	
 	
 	function findByHashtag() {
 		$("#hashTagWarning").hide();
@@ -252,9 +440,37 @@
 		$("#getStartedSection").hide();
 		$("#foundTweepsSection").show();
 		$("#introSection").hide();
+
+		var followCount = data.length;
+		if (followCount > maxToFollow) followCount = maxToFollow;
 		
 		$("#tweepsCount").html(data.length);
-		$("#followCount").val(data.length);
+		$("#followCount").val(followCount);
 	}
 	
+	
+	function displayFollowers(data) {
+		if (!data || data.length < 3) {
+			$("#pleaseWaitSection").hide();
+			$("#getStartedSection").hide();
+			$("#introSection").hide();
+			$("#noResultsSection").show();
+			return;
+		}
+		
+		currentFollowSet = data;
+		
+		$("#getTweepsButtonGroup").show();
+		$("#pleaseWaitSection").hide();
+		
+		$("#getStartedSection").hide();
+		$("#foundTweepsSection").show();
+		$("#introSection").hide();
+		
+		var followCount = data.length;
+		if (followCount > maxToFollow) followCount = maxToFollow;
+		
+		$("#tweepsCount").html(data.length);
+		$("#followCount").val(followCount);
+	}
 	

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>BlastFollow | Follow Followers</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="Mass Follow Users" name="description"></meta>
+        <meta content="Carey Development, LLC" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!--  <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>-->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title">Follow Followers</h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    <div>
+                    		<div class="portlet-body" id="messagesSection">
+                    			<th:block th:if="${action == 'operationStopped'}">
+	                    		<div class="note note-danger">
+			                    	<h4 class="block">Stopped</h4>
+			                        <p>The operation was stopped at your request.</p>
+			                    </div>
+			                    </th:block>
+		                    </div>
+                    	<!--  <div class="portlet-body" id="introSection">
+                    		<div class="note note-info">
+		                    	<h4 class="block">What Does This Tool Do?</h4>
+		                        <p>This tool lets you follow users <i>en masse.</i> Just enter a hashtag used by people on Twitter that you'd like to follow. 
+		                        Then, BlastFollow will automatically follow those users for you. </p>
+		                    </div>
+		                    <div class="note note-danger">
+		                    	<h4 class="block">Be Careful</h4>
+		                        <p>Twitter has been known to suspend accounts for aggressive following. Although BlastFollow will
+		                        add several seconds between each follow, you should avoid following too many people in any one day. Carey Development, LLC
+		                        assumes no responsibility for what happens to your account when you use this tool.</p>
+		                    </div>
+		                    <div class="note note-info">
+		                    	<h4 class="block">Pro-Tip</h4>
+		                        <p>If you aren't sure how many people to follow, it's best to start small and then work your way up. 
+		                        Just follow 10 people today and come back tomorrow.</p>
+		                    </div>
+		                </div>-->
+		                <div class="portlet light bordered" id="getStartedSection">
+                             <div class="portlet-title">
+                                 <div class="caption">
+                                     <i class="icon-social-twitter font-blue-sharp"></i>
+                                     <span class="caption-subject font-blue-sharp bold uppercase">Follow the Followers of Another</span>
+                                 </div>
+                             </div>
+                             <div class="portlet-body form">
+                             	<form role="form">
+                                     <div class="form-body">
+                                         <div class="form-group">
+                                         	 <div class="note note-info">Enter the user name of someone with followers you'd like to follow. Then, you can start following them one by one.</div>
+                                         	 <div class="note note-danger">
+						                    	<h4 class="block">Be Careful</h4>
+						                        <p>Twitter has been known to suspend accounts for aggressive following. Although BlastFollow will
+						                        add several seconds between each follow, you should avoid following too many people in any one day. Carey Development, LLC
+						                        assumes no responsibility for what happens to your account when you use this tool.</p>
+						                    </div>
+                                             <div class="alert alert-danger" style="display:none" id="usernameWarning">
+                                        			<strong>User Name Required!</strong> Please enter a user name.
+                                        	 </div>
+                                             <label>User Name</label>
+                                             <div class="input-group" style="margin-bottom:20px">
+                                                   <input type="text" id="username" class="form-control" maxlength="24" placeholder="User Name"/>
+                                             </div>
+                                             <div class="input-group" style="margin-bottom:20px;text-align:center" id="getTweepsButtonGroup">
+                                             	<a href="javascript:findFollowers()"><button type="button" class="btn btn-primary mt-ladda-btn ladda-button" id="findTweepsButton" data-style="expand-right"><span class="ladda-label">Find People Following That User</span></button></a>
+                                             </div>
+                                             <div class="note note-info" id="pleaseWaitSection" style="display:none">
+                                        		<p style="font-size:14pt">Please Wait... <img style="position:relative;top:-2px" th:src="@{/images/getTweepsSpinner.gif}"/> </p>
+                                    		 </div>
+                                             <div class="note note-info">When you click the button above, all you'll do is find followers of the user whose name you entered above. You won't start following anyone just yet.</div>
+                                         </div>
+                                     </div>
+                                </form>
+                             </div>
+                       	</div>
+                       	<div class="row" id="noResultsSection" style="display:none">
+                       		<div style="margin-bottom:20px" class="col-md-4">
+			                	<div class="alert alert-danger">
+	                            	<strong>No results!</strong> Sorry, couldn't find anyone following that user who you aren't following.
+	                            </div>
+	                            <div style="display:flex;justify-content:space-between">
+		                            <a th:href="@{/followfollowers}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Run</button></a>
+		                            <a th:href="@{/blastfollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Dashboard</button></a>
+	                            </div>
+                             </div>
+                       	</div>                      	
+                      	<div class="portlet light bordered" id="foundTweepsSection" style="display:none">
+                             <div class="portlet-title">
+                                 <div class="caption">
+                                     <i class="icon-social-twitter font-blue-sharp"></i>
+                                     <span class="caption-subject font-blue-sharp bold uppercase">Success</span>
+                                 </div>
+                             </div>
+                             <div class="portlet-body form">
+                                 <div class="note note-info">I found <span id="tweepsCount"></span> people who you aren't following and are following that user.
+                             	 Select how many of them you want to follow and press the "Follow" button below to begin following them one at a time.</div>
+                                 <div class="note note-info">
+                            		<strong>Note:</strong> There will be a delay of several seconds between each follow. That's quite intentional.
+                            	</div>                             
+                             	<form role="form" class="form-horizontal">
+                                     <div class="form-body">
+                                         <div class="form-group" style="margin-bottom:40px">                                              	
+                                                <label class="col-md-2 control-label">Follow Count:</label>
+                                                <div class="col-md-1">
+                                                    <input type="text" id="followCount" class="form-control" placeholder="Follow Count"/>
+                                                </div>
+                                                <label class="col-md9 control-label" style="text-align:left">Enter the number of people you want to follow (Max. 100)</label>
+                                         </div>
+                                       	 <div class="input-group" style="margin-bottom:20px;text-align:center">
+                                             	<a href="javascript:processFollowers()" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Follow</button></a>
+                                             	<span style="margin-left:20px;margin-right:20px">Or:</span>
+                                             	<a th:href="@{/followfollowers}" style="margin-bottom:5px;margin-right:10px"><button type="button" class="btn btn-success">Another Run</button></a>
+                                             	<a th:href="@{/blastfollow}" style="margin-bottom:5px"><button type="button" class="btn btn-success">Back to Dashboard</button></a>
+                                         </div>
+                                     </div>
+                                </form>
+                             </div>
+                       	</div>
+     					<div id="statusSection" style="display:none">
+	                       	<div class="portlet light bordered">
+	                             <div class="portlet-title">
+	                                 <div class="caption">
+	                                     <i class="icon-social-twitter font-blue-sharp"></i>
+	                                     <span class="caption-subject font-blue-sharp bold uppercase">Commencing</span>
+	                                 </div>
+	                             </div>
+	                             <div class="portlet-body form">
+	                                 <div class="note note-info">Don't close this page while BlastFollow is running. You can work on other tabs, step away from your PC,
+	                                 or go grab a cup of coffee. Just leave this page open.
+	                                 </div>
+	                             </div>
+	                        </div>
+		                    <div class="row" >
+		                        <div class="col-md-4 ">
+		                        	<div class="progress progress-striped active" id="progressBarSection">
+                                        <div class="progress-bar progress-bar-success" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        </div>
+                                    </div>
+                                 	<div id="finishedSection" style="display:none;margin-bottom:20px;">
+			                            <div class="alert alert-success" style="margin-bottom:10px">
+	                                        <strong>Success!</strong> Following complete.
+	                                    </div>
+	                                    <div style="display:flex;justify-content: space-between">
+		                                    <a th:href="@{/followfollowers}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Run</button></a>
+		                                    <a th:href="@{/blastfollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Dashboard</button></a>
+	                                    </div>
+                                    </div>
+		                            <div class="portlet box blue-hoki">
+		                                <div class="portlet-title">
+		                                    <div class="caption">
+		                                        <i class="fa fa-users"></i>Status </div>
+		                                    <div class="actions" id="actionsButton">
+		                                        <a th:href="@{/followfollowers?action=operationStopped}" class="btn btn-default btn-sm">
+		                                            <i class="fa fa-hand-stop-o"></i> Stop </a>
+		                                    </div>
+		                                </div>
+		                                <div class="portlet-body">   
+		                                    <div class="scroller" style="height:200px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="#a1b2bd">
+												<div id="statusArea" class="statusArea">
+													<div id="statusResults"></div>
+													<img th:src="@{/images/ripple.gif}" id="spinnerIcon"/>
+									 			</div>
+											</div>
+		                                </div>
+		                            </div>
+		                        </div>
+	                     	</div>
+                       	</div>
+                    </div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <!-- END FOOTER -->
+        <script th:src="@{/js/twitter.js}" type="text/javascript"></script>
+    </body>
+</html>

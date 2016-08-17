@@ -1,71 +1,242 @@
+
 <!DOCTYPE html>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <!--<![endif]-->
     <!-- BEGIN HEAD -->
-    
+
     <head>
-        <meta charset="utf-8"></meta>
+        <meta charset="utf-8"/>
         <title>BlastFollow | Home</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
-        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
-        <meta content="" name="description"></meta>
-        <meta content="" name="author"></meta>                
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="The #1 Twitter automation tool on the web" name="description" />
+        <meta content="Carey Development, LLC" name="author" />
+
         <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
         <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
         <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
         <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN THEME GLOBAL STYLES -->
         <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
         <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
-        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
-        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
-        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
-        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
-    </head>
+        <!-- END THEME GLOBAL STYLES -->
+        <!-- BEGIN THEME LAYOUT STYLES -->
+        <link th:href="@{/assets/layouts/layout3/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout3/css/themes/default.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout3/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <!-- END THEME LAYOUT STYLES -->
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link> 
+        
+        
+        <link th:href="@{/assets/pages/css/about.min.css}" rel="stylesheet" type="text/css" />
+        </head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
-        <!-- BEGIN HEADER -->
-        <div th:include="fragments/header :: header"></div>
-        <!-- END HEADER -->
-        <div class="clearfix"> </div>
+    <body class="page-container-bg-solid">
+		<div th:include="fragments/topmenuheader :: header"></div>
         <!-- BEGIN CONTAINER -->
         <div class="page-container">
-            <!-- BEGIN SIDEBAR -->
-            <div th:include="fragments/sidebar :: sidebar"></div>
-            <!-- END SIDEBAR -->
             <!-- BEGIN CONTENT -->
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
-                <div class="page-content">
-                    <!-- BEGIN PAGE HEADER-->
-                    <!-- BEGIN PAGE BAR -->
-                    <!--  <div class="page-bar">
-                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
-                        <div th:include="fragments/actionbar :: actionbar"></div>
-                    </div>-->
-                    <!-- END PAGE BAR -->
-                    <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">Welcome to BlastFollow</h1>
-                    <!-- END PAGE TITLE-->
-                    <!-- END PAGE HEADER-->
-                    <div class="note note-info">
-                        <p> Please login with Twitter to use this tool. </p>
+                <!-- BEGIN PAGE HEAD-->
+                <div class="page-head" style="background-color:#eff3f8;padding-top:40px">
+                    <div class="container">
+                        <!-- BEGIN PAGE TITLE -->
+                        <div class="page-title">
+                            <h1>
+                            </h1>
+                        </div>
+	                        <div class="row margin-bottom-40" style="background-image:url(./images/rocket.png);height:500px;background-position:center;">
+	                        <div class="col-md-12" style="text-align:center;margin-top:100px">
+	                            <h1 style="color:#ffffff">BlastFollow</h1>
+	                            <h2 style="color:#ffffff">It's Time For Explosive Growth</h2>
+	                            <div style="margin-top:100px">
+	                            <a href="./getToken"><img th:src="@{/images/sign-in-with-twitter-gray.png}"/></a>
+	                            </div>
+	                        </div>
+                    		</div>
+                        <!-- END PAGE TITLE -->
+                        <!-- BEGIN PAGE TOOLBAR -->
+                        <div class="page-toolbar">
+                            <!-- BEGIN THEME PANEL -->
+                            <!-- END THEME PANEL -->
+                        </div>
+                        <!-- END PAGE TOOLBAR -->
                     </div>
-                    <div>
-						<a href="./getToken"><img th:src="@{/images/sign-in-with-twitter-gray.png}"/></a>
-					</div>                    
                 </div>
+                <!-- END PAGE HEAD-->
+                <!-- BEGIN PAGE CONTENT BODY -->
+                <div class="page-content">
+                    <div class="container">
+                        <!-- BEGIN PAGE CONTENT INNER -->
+                        <div class="page-content-inner">
+                            <div class="row margin-bottom-40" style="text-align:center" data-auto-height="true">
+                        		<div class="col-md-12">
+                            		<h1>Skyrocket Your Social Media Marketing</h1>
+                        		</div>
+                            </div>
+	                        <div class="row margin-bottom-20">
+		                        <div class="col-lg-3 col-md-6" style="height:360px">
+		                            <div class="portlet light">
+		                                <div class="card-icon">
+		                                    <i class="icon-user-follow font-red-sunglo theme-font"></i>
+		                                </div>
+		                                <div class="card-title">
+		                                    <span> Gain Followers </span>
+		                                </div>
+		                                <div class="card-desc">
+		                                    <span> Follow people on Twitter who share your interests so that they'll follow you back.</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="col-lg-3 col-md-6" style="height:360px">
+		                            <div class="portlet light">
+		                                <div class="card-icon">
+		                                    <i class="icon-clock font-green-haze theme-font"></i>
+		                                </div>
+		                                <div class="card-title">
+		                                    <span> Save Time </span>
+		                                </div>
+		                                <div class="card-desc">
+		                                    <span> Maximize productivity as BlastFollow automatically follows Twitter users for you. </span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="col-lg-3 col-md-6" style="height:360px">
+		                            <div class="portlet light">
+		                                <div class="card-icon">
+		                                    <i class="icon-like font-purple-wisteria theme-font"></i>
+		                                </div>
+		                                <div class="card-title">
+		                                    <span> Increase Engagements </span>
+		                                </div>
+		                                <div class="card-desc">
+		                                    <span> Improve your reach with a larger following that offers more likes, replies, clicks, and retweets.</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="col-lg-3 col-md-6" style="height:360px">
+		                            <div class="portlet light">
+		                                <div class="card-icon">
+		                                    <i class="icon-star font-blue theme-font"></i>
+		                                </div>
+		                                <div class="card-title">
+		                                    <span> Become a Star </span>
+		                                </div>
+		                                <div class="card-desc">
+		                                    <span> Blow up your online following and increase brand name recognition. Become a social media star!</span>
+		                                </div>
+		                            </div>
+		                        </div>
+	                    	</div>
+	                   		<div class="row">
+	                   		<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">this happened while my Mom was at the gorilla exhibit. Her video. <a href="https://twitter.com/hashtag/cincinnatizoo?src=hash">#cincinnatizoo</a> <a href="https://twitter.com/hashtag/gorilla?src=hash">#gorilla</a> <a href="https://twitter.com/hashtag/harambe?src=hash">#harambe</a> <a href="https://t.co/RFBUQEQGAr">pic.twitter.com/RFBUQEQGAr</a></p>&mdash; Amber Soler (@Amber_Soler) <a href="https://twitter.com/Amber_Soler/status/736785301079629825">May 29, 2016</a></blockquote>
+	                   		</div>	                    	
+		                 <div class="row about-links-cont">
+	                        <div class="col-md-6 about-links" style="height:545px;">
+	                        	<div style="position: relative;top: 50%;-webkit-transform: translateY(-50%);-ms-transform: translateY(-50%);transform: translateY(-50%);">
+								<div class="portlet box blue-hoki" >
+	                                <div class="portlet-title">
+	                                    <div class="caption">
+	                                       How Does It Work? </div>
+	                                </div>
+	                                <div class="portlet-body">
+	                                    <div>
+	                                        <strong>It's Simple</strong>
+	                                        <br/> You just provide a hashtag that's used by people who share your interests. For example,
+	                                        if you're into SEO, you might use the #seo or #contentmarketing hashtag. Once you've entered a hashtag,
+	                                        BlastFollow will let you know how many people it found who've tweeted with that hashtag. Then, you 
+	                                        can automatically follow each one of them.
+	                                        <p>&nbsp;</p>
+	                                        <strong>Keep In Mind</strong>
+	                                        <br/>If you follow too aggressively, Twitter might suspend your account. It's best to
+	                                        follow only a reasonable amount of people in a given day. The point of this tool is to increase
+	                                        your productivity so that you don't have to manually follow people one-by-one.
+	                                        <p>&nbsp;</p>
+	                                        <strong>Get Started Now</strong>
+	                                        <br/>What are you waiting for? BlastFollow is easy to use. Login now and start increasing your Twitter audience!
+	                                        <p>&nbsp;</p>
+	                                        <div style="text-align:center">
+	                                        	<a href="./getToken"><img th:src="@{/images/sign-in-with-twitter-gray.png}"/></a>
+	                                        </div>
+	                                   </div>
+	                                </div>
+	                            </div>
+	                            </div>	                           
+	                        </div>
+	                        <div class="col-md-6 col-sm-12">
+	                            <div class="about-image" style="background: url(./images/twitter-iphone.jpg) center no-repeat;"></div>
+	                        </div>
+	                    </div>      
+                        </div>
+                        <div class="row" style="margin-top:30px">
+	                        <div class="col-lg-4 col-md-4 col-sm-12">
+	                            <div class="portlet mt-element-ribbon light portlet-fit bordered">
+	                                <div class="ribbon ribbon-right ribbon-clip ribbon-shadow ribbon-color-primary uppercase">
+	                                    <div class="ribbon-sub ribbon-clip ribbon-right"></div> <i class="fa fa-cloud"></i> </div>
+	                                <div class="portlet-title">
+	                                    <div class="caption">
+	                                        <i class=" icon-layers font-green"></i>
+	                                        <span class="caption-subject font-green bold uppercase">Nothing to Install</span>
+	                                    </div>
+	                                </div>
+	                                <div class="portlet-body"> BlastFollow runs in the cloud. You won't have to install any software. </div>
+	                            </div>
+	                        </div>
+	                        <div class="col-lg-4 col-md-4 col-sm-12">
+	                            <div class="portlet mt-element-ribbon light portlet-fit bordered">
+	                                <div class="ribbon ribbon-right ribbon-clip ribbon-shadow ribbon-color-primary uppercase">
+	                                    <div class="ribbon-sub ribbon-clip ribbon-right"></div> <i class="fa fa-smile-o"></i> </div>
+	                                <div class="portlet-title">
+	                                    <div class="caption">
+	                                        <i class=" icon-layers font-green"></i>
+	                                        <span class="caption-subject font-green bold uppercase">User-Friendly</span>
+	                                    </div>
+	                                </div>
+	                                <div class="portlet-body"> BlastFollow is easy to use and offers step-by-step guidance to maximize your following. </div>
+	                            </div>
+	                        </div>
+	                        <div class="col-lg-4 col-md-4 col-sm-12">
+	                            <div class="portlet mt-element-ribbon light portlet-fit bordered">
+	                                <div class="ribbon ribbon-right ribbon-clip ribbon-shadow ribbon-color-primary uppercase">
+	                                	<div class="ribbon-sub ribbon-clip ribbon-right"></div> <i class="fa fa-thumbs-o-up"></i> </div>
+	                                <div class="portlet-title">
+	                                    <div class="caption">
+	                                        <i class=" icon-layers font-green"></i>
+	                                        <span class="caption-subject font-green bold uppercase">It's Free</span>
+	                                    </div>
+	                                </div>
+	                                <div class="portlet-body"> You can start following people today free of charge. </div>
+	                            </div>
+	                        </div>
+                        </div>
+                        
+                        <div class="row margin-bottom-40" style="text-align:center" data-auto-height="true">
+                        		<div class="col-md-12">
+                            		<h1>What Are You Waiting For?</h1>
+                            		<h3>Login With Twitter and Start Connecting With More People Online</h3>
+                        		</div>
+                        </div>
+                        <div class="row" style="text-align:center;margin-bottom:40px">
+                        	<a href="./getToken"><img th:src="@{/images/sign-in-with-twitter-gray.png}"/></a>
+                        </div>                        
+                        <!-- END PAGE CONTENT INNER -->
+                    </div>
+                </div>
+                <!-- END PAGE CONTENT BODY -->
                 <!-- END CONTENT BODY -->
             </div>
             <!-- END CONTENT -->
+            <!-- BEGIN QUICK SIDEBAR -->
+            <!-- END QUICK SIDEBAR -->
         </div>
-        <!-- END CONTAINER -->
-        <!-- BEGIN FOOTER -->
-        <div th:include="fragments/footer :: footer"></div>
-        <!-- END FOOTER -->
+        <div th:include="fragments/homefooter :: footer"></div>
     </body>
+
 </html>

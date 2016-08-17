@@ -1,0 +1,18 @@
+<images>
+                    <div class="row">
+	                    <div class="col-md-4 col-lg-4">&nbsp;</div>
+	                    <div class="col-md-4 col-lg-4" style="text-align:center"><span th:text="${showingResults}" style="font-size:18pt;text-align:center"></span></div>
+	                    <div class="col-md-4 col-lg-4" style="margin-bottom:60px">&nbsp;</div>
+                    </div>
+                                        
+                    <div th:each="image : ${images}" class="row" style="margin-bottom:60px">
+                    	<div class="col-md-2 col-lg-2">&nbsp;</div>
+                    	
+                    	<div class="col-md-8 col-lg-8" style="text-align:center">
+                    		<a th:href="${image.url}" target="_blank"><img th:src="${image.url}" style="max-width:600px"/></a>
+                    	</div>
+                    	
+                    	<div class="col-md-2 col-lg-2">&nbsp;</div>
+                    </div>
+
+</images>

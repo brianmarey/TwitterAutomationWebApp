@@ -3,13 +3,13 @@
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <!--<![endif]-->
     <!-- BEGIN HEAD -->
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>BlastFollow | Follow Users</title>
+        <title>BlastFollow | AutoFollow</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="Mass Follow Users" name="description"></meta>
@@ -49,7 +49,7 @@
                     </div>-->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">Follow Users</h1>
+                    <h1 class="page-title">AutoFollow</h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     <div>
@@ -83,15 +83,14 @@
                              <div class="portlet-title">
                                  <div class="caption">
                                      <i class="icon-social-twitter font-blue-sharp"></i>
-                                     <span class="caption-subject font-blue-sharp bold uppercase">Enter a Hashtag</span>
+                                     <span class="caption-subject font-blue-sharp bold uppercase">Find People to Follow</span>
                                  </div>
                              </div>
                              <div class="portlet-body form">
                              	<form role="form">
                                      <div class="form-body">
                                          <div class="form-group">
-                                         	 <div class="note note-info">Enter a hashtag used by people you'd like to follow. For example, if you're into SEO, use the #seo hashtag.
-                                         	 You don't have to enter the hashtag itself (but it's okay if you want to).</div>
+                                         	 <div class="note note-info">Enter a hashtag or keyword used by people you'd like to follow. For example, if you're into SEO, use the #seo hashtag.</div>
                                          	 <div class="note note-danger">
 						                    	<h4 class="block">Be Careful</h4>
 						                        <p>Twitter has been known to suspend accounts for aggressive following. Although BlastFollow will
@@ -99,14 +98,11 @@
 						                        assumes no responsibility for what happens to your account when you use this tool.</p>
 						                    </div>
                                              <div class="alert alert-danger" style="display:none" id="hashTagWarning">
-                                        			<strong>Hashtag Required!</strong> Please enter a hashtag.
+                                        			<strong>Hashtag/Keyword Required!</strong> Please enter a hashtag or keyword.
                                         	 </div>
-                                             <label>Hashtag</label>
+                                             <label>Hashtag/Keyword</label>
                                              <div class="input-group" style="margin-bottom:20px">
-                                                 <span class="input-group-addon">
-                                                     #
-                                                 </span>
-                                                 <input type="text" id="hashtag" class="form-control" maxlength="24" placeholder="Hashtag"/>
+                                                   <input type="text" id="hashtag" class="form-control" maxlength="24" placeholder="Hashtag/Keyword"/>
                                              </div>
                                              <div class="input-group" style="margin-bottom:20px;text-align:center" id="getTweepsButtonGroup">
                                              	<a href="javascript:findByHashtag()"><button type="button" class="btn btn-primary mt-ladda-btn ladda-button" id="findTweepsButton" data-style="expand-right"><span class="ladda-label">Find People Tweeting With That Hashtag</span></button></a>
@@ -114,7 +110,7 @@
                                              <div class="note note-info" id="pleaseWaitSection" style="display:none">
                                         		<p style="font-size:14pt">Please Wait... <img style="position:relative;top:-2px" th:src="@{/images/getTweepsSpinner.gif}"/> </p>
                                     		 </div>
-                                             <div class="well">When you click the button above, all you'll do is find people who've tweeted with that hashtag
+                                             <div class="note note-info">When you click the button above, all you'll do is find people who've tweeted with that hashtag
                                              recently. You won't be following anyone just yet.</div>
                                          </div>
                                      </div>
@@ -124,10 +120,10 @@
                        	<div class="row" id="noResultsSection" style="display:none">
                        		<div style="margin-bottom:20px" class="col-md-4">
 			                	<div class="alert alert-danger">
-	                            	<strong>No results!</strong> Sorry, couldn't find anyone tweeting with that hashtag.
+	                            	<strong>No results!</strong> Sorry, couldn't find anyone tweeting with that hashtag or keyword.
 	                            </div>
 	                            <div style="display:flex;justify-content:space-between">
-		                            <a th:href="@{/autofollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Hashtag</button></a>
+		                            <a th:href="@{/autofollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Hashtag/Keyword</button></a>
 		                            <a th:href="@{/blastfollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Dashboard</button></a>
 	                            </div>
                              </div>
@@ -140,9 +136,9 @@
                                  </div>
                              </div>
                              <div class="portlet-body form">
-                                 <div class="well">I found <span id="tweepsCount"></span> people who tweeted with that hashtag and aren't following you.
+                                 <div class="note note-info">I found <span id="tweepsCount"></span> people who tweeted with that search term and aren't following you.
                              	 Select how many of them you want to follow and press the "Follow" button below to begin following them one at a time.</div>
-                                 <div class="well">
+                                 <div class="note note-info">
                             		<strong>Note:</strong> There will be a delay of several seconds between each follow. That's quite intentional.
                             	</div>                             
                              	<form role="form" class="form-horizontal">
@@ -173,7 +169,7 @@
 	                                 </div>
 	                             </div>
 	                             <div class="portlet-body form">
-	                                 <div class="well">Don't close this page while BlastFollow is running. You can work on other tabs, step away from your PC,
+	                                 <div class="note note-info">Don't close this page while BlastFollow is running. You can work on other tabs, step away from your PC,
 	                                 or go grab a cup of coffee. Just leave this page open.
 	                                 </div>
 	                             </div>

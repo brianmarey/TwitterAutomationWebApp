@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>BlastFollow | AutoRefollow</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="Automatically Unfollow Users" name="description"></meta>
+        <meta content="Carey Development, LLC" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!--  <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>-->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title">AutoRefollow</h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    <div>
+                    		<div class="portlet-body" id="messagesSection">
+                    			<th:block th:if="${action == 'operationStopped'}">
+	                    		<div class="note note-danger">
+			                    	<h4 class="block">Stopped</h4>
+			                        <p>The operation was stopped at your request.</p>
+			                    </div>
+			                    </th:block>
+		                    </div>
+		                <div class="portlet light bordered" id="getStartedSection">
+                             <div class="portlet-title">
+                                 <div class="caption">
+                                     <i class="icon-social-twitter font-blue-sharp"></i>
+                                     <span class="caption-subject font-blue-sharp bold uppercase">Practice Good Karma</span>
+                                 </div>
+                             </div>
+                             <div class="portlet-body form">
+                             	<form role="form">
+                                     <div class="form-body">
+                                         <div class="form-group">
+                                         	 <div class="note note-info">This tool allows you to automatically follow people who are following you.</div>
+                                             <div class="alert alert-danger" style="display:none" id="numberWarning">
+                                        			<strong>Number Required!</strong> Please enter a number.
+                                        	 </div>
+                                             <label>Number to Refollow</label>
+                                             <div class="input-group" style="margin-bottom:20px">
+                                                 <input type="text" id="refollowCount" class="form-control" maxlength="3" value="100"/> <label style="text-align:left">(Max: 100)</label>
+                                             </div>
+                                             <div class="input-group" style="margin-bottom:20px;text-align:center" id="getTweepsButtonGroup">
+                                             	<a href="javascript:beginAutoRefollow()"><button type="button" class="btn btn-primary mt-ladda-btn ladda-button" id="beginAutoRefollowButton" data-style="expand-right"><span class="ladda-label">Start Refollowing</span></button></a>
+                                             </div>
+                                             <div class="note note-info" id="pleaseWaitSection" style="display:none">
+                                        		<p style="font-size:14pt">Please Wait... <img style="position:relative;top:-2px" th:src="@{/images/getTweepsSpinner.gif}"/> </p>
+                                    		 </div>
+                                             <div class="note note-info">When you click the button above, you'll start refollowing people who are following you.</div>
+                                         </div>
+                                     </div>
+                                </form>
+                             </div>
+                       	</div>                     	
+						<div id="statusSection" style="display:none">
+	                       	<div class="portlet light bordered">
+	                             <div class="portlet-title">
+	                                 <div class="caption">
+	                                     <i class="icon-social-twitter font-blue-sharp"></i>
+	                                     <span class="caption-subject font-blue-sharp bold uppercase">Commencing</span>
+	                                 </div>
+	                             </div>
+	                             <div class="portlet-body form">
+	                                 <div class="note note-info">Don't close this page while BlastFollow is running. You can work on other tabs, step away from your PC,
+	                                 or go grab a cup of coffee. Just leave this page open.
+	                                 </div>
+	                             </div>
+	                        </div>
+		                    <div class="row" >
+		                        <div class="col-md-4 ">
+		                        	<div class="progress progress-striped active" id="progressBarSection">
+                                        <div class="progress-bar progress-bar-success" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        </div>
+                                    </div>
+                                 	<div id="finishedSection" style="display:none;margin-bottom:20px;">
+			                            <div class="alert alert-success" style="margin-bottom:10px">
+	                                        <strong>Success!</strong> Refollowing complete.
+	                                    </div>
+	                                    <div style="display:flex;justify-content: space-between">
+		                                    <a th:href="@{/autorefollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Another Run</button></a>
+		                                    <a th:href="@{/blastfollow}" style="margin-bottom:5px"><button type="button" class="btn btn-primary">Dashboard</button></a>
+	                                    </div>
+                                    </div>
+		                            <div class="portlet box blue-hoki">
+		                                <div class="portlet-title">
+		                                    <div class="caption">
+		                                        <i class="fa fa-users"></i>Status </div>
+		                                    <div class="actions" id="actionsButton">
+		                                        <a th:href="@{/autorefollow?action=operationStopped}" class="btn btn-default btn-sm">
+		                                            <i class="fa fa-hand-stop-o"></i> Stop </a>
+		                                    </div>
+		                                </div>
+		                                <div class="portlet-body">   
+		                                    <div class="scroller" style="height:200px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="#a1b2bd">
+												<div id="statusArea" class="statusArea">
+													<div id="statusResults"></div>
+													<img th:src="@{/images/ripple.gif}" id="spinnerIcon"/>
+									 			</div>
+											</div>
+		                                </div>
+		                            </div>
+		                        </div>
+	                     	</div>
+                       	</div>
+                    </div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <!-- END FOOTER -->
+        <script th:src="@{/js/twitter.js}" type="text/javascript"></script>
+    </body>
+</html>

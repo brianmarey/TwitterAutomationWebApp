@@ -49,27 +49,169 @@
                                         <span class="title">Dashboard</span>
                                     </a>
                                 </li>
-                                <li class="nav-item start ">
+                                <li class="nav-item start " th:classappend="${autoFollowActive}">
                                     <a th:href="@{/autofollow}" class="nav-link ">
                                         <i class="icon-arrow-up"></i>
                                         <span class="title">AutoFollow</span>
                                     </a>
                                 </li>
-                                <li class="nav-item start ">
+                                <li class="nav-item start " th:classappend="${autoUnfollowActive}">
                                     <a th:href="@{/autounfollow}" class="nav-link ">
                                         <i class="icon-arrow-down"></i>
                                         <span class="title">AutoUnfollow</span>
                                     </a>
                                 </li>
-                                <li class="nav-item start ">
+                                <li class="nav-item start " th:classappend="${autoRefollowActive}">
                                     <a th:href="@{/autorefollow}" class="nav-link ">
                                         <i class="icon-arrow-right"></i>
                                         <span class="title">AutoRefollow</span>
                                     </a>
                                 </li>
+                                <li class="nav-item start " th:classappend="${followFollowersActive}">
+                                    <a th:href="@{/followfollowers}" class="nav-link ">
+                                        <i class="icon-loop"></i>
+                                        <span class="title">Follow Followers</span>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="heading">
+                        	<h3 class="uppercase">Virality</h3>
+                        </li>
+                        <li class="nav-item start " th:classappend="${redditActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="fa fa-reddit"></i>
+                                <span class="title">Reddit</span>
+                                <span class="arrow " th:classappend="${redditArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${redditFunnyImagesActive}">
+                                    <a th:href="@{/redditFunnyImages}" class="nav-link ">
+                                        <i class="icon-emoticon-smile"></i>
+                                        <span class="title">Funny Images</span>
+                                    </a>
+                                </li>
+                             </ul>
+                        </li>
+                        <li class="nav-item start " th:classappend="${chiveActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="fa fa-circle-thin"></i>
+                                <span class="title">The Chive</span>
+                                <span class="arrow " th:classappend="${chiveArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${chiveImagesActive}">
+                                    <a th:href="@{/chiveImages}" class="nav-link ">
+                                        <i class="fa fa-image"></i>
+                                        <span class="title">Images</span>
+                                    </a>
+                                </li>
+                             </ul>
+                        </li>
+                        <li class="nav-item start " th:classappend="${blogsActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="fa fa-rss"></i>
+                                <span class="title">Blogs</span>
+                                <span class="arrow " th:classappend="${blogsArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${viralContentFromBlogsActive}">
+                                    <a th:href="@{/viralContentFromBlogs}" class="nav-link ">
+                                        <i class="fa fa-fire"></i>
+                                        <span class="title">Viral Content</span>
+                                    </a>
+                                </li>
+                             </ul>
+                        </li>
+                        <li class="nav-item start " th:classappend="${twitterActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-social-twitter"></i>
+                                <span class="title">Twitter</span>
+                                <span class="arrow " th:classappend="${twitterArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${twitterViralPhotosActive}">
+                                    <a th:href="@{/viralTweets(category=photo)}" class="nav-link ">
+                                        <i class="fa fa-image"></i>
+                                        <span class="title">Photos</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start " th:classappend="${twitterViralVideosActive}">
+                                    <a th:href="@{/viralTweets(category=video)}" class="nav-link ">
+                                        <i class="fa fa-video-camera"></i>
+                                        <span class="title">Videos</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start " th:classappend="${twitterViralFunnyActive}">
+                                    <a th:href="@{/viralTweets(category=funny)}" class="nav-link ">
+                                        <i class="fa fa-smile-o"></i>
+                                        <span class="title">Funny</span>
+                                    </a>
+                                </li>
+                             </ul>
+                        </li>
+                        <li class="nav-item start " th:classappend="${facebookActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-social-facebook"></i>
+                                <span class="title">Facebook</span>
+                                <span class="arrow " th:classappend="${facebookArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${facebookViralPhotosActive}">
+                                    <a th:href="@{/viralFacebook(category=added_photos)}" class="nav-link ">
+                                        <i class="fa fa-image"></i>
+                                        <span class="title">Photos</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start " th:classappend="${facebookViralVideosActive}">
+                                    <a th:href="@{/viralFacebook(category=added_video)}" class="nav-link ">
+                                        <i class="fa fa-video-camera"></i>
+                                        <span class="title">Videos</span>
+                                    </a>
+                                </li>
+                             </ul>
+                        </li>
+                        
+                        <li class="heading">
+                        	<h3 class="uppercase">Other Tools</h3>
+                        </li>
+                        <li class="nav-item start " th:classappend="${nativeAdsActive}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-book-open"></i>
+                                <span class="title">Native Ads</span>
+                                <span class="arrow " th:classappend="${nativeAdsArrow}"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start " th:classappend="${latestNativeAdsActive}">
+                                    <a th:href="@{/latestNativeAds}" class="nav-link ">
+                                        <i class="icon-calendar"></i>
+                                        <span class="title">Latest</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start " th:classappend="${hottestNativeAdsActive}">
+                                    <a th:href="@{/hottestNativeAds}" class="nav-link ">
+                                        <i class="icon-fire"></i>
+                                        <span class="title">Hottest</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>    
+                        <li class="heading">
+                        	<h3 class="uppercase">Admin</h3>
+                        </li>
+                        <li class="nav-item start ">
+                            <a th:href="@{/contact}" class="nav-link">
+                                <i class="icon-bubbles"></i>
+                                <span class="title">Contact</span>
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a th:href="@{/privacy}" class="nav-link">
+                                <i class="icon-lock"></i>
+                                <span class="title">Privacy</span>
+                            </a>
+                        </li>
+                        <!--  <li class="heading">
                             <h3 class="uppercase">Features</h3>
                         </li>
                         <li class="nav-item  ">
@@ -100,7 +242,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>-->
                     </ul>
                     <!-- END SIDEBAR MENU -->
                     <!-- END SIDEBAR MENU -->

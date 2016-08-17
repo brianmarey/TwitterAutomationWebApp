@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+
+    <head>
+        <meta charset="utf-8"/>
+        <title>BlastFollow | Contact</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="Contact Us at BlastFollow" name="description" />
+        <meta content="Carey Development, LLC" name="author" />
+
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN THEME GLOBAL STYLES -->
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <!-- END THEME GLOBAL STYLES -->
+        <!-- BEGIN THEME LAYOUT STYLES -->
+        <link th:href="@{/assets/layouts/layout3/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout3/css/themes/default.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout3/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <!-- END THEME LAYOUT STYLES -->
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link> 
+        
+        
+        <link th:href="@{/assets/pages/css/about.min.css}" rel="stylesheet" type="text/css" />
+        
+        <script>
+        function submitForm() {
+			$('#contact_form').hide();
+			$('#gears').show();
+			$('#contact_form').submit();
+        }
+        </script>
+        </head>
+    <!-- END HEAD -->
+
+    <body class="page-container-bg-solid">
+		<div th:include="fragments/topmenuheader :: header"></div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <!-- BEGIN PAGE HEAD-->
+                <div class="page-head" style="background-color:#eff3f8;padding-top:40px">
+                    <div class="container">
+                        <!-- BEGIN PAGE TITLE -->
+                        <div class="page-title">
+                            <h1>Contact Us
+                            </h1>
+                        </div>
+                        <!-- END PAGE TITLE -->
+                        <!-- BEGIN PAGE TOOLBAR -->
+                        <div class="page-toolbar">
+                            <!-- BEGIN THEME PANEL -->
+                            <!-- END THEME PANEL -->
+                        </div>
+                        <!-- END PAGE TOOLBAR -->
+                    </div>
+                </div>
+                <!-- END PAGE HEAD-->
+                <!-- BEGIN PAGE CONTENT BODY -->
+                <div class="page-content">
+                    <div class="container">
+                        <!-- BEGIN PAGE CONTENT INNER -->
+                        <div class="page-content-inner">
+                            <div class="row margin-bottom-40">
+								<div class="col-md-6">
+								<th:block th:if="${output != null}">
+									<div class="note note-success">
+                                        <p th:text="${output}"> </p>
+                                    </div>
+								</th:block>
+                                <div class="c-contact">
+                                    <div class="c-content-title-1">
+                                        <h3 class="uppercase">Happy To Hear From You</h3>
+                                        <div class="c-line-left bg-dark"></div>
+                                        <p class="c-font-lowercase">Fill out the form below to reach out to us.</p>
+                                    </div>
+                                    <form th:action="@{/sendForm}" th:object="${contactForm}" method="post" id="contact_form">
+                                        <div class="form-group">
+                                            <input type="text" placeholder="Your Name" th:field="*{name}" class="form-control input-md"/> </div>
+                                        <div class="form-group">
+                                            <input type="text" placeholder="Your Email" th:field="*{email}" class="form-control input-md"/> </div>
+                                        <div class="form-group">
+                                            <textarea rows="8" th:field="*{comment}" name="message" placeholder="Write comment here ..." class="form-control input-md"></textarea>
+                                        </div>
+                                       <button type="button" class="btn btn-primary" onclick="submitForm()">Send</button>
+                                    </form>
+                                    <div id="gears" style="display:none">
+                                    	<img th:src="@{/images/gears.gif}"/>
+                                    </div>
+                                </div>
+								</div>
+                            </div>
+                         </div>
+                        <!-- END PAGE CONTENT INNER -->
+                    </div>
+                </div>
+                <!-- END PAGE CONTENT BODY -->
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+            <!-- BEGIN QUICK SIDEBAR -->
+            <!-- END QUICK SIDEBAR -->
+        </div>
+        <div th:include="fragments/homefooter :: footer"></div>
+    </body>
+</html>

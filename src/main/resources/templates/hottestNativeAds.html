@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>BlastFollow | Hottest Native Ads</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="These native ads appeared on our radar recently" name="description"></meta>
+        <meta content="Carey Development, LLC" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title">Hottest Native Ads</h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    <div class="row">
+	                    <div class="col-md-4 col-lg-4">&nbsp;</div>
+	                    <div class="col-md-4 col-lg-4" style="text-align:center"><span th:text="${showingResults}" style="font-size:14pt;text-align:center"></span></div>
+	                    <div class="col-md-4 col-lg-4" style="margin-bottom:60px">&nbsp;</div>
+                    </div>
+                    <div th:each="data, row: ${nativeAds}" th:with="numList=${ {2,1,0} }" th:if="${row.count % 3 == 0 or row.last}" style="text-align:center" class="row">
+					    <div class="col-md-4 " style="margin-bottom:60px" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.count % 3 == 0}">
+					    	<img style="margin-bottom:10px;max-width:250px;max-height:300px" th:src="${nativeAds[dataIndex].imageUrl}"/><br/>
+					    	<a th:utext="${nativeAds[dataIndex].headline}" th:href="${nativeAds[dataIndex].url}" class="linkText" target="_blank">...</a><br/>
+					    	<span style="fontSize:10pt" th:utext="${nativeAds[dataIndex].adCompany.name}"></span><br/>
+				    		<span style="fontSize:10pt" th:utext="${'Last Seen: ' + nativeAds[dataIndex].lastSeenStr}"></span><br/>
+				    		<span style="fontSize:10pt" th:utext="${'Days Seen: ' + nativeAds[dataIndex].daysSeen}"></span>
+					    </div>
+					    <div class="col-md-4 " style="margin-bottom:60px" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.last} and ${row.count % 3 != 0} and ${num &lt; row.count % 3}">
+					    	<img style="margin-bottom:10px;max-width:250px;max-height:300px" th:src="${nativeAds[dataIndex].imageUrl}"/><br/>
+					    	<a th:utext="${nativeAds[dataIndex].headline}" th:href="${nativeAds[dataIndex].url}" class="linkText" target="_blank"></a><br/>
+					    	<span style="fontSize:10pt" th:utext="${nativeAds[dataIndex].adCompany.name}"></span><br/>
+				    		<span style="fontSize:10pt" th:utext="${'Last Seen: ' + nativeAds[dataIndex].lastSeenStr}"></span><br/>
+				    		<span style="fontSize:10pt" th:utext="${'Days Seen: ' + nativeAds[dataIndex].daysSeen}"></span>
+					    </div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-lg-4">&nbsp;</div>
+						<div class="col-md-4 col-lg-4" style="text-align:center">
+							<span th:if="${isFirst} == false" style="margin-right:20px;font-size:14pt"><a th:href="@{/hottestNativeAds(pageNum=${previousPageNum})}" class="paginationText"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous</a></span>
+							<span th:if="${isLast} == false" style="margin-left:20px;font-size:14pt"><a th:href="@{/hottestNativeAds(pageNum=${nextPageNum})}" class="paginationText">Next <i class="fa fa-arrow-right" aria-hidden="true"></i></a></span>
+						</div>
+						<div class="col-md-4 col-lg-4">&nbsp;</div>
+					</div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <!-- END FOOTER -->
+    </body>
+</html>

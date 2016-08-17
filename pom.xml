@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.careydevelopment</groupId>
   <artifactId>TwitterAutomationWebApp</artifactId>
-  <version>0.9-SNAPSHOT</version>
+  <version>1.10-SNAPSHOT</version>
   <packaging>war</packaging>	
   
   
@@ -13,6 +13,29 @@
   </parent>
   
     <dependencies>
+          <dependency>
+        	<groupId>edu.uci.ics</groupId>
+        	<artifactId>crawler4j</artifactId>
+        	<version>4.2</version>
+    	</dependency>
+    
+       <dependency>
+           <groupId>com.careydevelopment</groupId>
+           <artifactId>twitter-laughs</artifactId>
+           <version>[0.2,)</version>
+       </dependency>
+       
+    	  <dependency>
+    		<groupId>com.sdicons.jsontools</groupId>
+    		<artifactId>jsontools-core</artifactId>
+    		<version>1.7</version>
+		</dependency>
+        <dependency>
+			<groupId>com.careydevelopment</groupId>
+			<artifactId>mail-support</artifactId>
+			<version>[1.0,)</version>
+		</dependency>
+		
         <dependency>
 	       <groupId>com.careydevelopment</groupId>
 	       <artifactId>properties-support</artifactId>
@@ -107,7 +130,7 @@
 </dependencyManagement>
   
   <build>
-    <finalName>TwitterAutomation</finalName>
+    <finalName>ROOT</finalName>
     
     <plugins>
       <plugin>

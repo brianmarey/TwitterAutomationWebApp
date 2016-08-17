@@ -7,12 +7,22 @@
     </encoder>
   </appender>
 	
-	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-	    <!-- Name of the file where the log messages are written -->
-	    <file>/etc/tomcat8/logs/twitterautomation.log</file>
-	    <encoder>
-	      <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
-	    </encoder>
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	   <file>/etc/tomcat8/logs/blastfollow.log</file>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>/etc/tomcat8/logs/blastfollow.%i.log.zip</fileNamePattern>
+      <minIndex>1</minIndex>
+      <maxIndex>3</maxIndex>
+    </rollingPolicy>
+
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>5MB</maxFileSize>
+    </triggeringPolicy>
+    <encoder>
+      <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+
     </appender>
 	
 

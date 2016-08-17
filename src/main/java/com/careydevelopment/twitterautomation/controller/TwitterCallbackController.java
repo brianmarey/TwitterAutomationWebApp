@@ -1,11 +1,7 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.careydevelopment.twitterautomation.domain.Tip;
-import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
-import com.careydevelopment.twitterautomation.jpa.repository.TwitterUserRepository;
+import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
-import com.careydevelopment.twitterautomation.util.TipsHelper;
 
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
@@ -31,14 +22,14 @@ import twitter4j.auth.RequestToken;
 public class TwitterCallbackController {
 	
 	@Autowired
-	TwitterUserRepository twitterUserRepository;
+	private LoginService loginService;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TwitterCallbackController.class);
  
 	
     @RequestMapping("/twitterCallback")
     public String twitterCallback(@RequestParam(value="oauth_verifier", required=true) String oauthVerifier,
-    		HttpServletRequest request, Model model) {
+    		HttpServletRequest request, HttpServletResponse response, Model model) {
 
     	//get the objects from the session
     	Twitter twitter = (Twitter) request.getSession().getAttribute(Constants.TWITTER);
@@ -48,56 +39,13 @@ public class TwitterCallbackController {
         	//get the access token
             AccessToken token = twitter.getOAuthAccessToken(requestToken, oauthVerifier);
             
-            handleLogin(twitter,model);
-            
-            //remove the request token from the session
-            request.getSession().removeAttribute("requestToken");
-            
-            //add the access token to the session
-            request.getSession().setAttribute(Constants.LOGIN_KEY, token.getToken());
-            
-            User user = twitter.showUser(twitter.getId());
-            request.getSession().setAttribute(Constants.TWITTER_USER, user);
-            
-            //setDisplayAttributes(model,user);
+            loginService.login(twitter,model,request,response, token);
         } catch (Exception e) {
             LOGGER.error("Problem getting token!",e);
             return "redirect:notLoggedIn";
         }
         
         return "redirect:blastfollow";
-    }
-    
-    
-    private void handleLogin(Twitter twitter, Model model) throws TwitterException {
-    	//just check to make sure we're happy
-        String screenName = twitter.getScreenName();
-        LOGGER.info("My screen name is " + screenName);
-        
-        TwitterUser u = twitterUserRepository.findByScreenName(screenName);
-        LOGGER.info("Twitter user is " + u);
-        if (u == null) {
-        	handleNewUser(model,screenName);
-        } else {
-        	handleUpdateUser(model,u);
-        }
-    }
-    
-    
-    private void handleNewUser(Model model, String screenName) {
-    	TwitterUser u = new TwitterUser();
-    	u.setScreenName(screenName);
-    	u.setLastLogin(new Date());
-    	u.setNewUser(true);
-    	twitterUserRepository.save(u);
-    	model.addAttribute(u);
-    }
-    
-    
-    private void handleUpdateUser(Model model, TwitterUser user) {
-    	user.setLastLogin(new Date());
-    	twitterUserRepository.save(user);
-    	model.addAttribute("twitterUser",user);
     }
     
     

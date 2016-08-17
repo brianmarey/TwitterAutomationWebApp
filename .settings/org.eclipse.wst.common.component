@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="TwitterAutomationWebApp">
+    <wb-module deploy-name="ROOT">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="twitter-laughs-0.2.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/TwitterLaughs/TwitterLaughs">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mail-support-1.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/MailSupport/MailSupport">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="properties-support-1.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/PropertiesSupport/PropertiesSupport">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/TwitterAutomationWebApp/target/classes"/>
-        <property name="context-root" value="TwitterAutomation"/>
+        <property name="context-root" value="ROOT"/>
     </wb-module>
 </project-modules>

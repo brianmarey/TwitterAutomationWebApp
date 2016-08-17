@@ -1,12 +1,15 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,6 +27,9 @@ public class TwitterUser {
 
 	@Column(name = "last_login")
 	private Date lastLogin;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	public List<Role> roles;
 
 	@Transient
 	private boolean newUser = false;
@@ -61,5 +67,13 @@ public class TwitterUser {
 
 	public void setNewUser(boolean newUser) {
 		this.newUser = newUser;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 }
