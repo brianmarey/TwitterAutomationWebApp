@@ -5,11 +5,11 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
-import java.util.Base64;
 import java.util.Properties;
 
 import javax.crypto.Cipher;
 
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +50,7 @@ public class EncryptionService {
 
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] encryptedBytes = cipher.doFinal(s.getBytes());
-            encrypted = new String(Base64.getEncoder().encode(encryptedBytes));
+            //encrypted = new String(Base64.getEncoder().encode(encryptedBytes));
  		} catch (Exception e) {
 			LOGGER.error("Problem encrypting!",e);
 		}
@@ -75,9 +75,9 @@ public class EncryptionService {
 			PrivateKey privateKey = (PrivateKey)privateKeyStore.getKey("careydevelopment", "Israel1!1!".toCharArray());
 			
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] ciphertextBytes = Base64.getDecoder().decode(s.getBytes());
-            byte[] decryptedBytes = cipher.doFinal(ciphertextBytes);
-            decrypted = new String(decryptedBytes);
+            //byte[] ciphertextBytes = Base64.getDecoder().decode(s.getBytes());
+            //byte[] decryptedBytes = cipher.doFinal(ciphertextBytes);
+            //decrypted = new String(decryptedBytes);
         } catch (Exception e) {
 			LOGGER.error("Problem trying to decrypt!",e);
 		}

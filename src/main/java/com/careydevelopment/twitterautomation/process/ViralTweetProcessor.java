@@ -47,7 +47,7 @@ public class ViralTweetProcessor extends Thread {
 	
 	private void processFunnyTweets() {
 		try {
-			List<Status> tweets = TwitterLaughs.getInstance().getLaughs();
+			/*List<Status> tweets = TwitterLaughs.getInstance().getLaughs();
 			
 			for (Status tweet : tweets) {
 				ViralTweet foundTweet = viralTweetRepository.findByTweetId(tweet.getId());
@@ -60,7 +60,7 @@ public class ViralTweetProcessor extends Thread {
 					foundTweet.setRetweets(tweet.getRetweetCount());
 					viralTweetRepository.save(foundTweet);
 				}
-			}
+			}*/
 		} catch (Exception e) {
 			LOGGER.error("Problem getting funny tweets!",e);
 		}

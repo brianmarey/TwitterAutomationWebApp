@@ -57,7 +57,7 @@ public class ScheduleTasksConfig {
 	@Autowired
 	ViralFacebookRepository viralFacebookRepository;
 
-	@Scheduled(fixedDelay=21600000)
+/*	@Scheduled(fixedDelay=21600000)
 	void getFunnyImagesFromReddit() {		
 		taskExecutor.execute(new Thread(){
 			public void run() {
@@ -157,5 +157,5 @@ public class ScheduleTasksConfig {
 		ViralFacebookProcessor proc = new ViralFacebookProcessor(facebookService,viralFacebookRepository);
 		LOGGER.info("it is " + proc);
 		taskExecutor.execute(proc);		
-	}
+	}*/
 }

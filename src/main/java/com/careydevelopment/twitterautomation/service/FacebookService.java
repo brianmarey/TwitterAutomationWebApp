@@ -115,9 +115,10 @@ public class FacebookService {
 	
 	
 	private String getAccessToken() throws PropertiesFactoryException {
-		Properties props = PropertiesFactory.getProperties(PropertiesFile.FACEBOOK_PROPERTIES);
+		/*Properties props = PropertiesFactory.getProperties(PropertiesFile.FACEBOOK_PROPERTIES);
 		String accessToken = props.getProperty("access.token");
-		return accessToken;
+		return accessToken;*/
+		return "";
 	}
 	
 	
