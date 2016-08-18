@@ -3,7 +3,9 @@ package com.careydevelopment.twitterautomation.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.careydevelopment.twitterautomation.domain.CompetitorSearch;
 import com.careydevelopment.twitterautomation.domain.DomainRank;
+import com.careydevelopment.twitterautomation.domain.DomainSearchKeyword;
 
 public class SemRushParser {
 	
@@ -54,5 +56,61 @@ public class SemRushParser {
 		
 		return rank;
 	}
+	
+	
+	public static List<DomainSearchKeyword> getDomainSearchKeywords(String response, String type) {
+		List<DomainSearchKeyword> keywords = new ArrayList<DomainSearchKeyword>();
+		
+		List<List<String>> vals = getList(response);
+		
+		if (vals.size() > 0) {
+			for (List<String> list : vals) {
+				if (list.size() > 10) {
+					DomainSearchKeyword keyword = new DomainSearchKeyword();
+					keyword.setType(type);
+					keyword.setCompetition(new Float(list.get(9)));
+					keyword.setCpc(new Float(list.get(5)));
+					keyword.setKeyword(list.get(0));
+					keyword.setNumberOfResults(new Integer(list.get(10)));
+					keyword.setPosition(new Integer(list.get(1)));
+					keyword.setPositionDifference(new Integer(list.get(3)));
+					keyword.setPreviousPosition(new Integer(list.get(2)));
+					keyword.setSearchVolume(new Integer(list.get(4)));
+					keyword.setTrafficCostPercent(new Float(list.get(8)));
+					keyword.setTrafficPercent(new Float(list.get(7)));
+					keyword.setUrl(list.get(6));
+					
+					keywords.add(keyword);
+				}				
+			}
+		}
+		
+		return keywords;
+	}
 
+	
+	public static List<CompetitorSearch> getCompetitors(String response, String type) {
+		List<CompetitorSearch> comps = new ArrayList<CompetitorSearch>();
+		
+		List<List<String>> vals = getList(response);
+		
+		if (vals.size() > 0) {
+			for (List<String> list : vals) {
+				if (list.size() > 5) {
+					CompetitorSearch comp = new CompetitorSearch();
+					comp.setType(type);
+					comp.setCommonKeywords(new Integer(list.get(2)));
+					comp.setCompetitorRelevance(new Float(list.get(1)));
+					comp.setDomain(list.get(0));
+					comp.setTypeCost(new Float(list.get(5)));
+					comp.setTypeKeywords(new Integer(list.get(3)));
+					comp.setTypeTraffic(new Integer(list.get(4)));
+					
+					comps.add(comp);
+				}				
+			}
+		}
+		
+		return comps;
+	}
 }
