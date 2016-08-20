@@ -45,7 +45,7 @@ public class TwitterCallbackController {
             return "redirect:notLoggedIn";
         }
         
-        return "redirect:blastfollow";
+        return "redirect:seoplayhouse";
     }
     
     
@@ -55,7 +55,7 @@ public class TwitterCallbackController {
     	//String screenName = twitter.getScreenName();
     	//model.addAttribute("screenName",screenName);
     	
-    	return "blastfollow";
+    	return "seoplayhouse";
     }
 
 }

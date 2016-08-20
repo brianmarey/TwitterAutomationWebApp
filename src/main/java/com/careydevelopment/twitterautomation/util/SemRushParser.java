@@ -6,6 +6,8 @@ import java.util.List;
 import com.careydevelopment.twitterautomation.domain.CompetitorSearch;
 import com.careydevelopment.twitterautomation.domain.DomainRank;
 import com.careydevelopment.twitterautomation.domain.DomainSearchKeyword;
+import com.careydevelopment.twitterautomation.domain.KeywordOverview;
+import com.careydevelopment.twitterautomation.domain.SearchResult;
 
 public class SemRushParser {
 	
@@ -113,4 +115,51 @@ public class SemRushParser {
 		
 		return comps;
 	}
+	
+	
+	public static List<KeywordOverview> getKeywordOverview(String response) {
+		List<KeywordOverview> keys = new ArrayList<KeywordOverview>();
+		
+		List<List<String>> vals = getList(response);
+		
+		if (vals.size() > 0) {
+			for (List<String> list : vals) {
+				if (list.size() > 4) {
+					KeywordOverview key = new KeywordOverview();
+					key.setCompetition(new Float(list.get(3)));
+					key.setCpc(new Float(list.get(2)));
+					key.setKeyword(list.get(0));
+					key.setNumberOfResults(new Integer(list.get(4)));
+					key.setSearchVolume(new Integer(list.get(1)));
+					
+					keys.add(key);
+				}				
+			}
+		}
+		
+		return keys;
+	}
+	
+	
+	public static List<SearchResult> getSearchResults(String response, String type) {
+		List<SearchResult> searches = new ArrayList<SearchResult>();
+		
+		List<List<String>> vals = getList(response);
+		
+		if (vals.size() > 0) {
+			for (List<String> list : vals) {
+				if (list.size() > 1) {
+					SearchResult search = new SearchResult();
+					search.setType(type);
+					search.setDomain(list.get(0));
+					search.setUrl(list.get(1));
+					
+					searches.add(search);
+				}				
+			}
+		}
+		
+		return searches;
+	}
+	
 }

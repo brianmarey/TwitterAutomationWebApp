@@ -140,5 +140,24 @@ public class FacebookService {
 		
 		return builder.toString();
 	}
+	
+	
+	public static void main(String[] args) {
+		try {
+			Properties props = PropertiesFactory.getProperties(PropertiesFile.GOOGLE_PROPERTIES);
+			String apiKey = props.getProperty("api.key");
+			String feedUrl = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=https://brianmcarey.com&strategy=mobile&key=" + apiKey;
+			JsonParser reader = new JsonParser(feedUrl);
+			JSONObject json = reader.getJson();
+			JSONObject ruleGroups =(JSONObject)json.get("ruleGroups");
+			System.err.println(ruleGroups);
+			JSONObject speed = (JSONObject)ruleGroups.get("SPEED");
+			JSONInteger speedScore = (JSONInteger)speed.get("score");
+			JSONObject usability = (JSONObject)ruleGroups.get("USABILITY");
+			JSONInteger usabilityScore = (JSONInteger)usability.get("score");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
