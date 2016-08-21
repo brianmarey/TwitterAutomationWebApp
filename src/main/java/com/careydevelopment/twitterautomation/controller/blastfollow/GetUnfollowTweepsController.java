@@ -1,4 +1,4 @@
-package com.careydevelopment.twitterautomation.controller;
+package com.careydevelopment.twitterautomation.controller.blastfollow;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

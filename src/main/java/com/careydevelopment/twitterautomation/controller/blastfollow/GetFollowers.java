@@ -1,4 +1,4 @@
-package com.careydevelopment.twitterautomation.controller;
+package com.careydevelopment.twitterautomation.controller.blastfollow;
 
 import java.util.ArrayList;
 import java.util.List;

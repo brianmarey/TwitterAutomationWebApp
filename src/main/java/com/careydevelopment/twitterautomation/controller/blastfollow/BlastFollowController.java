@@ -1,4 +1,4 @@
-package com.careydevelopment.twitterautomation.controller;
+package com.careydevelopment.twitterautomation.controller.blastfollow;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

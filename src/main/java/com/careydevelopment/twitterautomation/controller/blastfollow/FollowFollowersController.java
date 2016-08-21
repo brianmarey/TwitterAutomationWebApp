@@ -1,7 +1,5 @@
-package com.careydevelopment.twitterautomation.controller;
+package com.careydevelopment.twitterautomation.controller.blastfollow;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,25 +13,25 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.careydevelopment.propertiessupport.PropertiesFactory;
+import com.careydevelopment.propertiessupport.PropertiesFile;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
-public class AutoUnfollowController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AutoUnfollowController.class);
-	
-	private static final String LOCAL_HOST_FILE = "/etc/tomcat8/resources/localhost.properties";
+public class FollowFollowersController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(FollowFollowersController.class);
 	
 	@Autowired
 	LoginService loginService;
 	
-    @RequestMapping("/autounfollow")
-    public String autounfollow(@RequestParam(value="action", required=false) String action, 
+    @RequestMapping("/followfollowers")
+    public String autofollow(@RequestParam(value="action", required=false) String action, 
     	HttpServletRequest request, Model model,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
-    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) {
+    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
     	
     	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
     	
@@ -54,17 +52,18 @@ public class AutoUnfollowController {
     	if (!RoleHelper.isAuthorized(user, "Basic")) {
     		return "redirect:notAuthorized";
     	}
-
+    	
     	model.addAttribute("localhost",getLocalHostPrefix());
+    	
     	model.addAttribute("blastFollowActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("autoUnfollowActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("followFollowersActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("blastFollowArrow", Constants.TWISTIE_OPEN);
     	
     	if (action != null) {
     		model.addAttribute("action",action);
     	}
     	
-        return "autounfollow";
+        return "followfollowers";
     }
     
     
@@ -73,13 +72,7 @@ public class AutoUnfollowController {
      */
     private String getLocalHostPrefix() {
     	try {
-	    	Properties props = new Properties();
-	    	
-	    	File file = new File(LOCAL_HOST_FILE);
-	    	FileInputStream inStream = new FileInputStream(file);
-	    	
-	    	props.load(inStream);
-	    	
+    		Properties props = PropertiesFactory.getProperties(PropertiesFile.LOCALHOST_PROPERTIES);
 	    	String localHostPrefix = props.getProperty("localhost.prefix");
 	    	return localHostPrefix;
     	} catch (Exception e) {

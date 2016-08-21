@@ -1,4 +1,4 @@
-package com.careydevelopment.twitterautomation.controller;
+package com.careydevelopment.twitterautomation.controller.blastfollow;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,15 +21,15 @@ import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
-public class AutoRefollowController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AutoRefollowController.class);
+public class AutoUnfollowController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AutoUnfollowController.class);
 	
 	private static final String LOCAL_HOST_FILE = "/etc/tomcat8/resources/localhost.properties";
 	
 	@Autowired
 	LoginService loginService;
 	
-    @RequestMapping("/autorefollow")
+    @RequestMapping("/autounfollow")
     public String autounfollow(@RequestParam(value="action", required=false) String action, 
     	HttpServletRequest request, Model model,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
@@ -57,14 +57,14 @@ public class AutoRefollowController {
 
     	model.addAttribute("localhost",getLocalHostPrefix());
     	model.addAttribute("blastFollowActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("autoRefollowActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("autoUnfollowActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("blastFollowArrow", Constants.TWISTIE_OPEN);
     	
     	if (action != null) {
     		model.addAttribute("action",action);
     	}
     	
-        return "autorefollow";
+        return "autounfollow";
     }
     
     
@@ -83,7 +83,8 @@ public class AutoRefollowController {
 	    	String localHostPrefix = props.getProperty("localhost.prefix");
 	    	return localHostPrefix;
     	} catch (Exception e) {
-    		LOGGER.error("Problem reading localhost file!",e);
+    		e.printStackTrace();
+    		LOGGER.error("Problem reading localhost file!");
     		throw new RuntimeException("Problem reading localhost file!");
     	}
     }

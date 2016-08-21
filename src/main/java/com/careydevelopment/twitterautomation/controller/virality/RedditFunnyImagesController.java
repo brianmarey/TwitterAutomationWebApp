@@ -1,4 +1,4 @@
-package com.careydevelopment.twitterautomation.controller;
+package com.careydevelopment.twitterautomation.controller.virality;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.twitterautomation.jpa.entity.RedditImage;
-import com.careydevelopment.twitterautomation.jpa.repository.CalenderUtil;
 import com.careydevelopment.twitterautomation.jpa.repository.RedditImageRepository;
+import com.careydevelopment.twitterautomation.util.CalenderUtil;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.PaginationHelper;
 

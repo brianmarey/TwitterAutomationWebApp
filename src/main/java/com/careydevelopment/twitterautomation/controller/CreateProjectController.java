@@ -20,14 +20,16 @@ import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
+import twitter4j.Twitter;
+
 @Controller
-public class FollowFollowersController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(FollowFollowersController.class);
+public class CreateProjectController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CreateProjectController.class);
 	
 	@Autowired
 	LoginService loginService;
 	
-    @RequestMapping("/followfollowers")
+    @RequestMapping("/createProject")
     public String autofollow(@RequestParam(value="action", required=false) String action, 
     	HttpServletRequest request, Model model,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
@@ -52,34 +54,7 @@ public class FollowFollowersController {
     	if (!RoleHelper.isAuthorized(user, "Basic")) {
     		return "redirect:notAuthorized";
     	}
-    	
-    	model.addAttribute("localhost",getLocalHostPrefix());
-    	
-    	model.addAttribute("blastFollowActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("followFollowersActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("blastFollowArrow", Constants.TWISTIE_OPEN);
-    	
-    	if (action != null) {
-    		model.addAttribute("action",action);
-    	}
-    	
-        return "followfollowers";
+    	    	
+        return "createProject";
     }
-    
-    
-    /**
-     * Necessary to prevent cross-domain problems with AJAX
-     */
-    private String getLocalHostPrefix() {
-    	try {
-    		Properties props = PropertiesFactory.getProperties(PropertiesFile.LOCALHOST_PROPERTIES);
-	    	String localHostPrefix = props.getProperty("localhost.prefix");
-	    	return localHostPrefix;
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		LOGGER.error("Problem reading localhost file!");
-    		throw new RuntimeException("Problem reading localhost file!");
-    	}
-    }
-    
 }

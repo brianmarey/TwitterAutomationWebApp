@@ -1,8 +1,5 @@
-package com.careydevelopment.twitterautomation.controller;
+package com.careydevelopment.twitterautomation.controller.blastfollow;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,79 +11,61 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
-import com.careydevelopment.twitterautomation.domain.Tip;
-import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
-import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
 import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
-import com.careydevelopment.twitterautomation.util.TipsHelper;
 
 import twitter4j.Twitter;
-import twitter4j.User;
 
 @Controller
-public class SeoPlayhouseController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(SeoPlayhouseController.class);
+public class AutoFollowController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AutoFollowController.class);
 	
 	@Autowired
-	private LoginService loginService;
-		
-    @RequestMapping("/seoplayhouse")
-    public String blastfollow(HttpServletRequest request, Model model, 
-    		@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
-        	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) {    	
+	LoginService loginService;
+	
+    @RequestMapping("/autofollow")
+    public String autofollow(@RequestParam(value="action", required=false) String action, 
+    	HttpServletRequest request, Model model,
+    	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
+    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
     	
-    	User user = (User)request.getSession().getAttribute(Constants.TWITTER_USER);
-
+    	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
+    	
     	if (user == null) {
     		if (!accessToken.equals("") && !accessTokenSecret.equals("")) {
         		//this user has cookies and might be able to login
         		try {
-        			Twitter twitter = loginService.login(model, request, accessToken, accessTokenSecret);
-        			user = twitter.showUser(twitter.getId());
+        			loginService.login(model, request, accessToken, accessTokenSecret);
+        			user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
         		} catch (Exception e) {
         			return "redirect:notLoggedIn";
         		}
         	} else {        	
         		return "redirect:notLoggedIn";		
-        	}
+        	}    	
     	}
 
-    	TwitterUser twitterUser = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
-    	
-    	if (!RoleHelper.isAuthorized(twitterUser, "Basic")) {
+    	if (!RoleHelper.isAuthorized(user, "Basic")) {
     		return "redirect:notAuthorized";
     	}
     	
     	model.addAttribute("localhost",getLocalHostPrefix());
+    	
     	model.addAttribute("blastFollowActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("dashboardActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("autoFollowActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("blastFollowArrow", Constants.TWISTIE_OPEN);
-    
-    	setDisplayAttributes(model,user);
     	
+    	if (action != null) {
+    		model.addAttribute("action",action);
+    	}
     	
-        return "seoplayhouse";
-    }
-    
-    
-    private void setDisplayAttributes(Model model, User user) {
-    	DecimalFormat df = new DecimalFormat("###.##");
-    	df.setRoundingMode(RoundingMode.FLOOR);
-
-    	double ratio = ((double)user.getFollowersCount())/((double)user.getFriendsCount());
-    	
-    	String ratioS = df.format(ratio);
-    	model.addAttribute("ratio",ratioS);
-    	
-    	TipsHelper helper = new TipsHelper(user);
-    	List<Tip> tips = helper.getTips();
-    	model.addAttribute("tips",tips);
+        return "autofollow";
     }
     
     

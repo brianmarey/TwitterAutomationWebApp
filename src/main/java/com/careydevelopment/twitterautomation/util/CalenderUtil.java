@@ -1,4 +1,4 @@
-package com.careydevelopment.twitterautomation.jpa.repository;
+package com.careydevelopment.twitterautomation.util;
 
 import java.util.Calendar;
 import java.util.Date;
