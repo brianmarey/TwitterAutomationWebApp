@@ -55,6 +55,6 @@ public class CreateProjectController {
     		return "redirect:notAuthorized";
     	}
     	    	
-        return "createProject";
+        return "createaproject";
     }
 }
