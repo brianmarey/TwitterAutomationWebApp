@@ -1,32 +1,19 @@
 package com.careydevelopment.configuration;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.careydevelopment.twitterautomation.domain.Blog;
-import com.careydevelopment.twitterautomation.jpa.entity.ChiveImage;
-import com.careydevelopment.twitterautomation.jpa.entity.RedditImage;
-import com.careydevelopment.twitterautomation.jpa.entity.ViralContent;
 import com.careydevelopment.twitterautomation.jpa.repository.ChiveImageRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.RedditImageRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralContentRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralFacebookRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralTweetRepository;
-import com.careydevelopment.twitterautomation.process.ViralFacebookProcessor;
-import com.careydevelopment.twitterautomation.process.ViralTweetProcessor;
-import com.careydevelopment.twitterautomation.reader.BlogReader;
-import com.careydevelopment.twitterautomation.reader.ChiveReader;
-import com.careydevelopment.twitterautomation.reader.RedditImageReader;
 import com.careydevelopment.twitterautomation.service.FacebookService;
 import com.careydevelopment.twitterautomation.service.TwitterService;
-import com.careydevelopment.twitterautomation.util.BlogHelper;
 
 @Configuration
 @EnableScheduling

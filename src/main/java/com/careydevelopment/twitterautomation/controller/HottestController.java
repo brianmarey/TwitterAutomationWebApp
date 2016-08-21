@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.twitterautomation.jpa.entity.DomainAd;
 import com.careydevelopment.twitterautomation.jpa.entity.NativeAd;
-import com.careydevelopment.twitterautomation.jpa.repository.CalenderUtil;
 import com.careydevelopment.twitterautomation.jpa.repository.DomainAdRepository;
+import com.careydevelopment.twitterautomation.util.CalenderUtil;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.NativeAdUtil;
 import com.careydevelopment.twitterautomation.util.PaginationHelper;

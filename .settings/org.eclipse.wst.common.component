@@ -7,6 +7,12 @@
         <dependent-module archiveName="twitter-laughs-0.2.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/TwitterLaughs/TwitterLaughs">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="ip-location-reader-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/IPLocationReader/IPLocationReader">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="json-parser-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/JSONParser/JSONParser">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="mail-support-1.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/MailSupport/MailSupport">
             <dependency-type>uses</dependency-type>
         </dependent-module>

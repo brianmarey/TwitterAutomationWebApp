@@ -1,17 +1,18 @@
 package com.careydevelopment.twitterautomation.util;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class UrlHelper {
@@ -159,6 +160,48 @@ public class UrlHelper {
 		}
 		
 		return imageUrl;
+	}
+	
+	
+	public static String sendPost(String postUrl) throws MalformedURLException, IOException {
+		OutputStreamWriter out = null;
+		InputStream is =null;
+		String response = "";
+		
+		try {
+			URL url = new URL(postUrl);
+			HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+			httpCon.setDoOutput(true);
+			httpCon.setRequestMethod("POST");
+			httpCon.setRequestProperty("Accept", "application/json");
+			out = new OutputStreamWriter(httpCon.getOutputStream());
+			
+			is = httpCon.getInputStream();
+		    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		    
+		    String line = null;
+		    StringBuffer sb = new StringBuffer();
+		    while((line = br.readLine() ) != null) {
+		        sb.append(line);
+		    }
+		    httpCon.disconnect();
+		    
+		    response = sb.toString();
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (Exception e) {}
+			}
+			
+			if (is != null) {
+				try {
+					is.close();
+				} catch (Exception e) {}
+			}
+		}
+	    
+	    return response;
 	}
 
 }
