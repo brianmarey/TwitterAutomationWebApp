@@ -1,7 +1,5 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.util.Properties;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -10,17 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.careydevelopment.propertiessupport.PropertiesFactory;
-import com.careydevelopment.propertiessupport.PropertiesFile;
+import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
+import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
-
-import twitter4j.Twitter;
 
 @Controller
 public class CreateProjectController {
@@ -29,9 +26,8 @@ public class CreateProjectController {
 	@Autowired
 	LoginService loginService;
 	
-    @RequestMapping("/createProject")
-    public String autofollow(@RequestParam(value="action", required=false) String action, 
-    	HttpServletRequest request, Model model,
+    @RequestMapping(value="/createProject", method=RequestMethod.GET)
+    public String createProject(HttpServletRequest request, Model model,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
     	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
     	
@@ -55,6 +51,35 @@ public class CreateProjectController {
     		return "redirect:notAuthorized";
     	}
     	    	
+    	Project project = new Project();
+    	model.addAttribute("project",project);
+    	
+        return "createaproject";
+    }
+    
+    
+    @RequestMapping(value="/createProject", method=RequestMethod.POST)
+    public String createProjectSubmit(@ModelAttribute Project project,HttpServletRequest request, Model model,
+    	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
+    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
+    	
+    	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
+    	
+    	if (user == null) {
+    		return "redirect:notLoggedIn";		
+    	}
+
+    	if (!RoleHelper.isAuthorized(user, "Basic")) {
+    		return "redirect:notAuthorized";
+    	}
+    	    	
+    	System.err.println("project name is " + project.getName());
+    	String captchaResponse = request.getParameter("g-recaptcha-response");
+    	System.err.println("Captcha response is " + captchaResponse);
+    	
+    	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(captchaResponse);
+    	System.err.println("Passed is " + passedCaptcha);
+    	
         return "createaproject";
     }
 }
