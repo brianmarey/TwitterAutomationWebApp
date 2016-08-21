@@ -36,7 +36,13 @@
            <artifactId>twitter-laughs</artifactId>
            <version>[0.2,)</version>
        </dependency>
-       
+
+       <dependency>
+           <groupId>com.careydevelopment</groupId>
+           <artifactId>ip-location-reader</artifactId>
+           <version>[1.0,)</version>
+       </dependency>
+              
     	  <dependency>
     		<groupId>com.sdicons.jsontools</groupId>
     		<artifactId>jsontools-core</artifactId>

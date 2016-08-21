@@ -24,6 +24,9 @@
         <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
         <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
         <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+        
+        <!-- for captcha -->
+        <script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
     <!-- END HEAD -->
 
@@ -60,13 +63,25 @@
                     
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
-                        <form action="#" class="form-horizontal form-bordered">
+                        <form action="/createProjectSubmit" method="POST" class="form-horizontal form-bordered">
                             <div class="form-body">
                                 <div class="form-group">
                                     <label class="control-label col-md-3">Project Name</label>
                                     <div class="col-md-4">
                                         <input type="text" class="form-control" maxlength="32" name="defaultconfig" id="maxlength_defaultconfig"/>
                                         <span class="help-block"> Enter a name to describe your project. </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">&nbsp;</label>
+                                    <div class="col-md-4">
+                                    	<div class="g-recaptcha" data-sitekey="6LdjHygTAAAAAJcDHCTCFJbsNLRGghS3ua43t1nF"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">&nbsp;</label>
+                                    <div class="col-md-4">
+                                    	<button type="submit" class="btn btn-primary" style="margin-bottom:5px">Create Project</button>
                                     </div>
                                 </div>
                              </div>

@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.careydevelopment.ipreader.IPLocation;
+import com.careydevelopment.ipreader.IPLocationException;
+import com.careydevelopment.ipreader.IPLocationReader;
 import com.careydevelopment.twitterautomation.jpa.entity.Role;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.RoleRepository;
@@ -85,7 +88,23 @@ public class LoginService {
 	}
 	
 	
+	private void setIpAddress(Twitter twitter, HttpServletRequest request) throws TwitterException {
+    	String ipAddress = null;
+    	
+    	try {
+        	IPLocation ipLocation = IPLocationReader.getIPLocation();    		
+        	ipAddress = ipLocation.getIp();
+        	request.getSession().setAttribute(Constants.IP_ADDRESS, ipAddress);
+    	} catch (Exception ie) {
+    		LOGGER.error("Problem getting IP address for user " + twitter.getScreenName(),ie);
+    	}    	
+	}
+	
+	
     private void handleLogin(Twitter twitter, Model model, HttpServletRequest request) throws TwitterException {
+    	//set the IP Address in the session
+    	setIpAddress(twitter,request);
+    	
     	//just check to make sure we're happy
         String screenName = twitter.getScreenName();
         LOGGER.info(screenName + " has logged on");

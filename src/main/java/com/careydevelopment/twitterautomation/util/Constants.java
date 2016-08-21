@@ -12,6 +12,5 @@ public interface Constants {
 	public static final int MAX_FOLLOW_SIZE = 100;
 	public static final int RESULTS_PER_PAGE = 12;
 	public static final int COOKIE_LIFE = 2592000;
-	
-	
+	public static final String IP_ADDRESS = "localIpAddress";
 }
