@@ -1,14 +1,16 @@
 package com.careydevelopment.twitterautomation.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -59,7 +61,8 @@ public class CreateProjectController {
     
     
     @RequestMapping(value="/createProject", method=RequestMethod.POST)
-    public String createProjectSubmit(@ModelAttribute Project project,HttpServletRequest request, Model model,
+    public String createProjectSubmit(@Valid Project project, BindingResult bindingResult,
+    	HttpServletRequest request, Model model,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
     	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
     	
@@ -69,17 +72,17 @@ public class CreateProjectController {
     		return "redirect:notLoggedIn";		
     	}
 
-    	if (!RoleHelper.isAuthorized(user, "Basic")) {
+    	if (!RoleHelper.isAuthorized(user, Constants.AUTHORIZATION_BASIC)) {
     		return "redirect:notAuthorized";
     	}
+    	
+    	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
+    	if (!passedCaptcha) model.addAttribute("captchaFail", true);
+    	
+        if (bindingResult.hasErrors() || !passedCaptcha) {
+            return "createaproject";
+        }
     	    	
-    	System.err.println("project name is " + project.getName());
-    	String captchaResponse = request.getParameter("g-recaptcha-response");
-    	System.err.println("Captcha response is " + captchaResponse);
-    	
-    	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(captchaResponse);
-    	System.err.println("Passed is " + passedCaptcha);
-    	
         return "createaproject";
     }
 }

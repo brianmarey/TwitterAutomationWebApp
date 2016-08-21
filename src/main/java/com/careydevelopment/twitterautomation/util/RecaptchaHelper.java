@@ -2,6 +2,8 @@ package com.careydevelopment.twitterautomation.util;
 
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,12 +16,14 @@ public class RecaptchaHelper {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RecaptchaHelper.class);
 
-	public static boolean passedRecaptcha(String response) {
+	public static boolean passedRecaptcha(HttpServletRequest request) {
 		
 		boolean passed = true;
 		
 		if (Constants.USE_CAPTCHA) {
 			try {
+				String response = request.getParameter("g-recaptcha-response");
+				
 				String captchaUrl = getCaptchaUrl(response);
 				
 				String json = UrlHelper.sendPost(captchaUrl);
@@ -34,7 +38,7 @@ public class RecaptchaHelper {
 				LOGGER.error("Problem retrieving captcha info!",e);
 			}
 		}
-		
+
 		return passed;
 	}
 	

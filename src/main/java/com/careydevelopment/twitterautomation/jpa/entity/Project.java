@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "project")
@@ -19,6 +20,7 @@ public class Project {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
+	@Size(min=3, max=32, message="Project name must be between 3 and 32 characters")
 	@Column(name="project_name")
 	private String name;
 	
@@ -60,6 +62,4 @@ public class Project {
 	public void setOwner(TwitterUser owner) {
 		this.owner = owner;
 	}
-	
-	
 }

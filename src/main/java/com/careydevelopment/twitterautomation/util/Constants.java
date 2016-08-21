@@ -14,4 +14,5 @@ public interface Constants {
 	public static final int COOKIE_LIFE = 2592000;
 	public static final String IP_ADDRESS = "localIpAddress";
 	public static final boolean USE_CAPTCHA = true;
+	public static final String AUTHORIZATION_BASIC = "Basic";
 }

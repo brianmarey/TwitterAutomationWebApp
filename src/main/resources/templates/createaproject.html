@@ -65,17 +65,19 @@
                         <!-- BEGIN FORM-->
                         <form action="#" th:action="@{/createProject}" th:object="${project}" method="POST" class="form-horizontal form-bordered">
                             <div class="form-body">
-                                <div class="form-group">
+                                <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error : ''">
                                     <label class="control-label col-md-3">Project Name</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" maxlength="32" name="name" id="name"/>
-                                        <span class="help-block"> Enter a name to describe your project. </span>
+                                        <input type="text" class="form-control" maxlength="32" th:field="*{name}"/>
+                                        <span th:if="${#fields.hasErrors('name')}" class="help-block" th:errors="*{name}">Name Error</span>
+                                        <span th:unless="${#fields.hasErrors('name')}" class="help-block"> Enter a name to describe your project. </span>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" th:classappend="${captchaFail} ? has-error : ''">
                                     <label class="control-label col-md-3">&nbsp;</label>
                                     <div class="col-md-4">
                                     	<div class="g-recaptcha" data-sitekey="6LdjHygTAAAAAJcDHCTCFJbsNLRGghS3ua43t1nF"></div>
+                                    	<div th:if="${captchaFail}" class="help-block">Captcha validation failure</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
