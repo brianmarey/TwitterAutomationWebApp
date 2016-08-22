@@ -57,7 +57,7 @@
                     <h1 class="page-title">Dashboard</h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
-                    <th:block th:if="${twitterUser == null}">
+                    <th:block th:if="${twitterUser != null and twitterUser.newUser}">
                     	<div class="portlet-body">
                             <div class="note note-success">
                                 <h4 class="block">Welcome!</h4>
@@ -93,7 +93,7 @@
                                 <div class="portlet-body util-btn-margin-bottom-5">
                                 	<div class="clearfix" style="display: flex;justify-content: space-between;">
 								    	<a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a Project</button></a>
-								    	<a th:href="@{/quickStats}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Quick Stats</button></a>
+								    	<a th:href="@{/quickStats}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Get Quick Stats</button></a>
 									</div>
 								</div>
 							</div>

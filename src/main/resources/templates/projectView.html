@@ -60,6 +60,32 @@
                     <h1 class="page-title" th:text="${project.name}">Project</h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
+                    <th:block th:if="${noUrls}">
+                   	<div class="portlet-body">
+                         <div class="note note-success">
+                             <h4 class="block">No URLs Yet</h4>
+                             <p>This project has no URLs, domains, or subdomains added to it.</p>
+                             <p>&nbsp;</p>
+                             <p>Click on the "Add URL/Domain" button below to add a resource you'd like to monitor.</p>
+                         </div>
+                    </div>
+                   	</th:block>                    
+                   	<div class="row">
+					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					    	<div class="portlet light tasks-widget bordered">
+                            	<div class="portlet-title">
+                                	<div class="caption">
+                                    	<span class="caption-subject font-green-haze bold uppercase">What Would You Like To Do?</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body util-btn-margin-bottom-5">
+                                	<div class="clearfix" style="display: flex;justify-content: space-between;">
+								    	<a th:href="@{/createProjectUrl}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Add a URL/Domain</button></a>
+									</div>
+								</div>
+							</div>
+                        </div>
+					</div>
                 </div>
                 <!-- END CONTENT BODY -->
             </div>

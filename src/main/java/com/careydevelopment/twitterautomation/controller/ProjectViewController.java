@@ -1,25 +1,26 @@
 package com.careydevelopment.twitterautomation.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.twitterautomation.jpa.entity.Project;
+import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
 import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
-import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
@@ -31,7 +32,9 @@ public class ProjectViewController {
 	
 	@Autowired
 	ProjectRepository projectRepository;
-	
+
+	@Autowired
+	ProjectUrlRepository projectUrlRepository;
 	
     @RequestMapping(value="/projectView", method=RequestMethod.GET)
     public String projectView(HttpServletRequest request, Model model,
@@ -61,6 +64,11 @@ public class ProjectViewController {
     	
     	Project project = projectRepository.findOne(projectId);
     	model.addAttribute("project",project);
+    	
+    	List<ProjectUrl> projectUrls = projectUrlRepository.findByProject(project);
+    	if (projectUrls.size() == 0) {
+    		model.addAttribute("noUrls",true);
+    	}
     	
         return "projectView";
     }
