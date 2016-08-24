@@ -75,6 +75,8 @@ public class ProjectViewController {
     		model.addAttribute("noUrls",true);
     	}
     	
+    	model.addAttribute("urls",projectUrls);
+    	
         return "projectView";
     }
 }
