@@ -39,16 +39,10 @@ import com.careydevelopment.twitterautomation.util.Constants;
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectViewControllerTest {
 
-	//@Autowired
-	//WebApplicationContext wac;
-
 	@InjectMocks
 	ProjectViewController projectViewController;
 
 	MockMvc mockMvc;
-
-	//@Autowired
-	//MockHttpSession session;
 
 	@Mock
 	View mockView;
@@ -91,6 +85,90 @@ public class ProjectViewControllerTest {
 					.andExpect(model().attribute("project",hasProperty("id",is (1l))))
 					.andExpect(model().attribute("urls", hasSize(0)));
 		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail();
+		}
+	}
+	
+	
+	@Test
+	public void testViewProjectNotLoggedIn() {
+		TwitterUser owner = ControllerHelper.getNoRolesUser();
+
+		try {
+			Project project = new Project();
+			project.setId(1l);
+			project.setName("name");
+			project.setOwner(owner);
+
+			when(projectRepository.findOne(1l)).thenReturn(project);
+
+			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+			
+			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
+			
+			mockMvc.perform(get("/projectView")
+					.param("projectId", "1")
+					.accept(MediaType.TEXT_PLAIN))
+					.andExpect(view().name("redirect:notLoggedIn"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail();
+		}
+	}
+	
+	
+	@Test
+	public void testViewProjectNoAuthority() {
+		TwitterUser owner = ControllerHelper.getNoRolesUser();
+
+		try {
+			Project project = new Project();
+			project.setId(1l);
+			project.setName("name");
+			project.setOwner(owner);
+
+			when(projectRepository.findOne(1l)).thenReturn(project);
+
+			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+			
+			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
+			
+			mockMvc.perform(get("/projectView")
+					.sessionAttr(Constants.TWITTER_ENTITY, owner)
+					.param("projectId", "1")
+					.accept(MediaType.TEXT_PLAIN))
+					.andExpect(view().name("redirect:notAuthorized"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail();
+		}
+	}
+	
+	
+	@Test
+	public void testViewProjectDontOwn() {
+		TwitterUser owner = ControllerHelper.getBasicUser();
+		TwitterUser other = ControllerHelper.getNoRolesUser();
+		
+		try {
+			Project project = new Project();
+			project.setId(1l);
+			project.setName("name");
+			project.setOwner(other);
+
+			when(projectRepository.findOne(1l)).thenReturn(project);
+
+			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+			
+			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
+			
+			mockMvc.perform(get("/projectView")
+					.sessionAttr(Constants.TWITTER_ENTITY, owner)
+					.param("projectId", "1")
+					.accept(MediaType.TEXT_PLAIN))
+					.andExpect(view().name("redirect:notAuthorized"));
+			} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail();
 		}

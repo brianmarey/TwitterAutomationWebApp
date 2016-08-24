@@ -26,6 +26,7 @@ public class ControllerHelper {
 	public static TwitterUser getNoRolesUser() {
 		TwitterUser owner = new TwitterUser();
 		owner.setScreenName("darth");
+		owner.setId(2l);
 		return owner;
 	}
 }
