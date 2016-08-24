@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -78,13 +80,20 @@ public class CreateProjectController {
     		return "redirect:notAuthorized";
     	}
     	
+        List<Project> projects = projectRepository.findByOwner(user);
+        if (project != null && projects.size() >= user.getUserConfig().getMaxProjects()) {
+        	model.addAttribute("maxProjectsExceeded",true);
+        	model.addAttribute("maxProjects",user.getUserConfig().getMaxProjects());
+        	return "createaproject";
+        }
+    	
     	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);
     	
         if (bindingResult.hasErrors() || !passedCaptcha) {
             return "createaproject";
         }
-    	
+            	
         project.setOwner(user);
         project.setStatus(Constants.PROJECT_ACTIVE);
         projectRepository.save(project);

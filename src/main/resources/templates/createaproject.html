@@ -61,6 +61,14 @@
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     
+                    <div class="row" th:if="${maxProjectsExceeded}">
+               			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                    	<div class="note note-danger">
+	                            <h4 class="block">Too Many Projects</h4>
+	                            <p>You are limited to no more than <span th:text="${maxProjects}"></span> active projects.</p>
+	                        </div>
+                        </div>
+                    </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
                         <form action="#" th:action="@{/createProject}" th:object="${project}" method="POST" class="form-horizontal form-bordered">

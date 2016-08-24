@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -18,10 +20,12 @@ import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
 import com.careydevelopment.twitterautomation.service.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
+import com.careydevelopment.twitterautomation.util.UrlHelper;
 
 @Controller
 public class CreateProjectUrlController {
@@ -33,6 +37,8 @@ public class CreateProjectUrlController {
 	@Autowired
 	ProjectRepository projectRepository;
 	
+	@Autowired
+	ProjectUrlRepository projectUrlRepository;
 	
     @RequestMapping(value="/createProjectUrl", method=RequestMethod.GET)
     public String createProjectUrl(HttpServletRequest request, Model model,
@@ -61,9 +67,9 @@ public class CreateProjectUrlController {
     	}
     	
     	Project project = projectRepository.findOne(projectId);
+    	model.addAttribute("project",project);
     	
     	ProjectUrl projectUrl = new ProjectUrl();
-    	projectUrl.setProject(project);
     	model.addAttribute("projectUrl",projectUrl);
     	
         return "createProjectUrl";
@@ -71,7 +77,7 @@ public class CreateProjectUrlController {
     
     
     @RequestMapping(value="/createProjectUrl", method=RequestMethod.POST)
-    public String createProjectSubmit(@Valid Project project, BindingResult bindingResult,
+    public String createProjectSubmit(@Valid ProjectUrl projectUrl, BindingResult bindingResult,
     	HttpServletRequest request, Model model) { 
     	
     	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
@@ -79,22 +85,42 @@ public class CreateProjectUrlController {
     	if (user == null) {
     		return "redirect:notLoggedIn";		
     	}
-
+    	
     	if (!RoleHelper.isAuthorized(user, Constants.AUTHORIZATION_BASIC)) {
     		return "redirect:notAuthorized";
     	}
+    	
+        String projectIdS = request.getParameter("projectId");
+    	Project project = projectRepository.findOne(new Long(projectIdS));
+    	
+    	if (!project.getOwner().getId().equals(user.getId())) {
+    		return "redirect:notAuthorized";
+    	}
+    	
+    	model.addAttribute("project",project);
+    	
+        List<ProjectUrl> urls = projectUrlRepository.findByProject(project);
+    
+        if (urls != null && urls.size() >= user.getUserConfig().getMaxUrlsPerProject()) {
+        	model.addAttribute("maxUrlsExceeded",true);
+        	model.addAttribute("maxUrls",user.getUserConfig().getMaxUrlsPerProject());
+        	return "createProjectUrl";
+        }
     	
     	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);
     	
         if (bindingResult.hasErrors() || !passedCaptcha) {
-            return "createaproject";
+            return "createProjectUrl";
         }
-    	
-        project.setOwner(user);
-        project.setStatus(Constants.PROJECT_ACTIVE);
-        projectRepository.save(project);
+
+        if (!UrlHelper.isValidUrl(projectUrl.getUrl())) {
+        	model.addAttribute("invalidUrl",true);
+        	return "createProjectUrl";
+        }                
         
-        return "redirect:/projectView?projectId=" + project.getId();
+        projectUrl.setProject(project);
+        
+        return "redirect:/projectView?projectId=" + projectUrl.getProject().getId();
     }
 }

@@ -61,9 +61,22 @@
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     
+                    <div class="row" th:if="${maxUrlsExceeded}">
+               			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                    	<div class="note note-danger">
+	                            <h4 class="block">Too Many URLs</h4>
+	                            <p>You are limited to no more than <span th:text="${maxUrls}"></span> URLs per project.</p>
+	                        </div>
+                        </div>
+                    </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
+                        <div class="note note-danger" th:if="${invalidUrl}">
+                        	<h4 class="block">URL Is Invalid</h4>
+                            <p> The URL you entered is invalid. Please double-check and try again. </p>
+                        </div>
                         <form action="#" th:action="@{/createProjectUrl}" th:object="${projectUrl}" method="POST" class="form-horizontal form-bordered">
+                        	<input type="hidden" id="projectId" name="projectId" th:value="${project.id}"/>
                             <div class="form-body">
                                 <div class="form-group" th:classappend="${#fields.hasErrors('url')} ? has-error : ''">
                                     <label class="control-label col-md-3">URL, Domain, or Subdomain</label>
@@ -83,7 +96,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3">&nbsp;</label>
                                     <div class="col-md-4">
-                                    	<button type="submit" class="btn btn-primary" style="margin-bottom:5px">Create Project</button>
+                                    	<button type="submit" class="btn btn-primary" style="margin-bottom:5px">Add URL/Domain</button>
                                     </div>
                                 </div>
                              </div>
@@ -99,8 +112,6 @@
         <div th:include="fragments/footer :: footer"></div>
         <script th:src="@{/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js}" type="text/javascript"></script>
 		<script th:src="@{/assets/pages/scripts/components-bootstrap-maxlength.min.js}" type="text/javascript"></script>
-		<script th:src="@{/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js}" type="text/javascript"></script>
-		<script th:src="@{/assets/pages/scripts/components-bootstrap-select.min.js}" type="text/javascript"></script>
         <!-- END FOOTER -->
     </body>
 </html>

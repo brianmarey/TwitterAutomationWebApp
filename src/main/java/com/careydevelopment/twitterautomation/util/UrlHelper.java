@@ -203,5 +203,36 @@ public class UrlHelper {
 	    
 	    return response;
 	}
-
+	
+	
+	public static boolean isValidUrl(String urlString) {
+		boolean isValid = true;
+		
+		if (urlString == null) {
+			isValid = false;
+		} else {
+			if (!urlString.startsWith("http://") && !urlString.startsWith("https://")) {
+				urlString = "http://" + urlString;
+			}
+			
+			try {
+				URL url = new URL(urlString);
+				HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+				connection.setRequestMethod("GET");
+				connection.connect();
+		
+				int code = connection.getResponseCode();
+				
+				if (code == 404) {
+					isValid = false;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				isValid = false;
+				LOGGER.warn("Bad URL: " + urlString,e);
+			}
+		}
+		
+		return isValid;
+	}
 }

@@ -63,6 +63,11 @@ public class ProjectViewController {
     	}
     	
     	Project project = projectRepository.findOne(projectId);
+    	
+    	if (!project.getOwner().getId().equals(user.getId())) {
+    		return "redirect:notAuthorized";
+    	}
+    	
     	model.addAttribute("project",project);
     	
     	List<ProjectUrl> projectUrls = projectUrlRepository.findByProject(project);
