@@ -25,9 +25,6 @@ public class ProjectUrl {
 	@Column(name = "url")
 	private String url;
 
-	@Column(name = "db")
-	private String database;
-
 	@Column(name = "report_date")
 	private Date reportDate;
 
@@ -49,14 +46,6 @@ public class ProjectUrl {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getDatabase() {
-		return database;
-	}
-
-	public void setDatabase(String database) {
-		this.database = database;
 	}
 
 	public Project getProject() {

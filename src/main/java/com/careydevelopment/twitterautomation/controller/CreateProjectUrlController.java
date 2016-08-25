@@ -67,6 +67,11 @@ public class CreateProjectUrlController {
     	}
     	
     	Project project = projectRepository.findOne(projectId);
+    	
+    	if (!project.getOwner().getId().equals(user.getId())) {
+    		return "redirect:notAuthorized";
+    	}
+    	
     	model.addAttribute("project",project);
     	
     	ProjectUrl projectUrl = new ProjectUrl();
@@ -92,12 +97,11 @@ public class CreateProjectUrlController {
     	
         String projectIdS = request.getParameter("projectId");
     	Project project = projectRepository.findOne(new Long(projectIdS));
+    	model.addAttribute("project",project);
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
     	}
-    	
-    	model.addAttribute("project",project);
     	
         List<ProjectUrl> urls = projectUrlRepository.findByProject(project);
     
@@ -120,6 +124,7 @@ public class CreateProjectUrlController {
         }                
         
         projectUrl.setProject(project);
+        projectUrlRepository.save(projectUrl);
         
         return "redirect:/projectView?projectId=" + projectUrl.getProject().getId();
     }
