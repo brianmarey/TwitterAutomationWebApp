@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
-import com.careydevelopment.twitterautomation.service.LoginService;
+import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RoleHelper;

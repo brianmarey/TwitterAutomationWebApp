@@ -1,4 +1,4 @@
-package com.careydevelopment.twitterautomation.service;
+package com.careydevelopment.twitterautomation.service.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;

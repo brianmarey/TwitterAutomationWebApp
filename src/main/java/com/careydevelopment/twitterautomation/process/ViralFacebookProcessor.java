@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.careydevelopment.twitterautomation.jpa.entity.ViralFacebook;
 import com.careydevelopment.twitterautomation.jpa.entity.ViralTweet;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralFacebookRepository;
-import com.careydevelopment.twitterautomation.service.FacebookService;
+import com.careydevelopment.twitterautomation.service.impl.FacebookService;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;

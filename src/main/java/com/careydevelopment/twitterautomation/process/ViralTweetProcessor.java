@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.careydevelopment.twitterautomation.jpa.entity.ViralTweet;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralTweetRepository;
-import com.careydevelopment.twitterautomation.service.TwitterService;
+import com.careydevelopment.twitterautomation.service.impl.TwitterService;
 import com.careydevelopment.twitterlaughs.TwitterLaughs;
 
 import twitter4j.Status;

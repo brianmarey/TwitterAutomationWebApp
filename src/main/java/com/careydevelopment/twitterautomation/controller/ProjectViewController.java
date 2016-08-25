@@ -19,7 +19,7 @@ import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
-import com.careydevelopment.twitterautomation.service.LoginService;
+import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 

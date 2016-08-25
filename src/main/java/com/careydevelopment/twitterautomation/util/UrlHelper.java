@@ -19,6 +19,16 @@ public class UrlHelper {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlHelper.class);
 	
+	
+	public static String getFormattedUrl(String url) {
+		if (!url.startsWith("http://") && !url.startsWith("https://")) {
+			url = "http://" + url;
+		}
+		
+		return url;
+	}
+	
+	
 	public static String getUrlContents(String url) {
 		String urlContents = "";
 		BufferedReader in = null;
@@ -211,9 +221,7 @@ public class UrlHelper {
 		if (urlString == null) {
 			isValid = false;
 		} else {
-			if (!urlString.startsWith("http://") && !urlString.startsWith("https://")) {
-				urlString = "http://" + urlString;
-			}
+			urlString = getFormattedUrl(urlString);
 			
 			try {
 				URL url = new URL(urlString);

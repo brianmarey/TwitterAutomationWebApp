@@ -15,8 +15,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFactoryException;
 import com.careydevelopment.propertiessupport.PropertiesFile;
-import com.careydevelopment.twitterautomation.service.LoginService;
-import com.careydevelopment.twitterautomation.service.TwitterService;
+import com.careydevelopment.twitterautomation.service.impl.LoginService;
+import com.careydevelopment.twitterautomation.service.impl.TwitterService;
 import com.careydevelopment.twitterautomation.util.Constants;
 
 import twitter4j.Twitter;

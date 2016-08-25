@@ -83,7 +83,8 @@ public class ProjectViewControllerTest {
 					.andExpect(status().is(200))
 					.andExpect(view().name("projectView"))
 					.andExpect(model().attribute("project",hasProperty("id",is (1l))))
-					.andExpect(model().attribute("urls", hasSize(0)));
+					.andExpect(model().attribute("urls", hasSize(0)))
+					.andExpect(model().attribute("noUrls", is(true)));
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail();

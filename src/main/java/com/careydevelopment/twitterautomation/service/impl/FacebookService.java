@@ -1,4 +1,4 @@
-package com.careydevelopment.twitterautomation.service;
+package com.careydevelopment.twitterautomation.service.impl;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -146,7 +146,7 @@ public class FacebookService {
 		try {
 			Properties props = PropertiesFactory.getProperties(PropertiesFile.GOOGLE_PROPERTIES);
 			String apiKey = props.getProperty("api.key");
-			String feedUrl = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=https://brianmcarey.com&strategy=mobile&key=" + apiKey;
+			String feedUrl = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=http://brianmcarey.com&strategy=mobile&key=" + apiKey;
 			JsonParser reader = new JsonParser(feedUrl);
 			JSONObject json = reader.getJson();
 			JSONObject ruleGroups =(JSONObject)json.get("ruleGroups");

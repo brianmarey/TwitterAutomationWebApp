@@ -69,7 +69,10 @@
                              <p>Click on the "Add URL/Domain" button below to add a resource you'd like to monitor.</p>
                          </div>
                     </div>
-                   	</th:block>                    
+                   	</th:block>                 
+                   	<th:block th:unless="${noUrls}">
+                   		
+                   	</th:block>   
                    	<div class="row">
 					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					    	<div class="portlet light tasks-widget bordered">

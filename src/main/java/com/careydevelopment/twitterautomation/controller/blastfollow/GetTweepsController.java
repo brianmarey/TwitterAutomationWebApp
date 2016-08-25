@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careydevelopment.twitterautomation.model.FriendshipLightweight;
-import com.careydevelopment.twitterautomation.service.TwitterService;
+import com.careydevelopment.twitterautomation.service.impl.TwitterService;
 import com.careydevelopment.twitterautomation.util.Constants;
 
 import twitter4j.Friendship;

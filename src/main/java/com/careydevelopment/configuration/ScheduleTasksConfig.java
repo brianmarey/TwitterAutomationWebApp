@@ -12,8 +12,8 @@ import com.careydevelopment.twitterautomation.jpa.repository.RedditImageReposito
 import com.careydevelopment.twitterautomation.jpa.repository.ViralContentRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralFacebookRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralTweetRepository;
-import com.careydevelopment.twitterautomation.service.FacebookService;
-import com.careydevelopment.twitterautomation.service.TwitterService;
+import com.careydevelopment.twitterautomation.service.impl.FacebookService;
+import com.careydevelopment.twitterautomation.service.impl.TwitterService;
 
 @Configuration
 @EnableScheduling
