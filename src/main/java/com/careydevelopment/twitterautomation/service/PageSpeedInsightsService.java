@@ -1,6 +1,6 @@
 package com.careydevelopment.twitterautomation.service;
 
-import com.careydevelopment.twitterautomation.domain.PageSpeedInsights;
+import com.careydevelopment.twitterautomation.jpa.entity.PageSpeedInsights;
 
 public interface PageSpeedInsightsService {
 

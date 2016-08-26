@@ -2,7 +2,7 @@ package com.careydevelopment.twitterautomation.service;
 
 import org.junit.Test;
 
-import com.careydevelopment.twitterautomation.domain.PageSpeedInsights;
+import com.careydevelopment.twitterautomation.jpa.entity.PageSpeedInsights;
 import com.careydevelopment.twitterautomation.service.impl.PageSpeedInsightsServiceImpl;
 
 import org.junit.Assert;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
-import com.careydevelopment.twitterautomation.domain.PageSpeedInsights;
+import com.careydevelopment.twitterautomation.jpa.entity.PageSpeedInsights;
 import com.careydevelopment.twitterautomation.service.PageSpeedInsightsService;
 import com.careydevelopment.twitterautomation.util.JsonParser;
 import com.careydevelopment.twitterautomation.util.UrlHelper;

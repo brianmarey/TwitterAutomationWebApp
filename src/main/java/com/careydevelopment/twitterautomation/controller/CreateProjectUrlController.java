@@ -1,5 +1,6 @@
 package com.careydevelopment.twitterautomation.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
+import com.careydevelopment.twitterautomation.service.UrlMetricsService;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
@@ -39,6 +41,9 @@ public class CreateProjectUrlController {
 	
 	@Autowired
 	ProjectUrlRepository projectUrlRepository;
+	
+	@Autowired
+	UrlMetricsService urlMetricsService;
 	
     @RequestMapping(value="/createProjectUrl", method=RequestMethod.GET)
     public String createProjectUrl(HttpServletRequest request, Model model,
@@ -124,7 +129,10 @@ public class CreateProjectUrlController {
         }                
         
         projectUrl.setProject(project);
-        projectUrlRepository.save(projectUrl);
+        projectUrl.setReportDate(new Date());
+        projectUrl = projectUrlRepository.save(projectUrl);
+        
+        urlMetricsService.saveUrlMetrics(projectUrl);
         
         return "redirect:/projectView?projectId=" + projectUrl.getProject().getId();
     }
