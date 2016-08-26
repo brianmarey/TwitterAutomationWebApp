@@ -19,7 +19,7 @@ import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
 import com.careydevelopment.twitterautomation.domain.Tip;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
-import com.careydevelopment.twitterautomation.service.LoginService;
+import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 import com.careydevelopment.twitterautomation.util.TipsHelper;

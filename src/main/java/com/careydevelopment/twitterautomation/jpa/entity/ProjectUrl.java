@@ -1,0 +1,81 @@
+package com.careydevelopment.twitterautomation.jpa.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table(name = "project_url")
+public class ProjectUrl {
+
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	@Size(min = 5, max = 1024, message = "URL must be between 5 and 1024 characters")
+	@Column(name = "url")
+	private String url;
+
+	@Column(name = "report_date")
+	private Date reportDate;
+
+	@ManyToOne
+	@JoinColumn(name = "project_id")
+	private Project project;
+	
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "projectUrl")
+	public PageSpeedInsights pageSpeedInsights;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public Date getReportDate() {
+		return reportDate;
+	}
+
+	public void setReportDate(Date reportDate) {
+		this.reportDate = reportDate;
+	}
+
+	public PageSpeedInsights getPageSpeedInsights() {
+		return pageSpeedInsights;
+	}
+
+	public void setPageSpeedInsights(PageSpeedInsights pageSpeedInsights) {
+		this.pageSpeedInsights = pageSpeedInsights;
+	}
+	
+	
+}

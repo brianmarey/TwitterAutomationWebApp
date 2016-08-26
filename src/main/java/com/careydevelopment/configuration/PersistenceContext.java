@@ -104,6 +104,10 @@ class PersistenceContext {
 	                props.getProperty("hibernate.format_sql")
 	        );
 	 
+	        jpaProperties.put("hibernate.id.new_generator_mappings", 
+	                props.getProperty("hibernate.id.new_generator_mappings")
+	        );
+	        
 	        entityManagerFactoryBean.setJpaProperties(jpaProperties);
 	 
 	        return entityManagerFactoryBean;

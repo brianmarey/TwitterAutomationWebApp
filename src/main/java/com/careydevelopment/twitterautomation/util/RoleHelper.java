@@ -13,10 +13,12 @@ public class RoleHelper {
 	public static boolean isAuthorized(TwitterUser user, String roleCheck) {
 		boolean authorized = false;
 		
-		for (Role role : user.getRoles()) {
-			if (role.getRoleName().toLowerCase().equals(roleCheck.toLowerCase())) {
-				authorized = true;
-				break;
+		if (user.getRoles() != null) {
+			for (Role role : user.getRoles()) {
+				if (role.getRoleName().toLowerCase().equals(roleCheck.toLowerCase())) {
+					authorized = true;
+					break;
+				}
 			}
 		}
 		

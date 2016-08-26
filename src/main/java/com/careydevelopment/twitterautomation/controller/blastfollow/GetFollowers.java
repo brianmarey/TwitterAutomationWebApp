@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.careydevelopment.twitterautomation.service.TwitterService;
+import com.careydevelopment.twitterautomation.service.impl.TwitterService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.TwitterHelper;
 

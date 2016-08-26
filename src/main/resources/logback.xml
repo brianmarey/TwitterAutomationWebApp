@@ -8,10 +8,10 @@
   </appender>
 	
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-	   <file>/etc/tomcat8/logs/blastfollow.log</file>
+	   <file>/etc/tomcat8/logs/seoplayhouse.log</file>
 
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-      <fileNamePattern>/etc/tomcat8/logs/blastfollow.%i.log.zip</fileNamePattern>
+      <fileNamePattern>/etc/tomcat8/logs/seoplayhouse.%i.log.zip</fileNamePattern>
       <minIndex>1</minIndex>
       <maxIndex>3</maxIndex>
     </rollingPolicy>

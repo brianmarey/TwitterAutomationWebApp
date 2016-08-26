@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
-import com.careydevelopment.twitterautomation.service.LoginService;
+import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
@@ -78,13 +80,20 @@ public class CreateProjectController {
     		return "redirect:notAuthorized";
     	}
     	
+        List<Project> projects = projectRepository.findByOwner(user);
+        if (project != null && projects.size() >= user.getUserConfig().getMaxProjects()) {
+        	model.addAttribute("maxProjectsExceeded",true);
+        	model.addAttribute("maxProjects",user.getUserConfig().getMaxProjects());
+        	return "createaproject";
+        }
+    	
     	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);
     	
         if (bindingResult.hasErrors() || !passedCaptcha) {
             return "createaproject";
         }
-    	
+            	
         project.setOwner(user);
         project.setStatus(Constants.PROJECT_ACTIVE);
         projectRepository.save(project);

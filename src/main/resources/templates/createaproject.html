@@ -61,6 +61,14 @@
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     
+                    <div class="row" th:if="${maxProjectsExceeded}">
+               			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                    	<div class="note note-danger">
+	                            <h4 class="block">Too Many Projects</h4>
+	                            <p>You are limited to no more than <span th:text="${maxProjects}"></span> active projects.</p>
+	                        </div>
+                        </div>
+                    </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
                         <form action="#" th:action="@{/createProject}" th:object="${project}" method="POST" class="form-horizontal form-bordered">
@@ -68,7 +76,7 @@
                                 <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error : ''">
                                     <label class="control-label col-md-3">Project Name</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" maxlength="32" th:field="*{name}"/>
+                                        <input type="text" class="form-control" maxlength="32" th:value="*{name}" th:field="*{name}"/>
                                         <span th:if="${#fields.hasErrors('name')}" class="help-block" th:errors="*{name}">Name Error</span>
                                         <span th:unless="${#fields.hasErrors('name')}" class="help-block"> Enter a name to describe your project. </span>
                                     </div>

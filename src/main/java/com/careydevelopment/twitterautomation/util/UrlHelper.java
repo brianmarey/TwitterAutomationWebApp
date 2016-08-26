@@ -19,6 +19,16 @@ public class UrlHelper {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlHelper.class);
 	
+	
+	public static String getFormattedUrl(String url) {
+		if (!url.startsWith("http://") && !url.startsWith("https://")) {
+			url = "http://" + url;
+		}
+		
+		return url;
+	}
+	
+	
 	public static String getUrlContents(String url) {
 		String urlContents = "";
 		BufferedReader in = null;
@@ -203,5 +213,34 @@ public class UrlHelper {
 	    
 	    return response;
 	}
-
+	
+	
+	public static boolean isValidUrl(String urlString) {
+		boolean isValid = true;
+		
+		if (urlString == null) {
+			isValid = false;
+		} else {
+			urlString = getFormattedUrl(urlString);
+			
+			try {
+				URL url = new URL(urlString);
+				HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+				connection.setRequestMethod("GET");
+				connection.connect();
+		
+				int code = connection.getResponseCode();
+				
+				if (code == 404) {
+					isValid = false;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				isValid = false;
+				LOGGER.warn("Bad URL: " + urlString,e);
+			}
+		}
+		
+		return isValid;
+	}
 }

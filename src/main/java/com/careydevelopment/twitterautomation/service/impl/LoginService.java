@@ -1,4 +1,4 @@
-package com.careydevelopment.twitterautomation.service;
+package com.careydevelopment.twitterautomation.service.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,12 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import com.careydevelopment.ipreader.IPLocation;
-import com.careydevelopment.ipreader.IPLocationException;
 import com.careydevelopment.ipreader.IPLocationReader;
 import com.careydevelopment.twitterautomation.jpa.entity.Role;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
+import com.careydevelopment.twitterautomation.jpa.entity.UserConfig;
 import com.careydevelopment.twitterautomation.jpa.repository.RoleRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.TwitterUserRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.UserConfigRepository;
 import com.careydevelopment.twitterautomation.util.Constants;
 
 import twitter4j.Twitter;
@@ -34,6 +35,9 @@ public class LoginService {
 
 	@Autowired
 	TwitterUserRepository twitterUserRepository;
+
+	@Autowired
+	UserConfigRepository userConfigRepository;
 	
 	@Autowired
 	RoleRepository roleRepository;
@@ -110,16 +114,30 @@ public class LoginService {
         LOGGER.info(screenName + " has logged on");
         
         TwitterUser u = twitterUserRepository.findByScreenName(screenName);
-        LOGGER.info("Twitter user is " + u);
+
         if (u == null) {
-        	handleNewUser(model,screenName,request);
+        	u = handleNewUser(model,screenName,request);
         } else {
         	handleUpdateUser(model,u,request);
+        }
+        
+        if (u.getUserConfig() == null) {
+        	createUserConfig(u);
         }
     }
     
     
-    private void handleNewUser(Model model, String screenName, HttpServletRequest request) {
+    private void createUserConfig(TwitterUser u) {
+    	UserConfig uc = new UserConfig();
+    	uc.setMaxProjects(Constants.DEFAULT_MAX_PROJECTS);
+    	uc.setMaxUrlsPerProject(Constants.DEFAULT_MAX_URLS_PER_PROJECT);
+    	uc.setUser(u);
+    	
+    	userConfigRepository.save(uc);
+    }
+ 
+    
+    private TwitterUser handleNewUser(Model model, String screenName, HttpServletRequest request) {
     	TwitterUser u = new TwitterUser();
     	u.setScreenName(screenName);
     	u.setLastLogin(new Date());
@@ -142,6 +160,8 @@ public class LoginService {
     	
     	model.addAttribute(u);
     	request.getSession().setAttribute(Constants.TWITTER_ENTITY, u);
+    	
+    	return u;
     }
     
     

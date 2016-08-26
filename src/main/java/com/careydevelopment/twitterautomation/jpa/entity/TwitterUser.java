@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -30,6 +31,9 @@ public class TwitterUser {
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	public List<Role> roles;
+	
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "user")
+	public UserConfig userConfig;
 
 	@Transient
 	private boolean newUser = false;
@@ -76,4 +80,14 @@ public class TwitterUser {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+
+	public UserConfig getUserConfig() {
+		return userConfig;
+	}
+
+	public void setUserConfig(UserConfig userConfig) {
+		this.userConfig = userConfig;
+	}
+	
+	
 }
