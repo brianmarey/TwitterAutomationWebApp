@@ -25,7 +25,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 	
 	@Override
 	public void saveUrlMetrics(ProjectUrl url) {
-		//savePageSpeedInsights(url);
+		savePageSpeedInsights(url);
 		//saveUrlValue(url);
 	}
 	
