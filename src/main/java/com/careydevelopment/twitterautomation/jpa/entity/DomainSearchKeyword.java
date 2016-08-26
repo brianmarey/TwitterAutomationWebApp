@@ -1,21 +1,60 @@
-package com.careydevelopment.twitterautomation.domain;
+package com.careydevelopment.twitterautomation.jpa.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "domain_search_keyword")
 public class DomainSearchKeyword {
 
+	
+	@Id
+	@Column(name="id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name = "url_id")
+	private ProjectUrl projectUrl;
+	
+	@Column(name="keyword")
 	private String keyword;
+	
+	@Column(name="position")
 	private Integer position;
+	
+	@Column(name="previous_position")
 	private Integer previousPosition;
+	
+	@Column(name="position_difference")
 	private Integer positionDifference;
+	
+	@Column(name="search_volume")
 	private Integer searchVolume;
+	
+	@Column(name="cpc")
 	private Float cpc;
-	private String url;
+	
+	@Column(name="traffic_percent")
 	private Float trafficPercent;
+	
+	@Column(name="traffic_cost_percent")
 	private Float trafficCostPercent;
+	
+	@Column(name="competition")
 	private Float competition;
+	
+	@Column(name="number_of_results")
 	private Integer numberOfResults;
+	
+	@Column(name="type")
 	private String type; //paid or organic
-	
-	
 	
 	public String getType() {
 		return type;
@@ -59,12 +98,6 @@ public class DomainSearchKeyword {
 	public void setCpc(Float cpc) {
 		this.cpc = cpc;
 	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
 	public Float getTrafficPercent() {
 		return trafficPercent;
 	}
@@ -89,8 +122,18 @@ public class DomainSearchKeyword {
 	public void setNumberOfResults(Integer numberOfResults) {
 		this.numberOfResults = numberOfResults;
 	}
-	
-	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public ProjectUrl getProjectUrl() {
+		return projectUrl;
+	}
+	public void setProjectUrl(ProjectUrl projectUrl) {
+		this.projectUrl = projectUrl;
+	}	
 	
 }
 

@@ -1,10 +1,27 @@
-package com.careydevelopment.twitterautomation.domain;
+package com.careydevelopment.twitterautomation.jpa.entity;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 public class SearchResult {
 	
+	@Id
+	@Column(name="id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+	
+	@Column(name="keyword")
 	private String keyword;
+	
+	@Column(name="type")
 	private String type;
+	
+	@Column(name="domain")
 	private String domain;
+	
+	@Column(name="url")
 	private String url;
 	
 	public String getKeyword() {

@@ -44,7 +44,8 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 	@Override
 	public void saveUrlMetrics(ProjectUrl url) {
 		//savePageSpeedInsights(url);
-		saveMajesticInfo(url);
+		//saveMajesticInfo(url);
+		saveSEMRushInfo(url);
 		//saveUrlValue(url);
 	}
 	
@@ -54,6 +55,18 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 		
 		saveIndexInfo(url);	
 		saveBacklinkData(url);
+	}
+	
+	
+	private void saveSEMRushInfo(ProjectUrl url) {
+		LOGGER.info("Retrieving SEMRush info for url " + url.getUrl());			
+		
+		saveDomainRankInfo(url);
+	}
+	
+	
+	private void saveDomainRankInfo(ProjectUrl url) {
+		
 	}
 	
 	
