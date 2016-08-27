@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.service.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +11,21 @@ import com.careydevelopment.twitterautomation.domain.MajesticInfoTable;
 import com.careydevelopment.twitterautomation.domain.MajesticInfoTables;
 import com.careydevelopment.twitterautomation.domain.MajesticResults;
 import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
+import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
+import com.careydevelopment.twitterautomation.jpa.entity.DomainRank;
+import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.IndexItemInfoRow;
 import com.careydevelopment.twitterautomation.jpa.entity.PageSpeedInsights;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.repository.BacklinkDataRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.CompetitorSearchRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.DomainRankRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.IndexItemInfoRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.PageSpeedInsightsRepository;
 import com.careydevelopment.twitterautomation.service.MajesticService;
 import com.careydevelopment.twitterautomation.service.PageSpeedInsightsService;
+import com.careydevelopment.twitterautomation.service.SEMRushService;
 import com.careydevelopment.twitterautomation.service.UrlMetricsService;
 import com.careydevelopment.twitterautomation.util.BacklinkDataParser;
 import com.careydevelopment.twitterautomation.util.IndexItemInfoRowParser;
@@ -40,11 +49,23 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 	@Autowired
 	BacklinkDataRepository backlinkDataRepository;
 
+	@Autowired
+	SEMRushService semRushService;
+	
+	@Autowired
+	DomainRankRepository domainRankRepository;
+	
+	@Autowired
+	DomainSearchKeywordRepository domainSearchKeywordRepository;
+	
+	@Autowired
+	CompetitorSearchRepository competitorSearchRepository;
+	
 	
 	@Override
 	public void saveUrlMetrics(ProjectUrl url) {
-		//savePageSpeedInsights(url);
-		//saveMajesticInfo(url);
+		savePageSpeedInsights(url);
+		saveMajesticInfo(url);
 		saveSEMRushInfo(url);
 		//saveUrlValue(url);
 	}
@@ -62,11 +83,64 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 		LOGGER.info("Retrieving SEMRush info for url " + url.getUrl());			
 		
 		saveDomainRankInfo(url);
+		saveDomainSearchKeywords(url,SEMRushService.ORGANIC);
+		saveDomainSearchKeywords(url,SEMRushService.PAID);
+		
+		if (url.isDomain()) {
+			saveCompetitorSearch(url,SEMRushService.ORGANIC);
+			saveCompetitorSearch(url,SEMRushService.PAID);
+		} else {
+			LOGGER.info("Skipping competitor analysis because " + url.getUrl() + " is not a domain");
+		}
 	}
+
 	
+	private void saveCompetitorSearch(ProjectUrl url,String type) {
+		LOGGER.info("Saving competitor search");
+		
+		try {
+			List<CompetitorSearch> list = semRushService.getCompetitorSearch(url, type);
+			
+			if (list != null) {
+				for (CompetitorSearch key : list) {
+					key.setProjectUrl(url);
+					competitorSearchRepository.save(key);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("Problem saving competitor search info!",e);
+		}
+	}
+
+	
+	private void saveDomainSearchKeywords(ProjectUrl url,String type) {
+		LOGGER.info("Saving domain search keywords");
+		
+		try {
+			List<DomainSearchKeyword> list = semRushService.getDomainSearchKeywords(url, type);
+			
+			if (list != null) {
+				for (DomainSearchKeyword key : list) {
+					key.setProjectUrl(url);
+					domainSearchKeywordRepository.save(key);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("Problem saving domain search info!",e);
+		}
+	}
+
 	
 	private void saveDomainRankInfo(ProjectUrl url) {
+		LOGGER.info("Saving domain rank info");
 		
+		try {
+			DomainRank info = semRushService.getDomainRank(url);
+			info.setProjectUrl(url);
+			domainRankRepository.save(info);
+		} catch (Exception e) {
+			LOGGER.error("Problem saving rank info!",e);
+		}
 	}
 	
 	
@@ -136,5 +210,4 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 			LOGGER.error("Problem saving page speed insights!",e);
 		}
 	}
-
 }

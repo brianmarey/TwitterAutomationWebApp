@@ -9,6 +9,9 @@ import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.SearchResult;
 
 public interface SEMRushService {
+	
+	public static final String PAID = "paid";
+	public static final String ORGANIC = "organic";
 
 	public DomainRank getDomainRank(ProjectUrl projectUrl);
 	public List<CompetitorSearch> getCompetitorSearch(ProjectUrl projectUrl, String type);

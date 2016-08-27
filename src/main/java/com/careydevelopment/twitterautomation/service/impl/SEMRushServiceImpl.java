@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
 import com.careydevelopment.twitterautomation.jpa.entity.DomainRank;
@@ -14,6 +15,7 @@ import com.careydevelopment.twitterautomation.jpa.entity.SearchResult;
 import com.careydevelopment.twitterautomation.service.SEMRushService;
 import com.careydevelopment.twitterautomation.util.SemRushParser;
 
+@Component
 public class SEMRushServiceImpl implements SEMRushService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SEMRushServiceImpl.class);
 
