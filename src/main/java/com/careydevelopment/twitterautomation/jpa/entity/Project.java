@@ -1,12 +1,16 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
@@ -30,6 +34,9 @@ public class Project {
 	@ManyToOne
 	@JoinColumn(name="owner_id")
 	private TwitterUser owner;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
+	public List<ProjectUrl> projectUrls;
 
 	public Long getId() {
 		return id;
@@ -61,5 +68,23 @@ public class Project {
 
 	public void setOwner(TwitterUser owner) {
 		this.owner = owner;
+	}
+
+	public List<ProjectUrl> getProjectUrls() {
+		return projectUrls;
+	}
+
+	public void setProjectUrls(List<ProjectUrl> projectUrls) {
+		this.projectUrls = projectUrls;
+	}	
+	
+	public int getNumberOfUrls() {
+		int number = 0;
+		
+		if (projectUrls != null) {
+			number = projectUrls.size();
+		}
+		
+		return number;
 	}
 }
