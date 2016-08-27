@@ -11,6 +11,6 @@ import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 public interface ProjectRepository extends BaseRepository<Project,Long>{
 
     
-    @Query("SELECT p FROM Project p where p.owner = :owner")
+    @Query("SELECT p FROM Project p where p.owner = :owner and p.status='Active'")
     List<Project> findByOwner(@Param("owner") TwitterUser owner);
 }
