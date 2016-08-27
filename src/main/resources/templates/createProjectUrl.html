@@ -27,6 +27,14 @@
         
         <!-- for captcha -->
         <script src='https://www.google.com/recaptcha/api.js'></script>
+        
+        <script>
+        	function submitForm() {
+ 				$('#keepInMindNote').hide();
+ 				$('#loadingDiv').show();
+ 				$("#urlForm").submit()
+        	}        	
+        </script>
     </head>
     <!-- END HEAD -->
 
@@ -75,7 +83,7 @@
                         	<h4 class="block">URL Is Invalid</h4>
                             <p> The URL you entered is invalid. Please double-check and try again. </p>
                         </div>
-                        <form action="#" th:action="@{/createProjectUrl}" th:object="${projectUrl}" method="POST" class="form-horizontal form-bordered">
+                        <form action="#" th:action="@{/createProjectUrl}" th:object="${projectUrl}" method="POST" class="form-horizontal form-bordered" id="urlForm">
                         	<input type="hidden" id="projectId" name="projectId" th:value="${project.id}"/>
                             <div class="form-body">
                                 <div class="form-group" th:classappend="${#fields.hasErrors('url')} ? has-error : ''">
@@ -96,7 +104,19 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3">&nbsp;</label>
                                     <div class="col-md-4">
-                                    	<button type="submit" class="btn btn-primary" style="margin-bottom:5px">Add URL/Domain</button>
+                                    	<button type="button" class="btn btn-primary" style="margin-bottom:5px" onclick="submitForm()">Add URL/Domain</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">&nbsp;</label>
+                                    <div class="col-md-8 col-lg-8" id="keepInMindNote">
+                                    	<div class="note note-success">
+                                            <h4 class="block">Keep In Mind</h4>
+                                            <p> When you click the button above, the system will fetch a variety of metrics for the URL. It will take some time. Please be patient. </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-8" id="loadingDiv" style="display:none">
+                                    	<img th:src="@{/images/hourglass.gif}" alt="hourglass"/>
                                     </div>
                                 </div>
                              </div>
