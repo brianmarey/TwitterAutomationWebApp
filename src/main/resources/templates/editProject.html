@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>BlastFollow | Add a URL, Domain, or Subdomain</title>
+        <title>BlastFollow | Edit a Project</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="" name="description"></meta>
@@ -31,10 +31,8 @@
         <script>
         	function submitForm() {
         		$('#submitButton').prop('disabled', true);
- 				$('#keepInMindNote').hide();
- 				$('#loadingDiv').show();
- 				$("#urlForm").submit()
-        	}        	
+        		$('#projectForm').submit();
+        	}
         </script>
     </head>
     <!-- END HEAD -->
@@ -66,33 +64,22 @@
                     </div>-->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">Add a URL, Domain, or Subdomain</h1>
+                    <h1 class="page-title">Edit a Project</h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     
-                    <div class="row" th:if="${maxUrlsExceeded}">
-               			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-	                    	<div class="note note-danger">
-	                            <h4 class="block">Too Many URLs</h4>
-	                            <p>You are limited to no more than <span th:text="${maxUrls}"></span> URLs per project.</p>
-	                        </div>
-                        </div>
-                    </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
-                        <div class="note note-danger" th:if="${invalidUrl}">
-                        	<h4 class="block">URL Is Invalid</h4>
-                            <p> The URL you entered is invalid. Please double-check and try again. </p>
-                        </div>
-                        <form action="#" th:action="@{/createProjectUrl}" th:object="${projectUrl}" method="POST" class="form-horizontal form-bordered" id="urlForm">
-                        	<input type="hidden" id="projectId" name="projectId" th:value="${project.id}"/>
+                        <form action="#" id="projectForm" th:action="@{/editProject}" th:object="${project}" method="POST" class="form-horizontal form-bordered">
+                            <input type="hidden" th:value="*{id}" th:field="*{id}"/>
+                            <input type="hidden" th:value="*{status}" th:field="*{status}"/>
                             <div class="form-body">
-                                <div class="form-group" th:classappend="${#fields.hasErrors('url')} ? has-error : ''">
-                                    <label class="control-label col-md-3">URL, Domain, or Subdomain</label>
+                                <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error : ''">
+                                    <label class="control-label col-md-3">Project Name</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" maxlength="1024" th:value="*{url}" th:field="*{url}"/>
-                                        <span th:if="${#fields.hasErrors('url')}" class="help-block" th:errors="*{url}"></span>
-                                        <span th:unless="${#fields.hasErrors('url')}" class="help-block"> You don't have to include the http:// prefix.</span>
+                                        <input type="text" class="form-control" maxlength="32" th:value="*{name}" th:field="*{name}"/>
+                                        <span th:if="${#fields.hasErrors('name')}" class="help-block" th:errors="*{name}">Name Error</span>
+                                        <span th:unless="${#fields.hasErrors('name')}" class="help-block"> Enter a name to describe your project. </span>
                                     </div>
                                 </div>
                                 <div class="form-group" th:classappend="${captchaFail} ? has-error : ''">
@@ -105,19 +92,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3">&nbsp;</label>
                                     <div class="col-md-4">
-                                    	<button type="button" id="submitButton" class="btn btn-primary" style="margin-bottom:5px" onclick="submitForm()">Add URL/Domain</button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3">&nbsp;</label>
-                                    <div class="col-md-8 col-lg-8" id="keepInMindNote">
-                                    	<div class="note note-success">
-                                            <h4 class="block">Keep In Mind</h4>
-                                            <p> When you click the button above, the system will fetch a variety of metrics for the URL. It will take some time. Please be patient. </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8 col-lg-8" id="loadingDiv" style="display:none">
-                                    	<img th:src="@{/images/hourglass.gif}" alt="hourglass"/>
+                                    	<button type="button" onclick="submitForm()" id="submitButton" class="btn btn-primary" style="margin-bottom:5px">Save Project</button>
                                     </div>
                                 </div>
                              </div>

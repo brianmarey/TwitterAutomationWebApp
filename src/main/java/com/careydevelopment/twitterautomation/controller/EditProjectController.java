@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
@@ -24,8 +25,8 @@ import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
-public class CreateProjectController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CreateProjectController.class);
+public class EditProjectController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(EditProjectController.class);
 	
 	@Autowired
 	LoginService loginService;
@@ -34,10 +35,11 @@ public class CreateProjectController {
 	ProjectRepository projectRepository;
 	
 	
-    @RequestMapping(value="/createProject", method=RequestMethod.GET)
+    @RequestMapping(value="/editProject", method=RequestMethod.GET)
     public String createProject(HttpServletRequest request, Model model,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
-    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
+    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret,
+    	@RequestParam(value="projectId", required=true) Long projectId) { 
     	
     	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
     	
@@ -58,15 +60,24 @@ public class CreateProjectController {
     	if (!RoleHelper.isAuthorized(user, "Basic")) {
     		return "redirect:notAuthorized";
     	}
+    	
+    	Project project = projectRepository.findOne(projectId);
+
+    	if (project == null) {
+    		return "redirect:notAuthorized";
+    	}
+    	
+    	if (!project.getOwner().getId().equals(user.getId())) {
+    		return "redirect:notAuthorized";
+    	}
     	    	
-    	Project project = new Project();
     	model.addAttribute("project",project);
     	
-        return "createaproject";
+        return "editProject";
     }
     
     
-    @RequestMapping(value="/createProject", method=RequestMethod.POST)
+    @RequestMapping(value="/editProject", method=RequestMethod.POST)
     public String createProjectSubmit(@Valid Project project, BindingResult bindingResult,
     	HttpServletRequest request, Model model) { 
     	
@@ -80,22 +91,14 @@ public class CreateProjectController {
     		return "redirect:notAuthorized";
     	}
     	
-        List<Project> projects = projectRepository.findByOwner(user);
-        if (project != null && projects.size() >= user.getUserConfig().getMaxProjects()) {
-        	model.addAttribute("maxProjectsExceeded",true);
-        	model.addAttribute("maxProjects",user.getUserConfig().getMaxProjects());
-        	return "createaproject";
-        }
-    	
     	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);
     	
         if (bindingResult.hasErrors() || !passedCaptcha) {
-            return "createaproject";
+            return "editProject";
         }
             	
         project.setOwner(user);
-        project.setStatus(Constants.PROJECT_ACTIVE);
         projectRepository.save(project);
         
         return "redirect:/seoplayhouse";
