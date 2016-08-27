@@ -35,6 +35,9 @@ public class SeoPlayhouseController {
 	
 	@Autowired
 	private LoginService loginService;
+	
+	@Autowired
+	private ProjectRepository projectRepository;
 		
     @RequestMapping("/seoplayhouse")
     public String blastfollow(HttpServletRequest request, Model model, 
@@ -64,12 +67,14 @@ public class SeoPlayhouseController {
     	}
     	
     	model.addAttribute("localhost",getLocalHostPrefix());
-    	model.addAttribute("blastFollowActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("dashboardActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("blastFollowArrow", Constants.TWISTIE_OPEN);
+    	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     
     	setDisplayAttributes(model,user);
     	
+    	List<Project> projects = projectRepository.findByOwner(twitterUser);
+    	model.addAttribute("projects",projects);
     	
         return "seoplayhouse";
     }

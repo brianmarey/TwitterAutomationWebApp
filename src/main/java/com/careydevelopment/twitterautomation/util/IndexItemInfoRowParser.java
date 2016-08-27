@@ -1,6 +1,6 @@
 package com.careydevelopment.twitterautomation.util;
 
-import com.careydevelopment.twitterautomation.domain.IndexItemInfoRow;
+import com.careydevelopment.twitterautomation.jpa.entity.IndexItemInfoRow;
 
 public class IndexItemInfoRowParser {
 

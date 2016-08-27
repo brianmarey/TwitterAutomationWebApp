@@ -108,6 +108,10 @@ class PersistenceContext {
 	                props.getProperty("hibernate.id.new_generator_mappings")
 	        );
 	        
+	        jpaProperties.put("hibernate.jdbc.batch_size",20);
+	        jpaProperties.put("hibernate.order_inserts",true);
+	        jpaProperties.put("hibernate.order_updates",true);
+	        
 	        entityManagerFactoryBean.setJpaProperties(jpaProperties);
 	 
 	        return entityManagerFactoryBean;

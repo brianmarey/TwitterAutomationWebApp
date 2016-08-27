@@ -9,6 +9,8 @@ import javax.xml.bind.Unmarshaller;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
+import com.careydevelopment.twitterautomation.jpa.entity.IndexItemInfoRow;
 import com.careydevelopment.twitterautomation.util.BacklinkDataParser;
 import com.careydevelopment.twitterautomation.util.IndexItemInfoRowParser;
 
@@ -104,5 +106,4 @@ public class MajesticResultsTest extends TestCase {
 			Assert.fail();
 		}		
 	}
-
 }

@@ -3,11 +3,11 @@ package com.careydevelopment.twitterautomation.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.careydevelopment.twitterautomation.domain.CompetitorSearch;
-import com.careydevelopment.twitterautomation.domain.DomainRank;
-import com.careydevelopment.twitterautomation.domain.DomainSearchKeyword;
 import com.careydevelopment.twitterautomation.domain.KeywordOverview;
-import com.careydevelopment.twitterautomation.domain.SearchResult;
+import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
+import com.careydevelopment.twitterautomation.jpa.entity.DomainRank;
+import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
+import com.careydevelopment.twitterautomation.jpa.entity.SearchResult;
 
 public class SemRushParser {
 	
@@ -80,7 +80,7 @@ public class SemRushParser {
 					keyword.setSearchVolume(new Integer(list.get(4)));
 					keyword.setTrafficCostPercent(new Float(list.get(8)));
 					keyword.setTrafficPercent(new Float(list.get(7)));
-					keyword.setUrl(list.get(6));
+					//keyword.setUrl(list.get(6));
 					
 					keywords.add(keyword);
 				}				
@@ -103,7 +103,7 @@ public class SemRushParser {
 					comp.setType(type);
 					comp.setCommonKeywords(new Integer(list.get(2)));
 					comp.setCompetitorRelevance(new Float(list.get(1)));
-					comp.setDomain(list.get(0));
+					//comp.setDomain(list.get(0));
 					comp.setTypeCost(new Float(list.get(5)));
 					comp.setTypeKeywords(new Integer(list.get(3)));
 					comp.setTypeTraffic(new Integer(list.get(4)));

@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>BlastFollow | Dashboard</title>
+        <title>SEO Playhouse | Dashboard</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="" name="description"></meta>
@@ -72,7 +72,7 @@
                             <div class="container">
                                 <div class="mt-cookie-consent-bar-holder">
                                     <div class="mt-cookie-consent-bar-content"> This website uses cookies to ensure you get the best experience.
-                                        <a href="http://www.allaboutcookies.org/cookies/" tatget="_blank">What is a cookie?</a>
+                                        <a href="http://www.allaboutcookies.org/cookies/" target="_blank">What is a cookie?</a>
                                         <a href="./cookiePolicy">Our Cookie Policy</a>
                                     </div>
                                     <div class="mt-cookie-consent-bar-action">
@@ -80,6 +80,45 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        </th:block>
+                    	<th:block th:if="${twitterUser == null or !twitterUser.newUser}">                        
+                        <div class="row">
+	                       	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
+		                        <div class="portlet box blue">
+		                            <div class="portlet-title">
+		                                <div class="caption">
+		                                    <i class="fa fa-cogs"></i>Your Projects </div>
+		                                <!--  <div class="tools">
+		                                    <a href="javascript:;" class="collapse"> </a>
+		                                    <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+		                                    <a href="javascript:;" class="reload"> </a>
+		                                    <a href="javascript:;" class="remove"> </a>
+		                                </div>-->
+		                            </div>
+		                            <div class="portlet-body">
+		                                <div class="table-responsive">
+		                                    <table class="table table-bordered">
+		                                        <thead>
+		                                            <tr>
+		                                                <th> Project Name </th>
+		                                                <th> URLs </th>
+		                                                <th> Action </th>
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+		                                        	<tr th:each="project,iterationStatus  : ${projects}">
+		                                        		<td th:text="${project.name}" style="vertical-align:middle"></td>
+		                                        		<td th:text="${project.numberOfUrls}" style="vertical-align:middle"></td>
+		                                        		<td> <a th:href="@{/projectView(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                                <i class="fa fa-share"></i> View </a> </td>
+													</tr>		                                        
+		                                        </tbody>
+		                                    </table>
+		                                </div>
+		                            </div>
+		                        </div>
+	                        </div>
                         </div>
                         </th:block>
                         <div class="row">
@@ -94,82 +133,6 @@
                                 	<div class="clearfix" style="display: flex;justify-content: space-between;">
 								    	<a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a Project</button></a>
 								    	<a th:href="@{/quickStats}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Get Quick Stats</button></a>
-									</div>
-								</div>
-							</div>
-                        </div>
-					</div>
-                    <div class="row">
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <a class="dashboard-stat dashboard-stat-v2 blue" href="#" style="cursor:default">
-                                <div class="visual">
-                                    <i class="fa fa-users"></i>
-                                </div>
-                                <div class="details">
-                                    <div class="number">
-                                        <span data-counter="counterup" th:data-value="${session.twitterUser.followersCount}" th:text="${session.twitterUser.followersCount}">0</span>
-                                    </div>
-                                    <div class="desc"> Followers </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <a class="dashboard-stat dashboard-stat-v2 red" href="#" style="cursor:default">
-                                <div class="visual">
-                                    <i class="fa fa-users"></i>
-                                </div>
-                                <div class="details">
-                                    <div class="number">
-                                        <span data-counter="counterup" th:data-value="${session.twitterUser.friendsCount}" th:text="${session.twitterUser.friendsCount}">0</span>
-                                    </div>
-                                    <div class="desc"> Following </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <a class="dashboard-stat dashboard-stat-v2 green" href="#" style="cursor:default">
-                                <div class="visual">
-                                    <i class="fa fa-pie-chart"></i>
-                                </div>
-                                <div class="details">
-                                    <div class="number">
-                                        <span data-counter="counterup" th:data-value="${ratio}" th:text="${ratio}">0</span>
-                                    </div>
-                                    <div class="desc"> Ratio </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <th:block th:if="${not #lists.isEmpty(tips)}">
-                    <div class="portlet light bordered">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject font-dark bold uppercase">Tips</span>
-                            </div>
-						</div>
-						<th:block th:each="tip,iterationStatus  : ${tips}">
-                        <div class="portlet-body">
-                        	<div class="alert alert-block alert-info fade in">
-                                <h4 class="alert-heading" th:text="${tip.title}">Info!</h4>
-                                	<p th:text="${tip.description}">  </p>
-                            </div>
-                        </div>
-                        </th:block>
-					</div>
-					</th:block>
-					<div class="row">
-					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					    	<div class="portlet light tasks-widget bordered">
-                            	<div class="portlet-title">
-                                	<div class="caption">
-                                    	<span class="caption-subject font-green-haze bold uppercase">What Do You Want To Do?</span>
-                                    </div>
-                                </div>
-                                <div class="portlet-body util-btn-margin-bottom-5">
-                                	<div class="clearfix" style="display: flex;justify-content: space-between;">
-								    	<a th:href="@{/autofollow}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Start Following</button></a>
-										<a th:href="@{/autounfollow}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Start Unfollowing</button></a>
-										<a th:href="@{/autorefollow}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Start Refollowing</button></a>
 									</div>
 								</div>
 							</div>

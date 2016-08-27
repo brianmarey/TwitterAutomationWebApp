@@ -27,6 +27,17 @@ public class UrlHelper {
 		
 		return url;
 	}
+
+	
+	public static String getUnformattedUrl(String url) {
+		if (url.startsWith("http://")) {
+			url = url.substring(7, url.length());
+		} else if (url.startsWith("https://")) {
+			url = url.substring(8, url.length());
+		}
+		
+		return url;
+	}
 	
 	
 	public static String getUrlContents(String url) {

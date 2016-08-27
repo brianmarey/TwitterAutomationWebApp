@@ -1,6 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,9 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+
+import com.careydevelopment.twitterautomation.util.UrlHelper;
 
 @Entity
 @Table(name = "project_url")
@@ -36,7 +40,13 @@ public class ProjectUrl {
 	
 	@OneToOne(fetch = FetchType.EAGER, mappedBy = "projectUrl")
 	public PageSpeedInsights pageSpeedInsights;
-
+	
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "projectUrl")
+	public DomainRank domainRank;
+	
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "projectUrl")
+	public IndexItemInfoRow indexItemInfo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -76,6 +86,38 @@ public class ProjectUrl {
 	public void setPageSpeedInsights(PageSpeedInsights pageSpeedInsights) {
 		this.pageSpeedInsights = pageSpeedInsights;
 	}
+
+	public IndexItemInfoRow getIndexItemInfo() {
+		return indexItemInfo;
+	}
+
+	public void setIndexItemInfo(IndexItemInfoRow indexItemInfo) {
+		this.indexItemInfo = indexItemInfo;
+	}
+
+	public DomainRank getDomainRank() {
+		return domainRank;
+	}
+
+	public void setDomainRank(DomainRank domainRank) {
+		this.domainRank = domainRank;
+	}
 	
 	
+	public boolean isDomain() {
+		boolean isDomain = true;
+		
+		String formattedUrl = UrlHelper.getUnformattedUrl(url);
+		
+		if (formattedUrl.indexOf("/") > -1) {
+			isDomain = false;
+		} else {
+			String[] parts = formattedUrl.split(".");
+			if (parts != null && parts.length > 2) {
+				isDomain = false;
+			}
+		}
+		
+		return isDomain;
+	}
 }

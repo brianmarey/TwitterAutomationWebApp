@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.careydevelopment.twitterautomation.domain.BacklinkData;
+import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
 
 public class BacklinkDataParser {
 
