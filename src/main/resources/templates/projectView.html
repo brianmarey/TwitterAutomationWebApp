@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>BlastFollow | Project View</title>
+        <title>SEO Playhouse | Project View</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="" name="description"></meta>
@@ -122,11 +122,8 @@
 	                                        		<td th:text="${url.indexItemInfo.trustFlow}" style="vertical-align:middle"></td>
 	                                        		<td th:text="${url.indexItemInfo.citationFlow}" style="vertical-align:middle"></td>
 	                                        		<td th:text="${url.indexItemInfo.extBacklinks}" style="vertical-align:middle"></td>
-	                                        		<td> <a th:href="@{/projectView(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
-                                                               <i class="fa fa-share"></i> View </a> 
-                                                            <a th:href="@{/editProject(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
-                                                               <i class="fa fa-edit"></i> Edit </a> </td>
-												</tr>		                                        
+	                                        		<td> <a th:href="@{/projectUrlView(projectUrlId=${url.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                               <i class="fa fa-share"></i> View </a> </td>												</tr>		                                        
 	                                        </tbody>
 	                                    </table>
 	                                </div>

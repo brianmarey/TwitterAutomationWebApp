@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>SEO Playhouse | URL Details</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="" name="description"></meta>
+        <meta content="" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+        
+        <!-- for captcha -->
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    
+    <div id="fb-root"></div>
+    
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!--  <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>-->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title">URL Details<br/>
+                    <small th:text="${projectUrl.url}"></small></h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    
+                    <th:block th:unless="${projectUrl.indexItemInfo == null}">
+                    <div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
+	                        <div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                    Flow Metrics </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div style="margin-left:15px;margin-right:15px">
+	                        			<div style="margin-bottom:20px">
+			                        	<h3 th:text="${'Trust Flow: ' + projectUrl.indexItemInfo.trustFlow}">Trust Flow</h3>
+		                        		<div class="progress progress-striped active">
+			                            	<div class="progress-bar progress-bar-success" role="progressbar" th:aria-valuenow="${projectUrl.indexItemInfo.trustFlow}" aria-valuemin="0" aria-valuemax="100" th:style="${'width: ' + projectUrl.indexItemInfo.trustFlow + '%'}">
+			                                	<span class="sr-only"></span>
+			                            	</div>
+		                        		</div>                    
+		                        		</div>
+		                        		
+		                        		<div>
+			                        	<h3 th:text="${'Citation Flow: ' + projectUrl.indexItemInfo.citationFlow}">Citation Flow</h3>
+		                        		<div class="progress progress-striped active">
+			                            	<div class="progress-bar progress-bar-info" role="progressbar" th:aria-valuenow="${projectUrl.indexItemInfo.citationFlow}" aria-valuemin="0" aria-valuemax="100" th:style="${'width: ' + projectUrl.indexItemInfo.citationFlow + '%'}">
+			                                	<span class="sr-only"></span>
+			                            	</div>
+		                        		</div>                    
+		                        		</div>
+	                        		</div>
+                        		</div>	                    	
+	                    	</div>
+                    	</div>                    	
+                    </div>
+                    
+                    <div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
+	                        <div class="portlet box blue-hoki">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                    Backlink Info </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> External Backlinks </th>
+	                                                <th> Referring Domains </th>
+	                                                <th> Referring IPs </th>
+	                                                <th> .edu Backlinks </th>
+	                                               	<th> .edu Domains </th>
+	                                                <th> .gov Backlinks </th>
+	                                                <th> .gov Domains </th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+	                                        	<tr>
+	                                        		<td th:text="${projectUrl.indexItemInfo.extBacklinks}"></td>
+	                                        		<td th:text="${projectUrl.indexItemInfo.refDomains}"></td>
+	                                        		<td th:text="${projectUrl.indexItemInfo.refIps}"></td>
+	                                        		<td th:text="${projectUrl.indexItemInfo.extBacklinksEdu}"></td>
+	                                        		<td th:text="${projectUrl.indexItemInfo.refDomainsEdu}"></td>
+	                                        		<td th:text="${projectUrl.indexItemInfo.extBacklinksGov}"></td>
+	                                        		<td th:text="${projectUrl.indexItemInfo.refDomainsGov}"></td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    	
+                    </div>
+                    
+					<th:block th:if="${backlinks != null}">
+                    <div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
+	                        <div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                    Backlinks </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> URL </th>
+	                                                <th> TF </th>
+	                                                <th> CF </th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+	                                        	<tr th:each="backlink,iterationStatus : ${backlinks}">
+	                                        		<td><a th:href="${backlink.sourceUrl}" target="_blank" th:text="${backlink.sourceUrl}"></a></td>
+	                                        		<td th:text="${backlink.sourceTrustFlow}"></td>
+	                                        		<td th:text="${backlink.sourceCitationFlow}"></td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    	
+                    </div>
+					</th:block>
+                    
+                    </th:block>
+                    
+                   	<div class="row">
+					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					    	<div class="portlet light tasks-widget bordered">
+                            	<div class="portlet-title">
+                                	<div class="caption">
+                                    	<span class="caption-subject font-green-haze bold uppercase">What Would You Like To Do?</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body util-btn-margin-bottom-5">
+                                	<div class="clearfix" style="display: flex;justify-content: space-between;">
+								    	<a th:href="@{/createProjectUrl(projectId=${projectUrl.project.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Add a URL/Domain</button></a>
+								    	<a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New Project</button></a>
+									</div>
+								</div>
+							</div>
+                        </div>
+					</div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <!-- END FOOTER -->
+    </body>
+</html>
