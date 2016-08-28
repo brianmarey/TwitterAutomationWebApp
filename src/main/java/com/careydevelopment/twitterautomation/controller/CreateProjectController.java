@@ -58,9 +58,17 @@ public class CreateProjectController {
     	if (!RoleHelper.isAuthorized(user, "Basic")) {
     		return "redirect:notAuthorized";
     	}
+    	
+    	if (user.isBadLogin()) {
+    		return "redirect:badLogin";
+    	}
     	    	
     	Project project = new Project();
     	model.addAttribute("project",project);
+    	
+    	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("createProjectActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
         return "createaproject";
     }
@@ -98,6 +106,6 @@ public class CreateProjectController {
         project.setStatus(Constants.PROJECT_ACTIVE);
         projectRepository.save(project);
         
-        return "redirect:/seoplayhouse";
+        return "redirect:/projectView?projectId=" + project.getId();
     }
 }

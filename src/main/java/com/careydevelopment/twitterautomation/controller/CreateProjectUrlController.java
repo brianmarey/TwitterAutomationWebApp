@@ -71,6 +71,10 @@ public class CreateProjectUrlController {
     		return "redirect:notAuthorized";
     	}
     	
+    	if (user.isBadLogin()) {
+    		return "redirect:badLogin";
+    	}
+    	
     	Project project = projectRepository.findOne(projectId);
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
@@ -81,6 +85,9 @@ public class CreateProjectUrlController {
     	
     	ProjectUrl projectUrl = new ProjectUrl();
     	model.addAttribute("projectUrl",projectUrl);
+    	
+    	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
         return "createProjectUrl";
     }

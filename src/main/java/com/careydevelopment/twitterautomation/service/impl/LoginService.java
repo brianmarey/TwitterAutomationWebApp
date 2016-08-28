@@ -1,5 +1,6 @@
 package com.careydevelopment.twitterautomation.service.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -92,26 +93,23 @@ public class LoginService {
 	}
 	
 	
-	private void setIpAddress(Twitter twitter, HttpServletRequest request) throws TwitterException {
+	private void setIpAddress(Twitter twitter, HttpServletRequest request, TwitterUser u) throws TwitterException {
     	String ipAddress = null;
     	
     	try {
         	IPLocation ipLocation = IPLocationReader.getIPLocation();    		
         	ipAddress = ipLocation.getIp();
         	request.getSession().setAttribute(Constants.IP_ADDRESS, ipAddress);
+        	u.setIpAddress(ipAddress);
     	} catch (Exception ie) {
     		LOGGER.error("Problem getting IP address for user " + twitter.getScreenName(),ie);
     	}    	
 	}
 	
 	
-    private void handleLogin(Twitter twitter, Model model, HttpServletRequest request) throws TwitterException {
-    	//set the IP Address in the session
-    	setIpAddress(twitter,request);
-    	
+    private void handleLogin(Twitter twitter, Model model, HttpServletRequest request) throws TwitterException {    	
     	//just check to make sure we're happy
         String screenName = twitter.getScreenName();
-        LOGGER.info(screenName + " has logged on");
         
         TwitterUser u = twitterUserRepository.findByScreenName(screenName);
 
@@ -124,6 +122,33 @@ public class LoginService {
         if (u.getUserConfig() == null) {
         	createUserConfig(u);
         }
+        
+    	//set the IP Address in the session
+    	setIpAddress(twitter,request,u);
+    
+    	twitterUserRepository.save(u);
+    	
+    	checkForBadLogin(u);
+    	
+        LOGGER.info(screenName + " has logged on from ip " + u.getIpAddress());
+    }
+    
+    
+    private void checkForBadLogin(TwitterUser u) {
+    	List<TwitterUser> others = twitterUserRepository.findByIpAddress(u.getIpAddress());
+    	if (others != null) {
+    		for (TwitterUser tu : others) {
+    			if (!tu.getScreenName().equals(u.getScreenName())) {
+    				Date lastLogin = tu.getLastLogin();
+    				Calendar cal = Calendar.getInstance();
+    				cal.add(Calendar.DAY_OF_MONTH, -1);
+    				if (lastLogin.after(cal.getTime())) {
+    					u.setBadLogin(true);
+    					u.setBadLoginMessage("Another has already logged in with this IP address within the last day.");
+    				}
+    			}
+    		}
+    	}
     }
     
     
@@ -167,7 +192,6 @@ public class LoginService {
     
     private void handleUpdateUser(Model model, TwitterUser user, HttpServletRequest request) {
     	user.setLastLogin(new Date());
-    	twitterUserRepository.save(user);
     	model.addAttribute("twitterUser",user);   	
     	request.getSession().setAttribute(Constants.TWITTER_ENTITY, user);
     }

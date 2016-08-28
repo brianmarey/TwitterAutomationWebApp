@@ -62,7 +62,7 @@ public class CreateProjectUrlControllerTest {
 		//mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).setSingleView(mockView).build();
 	}
-
+	
 	
 	@Test
 	public void testCreateProjectUrlGetWin() {
@@ -74,9 +74,7 @@ public class CreateProjectUrlControllerTest {
 			project.setName("name");
 			project.setOwner(owner);
 
-			when(projectRepository.findOne(1l)).thenReturn(project);
-
-			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+				List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
 			
 			when(projectRepository.findOne(1l)).thenReturn(project);			
 			when(projectUrlRepository.findByProject(project)).thenReturn(projectUrls);

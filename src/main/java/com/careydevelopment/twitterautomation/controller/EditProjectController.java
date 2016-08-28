@@ -61,6 +61,10 @@ public class EditProjectController {
     		return "redirect:notAuthorized";
     	}
     	
+    	if (user.isBadLogin()) {
+    		return "redirect:badLogin";
+    	}
+    	
     	Project project = projectRepository.findOne(projectId);
 
     	if (project == null) {

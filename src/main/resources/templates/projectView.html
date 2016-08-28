@@ -27,14 +27,13 @@
         
         <!-- for captcha -->
         <script src='https://www.google.com/recaptcha/api.js'></script>
+        
     </head>
     <!-- END HEAD -->
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
     
-    
     <div id="fb-root"></div>
-    
     
         <!-- BEGIN HEADER -->
         <div th:include="fragments/header :: header"></div>
@@ -71,7 +70,70 @@
                     </div>
                    	</th:block>                 
                    	<th:block th:unless="${noUrls}">
-                   		
+                       <div class="row">
+                       	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
+	                        <div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                    <i class="fa fa-code"></i>URLs </div>
+	                                <!--  <div class="tools">
+	                                    <a href="javascript:;" class="collapse"> </a>
+	                                    <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+	                                    <a href="javascript:;" class="reload"> </a>
+	                                    <a href="javascript:;" class="remove"> </a>
+	                                </div>-->
+	                            </div>
+	                            <div class="portlet-body">
+	                                <div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> URL </th>
+	                                                <th style="width:75px"> Usability </th>
+	                                                <th style="width:40px"> TF </th>
+	                                                <th style="width:40px"> CF </th>
+	                                                <th style="width:90px"> Backlinks </th>
+	                                                <th> Action </th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+	                                        	<tr th:each="url,iterationStatus : ${urls}">
+	                                        		<td style="vertical-align:middle"><a th:href="${url.url}" target="_blank" th:text="${url.displayUrl}"></a></td>
+	                                        		<td style="vertical-align:middle;text-align:center">
+	                                        		<th:block th:if="${url.pageSpeedInsights.mobileSpeed != null}">
+	                                        		<th:block th:if="${url.pageSpeedInsights.mobileSpeed &gt; 89}"><i class="fa fa-circle tooltips"  data-container="body" data-placement="top" data-original-title="Fast for mobile users" style="color:green"></i></th:block>
+	                                        		<th:block th:if="${url.pageSpeedInsights.mobileSpeed &gt; 69 and url.pageSpeedInsights.mobileSpeed &lt; 90}"><i class="fa fa-circle tooltips"  data-container="body" data-placement="top" data-original-title="Not that fast for mobile users" style="color:yellow"></i></th:block>
+	                                        		<th:block th:if="${url.pageSpeedInsights.mobileSpeed &lt; 70}"><i class="fa fa-circle tooltips" data-container="body" data-placement="top" data-original-title="Slow for mobile users" style="color:red"></i></th:block>
+	                                        		</th:block>
+	                                        		
+	                                        		<th:block th:if="${url.pageSpeedInsights.mobileUsability != null}">
+	                                        		<th:block th:if="${url.pageSpeedInsights.mobileUsability &gt; 89}"><i class="fa fa-circle tooltips"  data-container="body" data-placement="top" data-original-title="Responsive to mobile users" style="color:green"></i></th:block>
+	                                        		<th:block th:if="${url.pageSpeedInsights.mobileUsability &gt; 69 and url.pageSpeedInsights.mobileUsability &lt; 90}"><i class="fa fa-circle tooltips"  data-container="body" data-placement="top" data-original-title="Mobile usability could be improved" style="color:yellow"></i></th:block>
+	                                        		<th:block th:if="${url.pageSpeedInsights.mobileUsability &lt; 70}"><i class="fa fa-circle tooltips" data-container="body" data-placement="top" data-original-title="Not optimized for mobile users" style="color:red"></i></th:block>
+	                                        		</th:block>
+
+	                                        		<th:block th:if="${url.pageSpeedInsights.desktopSpeed != null}">
+	                                        		<th:block th:if="${url.pageSpeedInsights.desktopSpeed &gt; 89}"><i class="fa fa-circle tooltips"  data-container="body" data-placement="top" data-original-title="User-friendly for desktop visitors" style="color:green"></i></th:block>
+	                                        		<th:block th:if="${url.pageSpeedInsights.desktopSpeed &gt; 69 and url.pageSpeedInsights.desktopSpeed &lt; 90}"><i class="fa fa-circle tooltips"  data-container="body" data-placement="top" data-original-title="Usability for desktop visitors could be improved" style="color:yellow"></i></th:block>
+	                                        		<th:block th:if="${url.pageSpeedInsights.desktopSpeed &lt; 70}"><i class="fa fa-circle tooltips" data-container="body" data-placement="top" data-original-title="User-hostile for desktop visitors" style="color:red"></i></th:block>
+	                                        		</th:block>
+	                                        		
+	                                        		</td>
+	                                        		<td th:text="${url.indexItemInfo.trustFlow}" style="vertical-align:middle"></td>
+	                                        		<td th:text="${url.indexItemInfo.citationFlow}" style="vertical-align:middle"></td>
+	                                        		<td th:text="${url.indexItemInfo.extBacklinks}" style="vertical-align:middle"></td>
+	                                        		<td> <a th:href="@{/projectView(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                               <i class="fa fa-share"></i> View </a> 
+                                                            <a th:href="@{/editProject(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                               <i class="fa fa-edit"></i> Edit </a> </td>
+												</tr>		                                        
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                            </div>
+	                        </div>
+                        </div>
+                       </div>                   		
                    	</th:block>   
                    	<div class="row">
 					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -84,6 +146,7 @@
                                 <div class="portlet-body util-btn-margin-bottom-5">
                                 	<div class="clearfix" style="display: flex;justify-content: space-between;">
 								    	<a th:href="@{/createProjectUrl(projectId=${project.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Add a URL/Domain</button></a>
+								    	<a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New Project</button></a>
 									</div>
 								</div>
 							</div>

@@ -120,4 +120,20 @@ public class ProjectUrl {
 		
 		return isDomain;
 	}
+	
+	
+	public String getDisplayUrl() {
+		StringBuilder sb = new StringBuilder();
+		
+		if (url != null) {
+			if (url.length() < 40) {
+				sb.append(url);
+			} else {
+				sb.append(url.substring(0, 38));
+				sb.append("...");
+			}
+		}
+		
+		return sb.toString();
+	}
 }

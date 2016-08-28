@@ -29,6 +29,9 @@ public class TwitterUser {
 	@Column(name = "last_login")
 	private Date lastLogin;
 	
+	@Column(name = "ip_address")
+	private String ipAddress;
+	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	public List<Role> roles;
 	
@@ -37,6 +40,12 @@ public class TwitterUser {
 
 	@Transient
 	private boolean newUser = false;
+	
+	@Transient
+	private boolean badLogin = false;
+	
+	@Transient
+	private String badLoginMessage;
 
 	public TwitterUser() {
 	}
@@ -88,6 +97,29 @@ public class TwitterUser {
 	public void setUserConfig(UserConfig userConfig) {
 		this.userConfig = userConfig;
 	}
-	
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+	public boolean isBadLogin() {
+		return badLogin;
+	}
+
+	public void setBadLogin(boolean badLogin) {
+		this.badLogin = badLogin;
+	}
+
+	public String getBadLoginMessage() {
+		return badLoginMessage;
+	}
+
+	public void setBadLoginMessage(String badLoginMessage) {
+		this.badLoginMessage = badLoginMessage;
+	}
 	
 }
