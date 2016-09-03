@@ -124,10 +124,12 @@ public class ProjectUrlViewController {
     	
     	List<AnchorTextData> anchorTextData = anchorTextDataRepository.findTop20ByProjectUrlOrderByIdAsc(projectUrl);
     	model.addAttribute("anchorTextData", anchorTextData);
-    	
+
+    	model.addAttribute("pageSpeedInsights", projectUrl.getPageSpeedInsights());
+
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
-
+    	
         return "projectUrlView";
     }
     

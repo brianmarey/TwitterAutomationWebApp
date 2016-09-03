@@ -67,7 +67,7 @@
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                    Flow Metrics </div>
+	                                    <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Trust Flow measures the quality of a site based on the type of backlinks. Citation Flow measures the number of backlinks." style="position:relative;top:-2px"></i>Flow Metrics </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div style="margin-left:15px;margin-right:15px">
@@ -431,6 +431,58 @@
                     	</div>                    
                     </th:block>
                     </div>
+                    
+                    
+                    <th:block th:if="${pageSpeedInsights != null}">
+                    <div class="row">
+                    	<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    		<div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                   Mobile Speed </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<th:block th:if="${pageSpeedInsights.mobileSpeed != null}">
+	                                	<th:block th:if="${pageSpeedInsights.mobileSpeed &gt; 89}"><div th:text="${pageSpeedInsights.mobileSpeed + '/100'}" style="text-align:center;font-size:32pt;color:green"></div></th:block>
+	                                	<th:block th:if="${pageSpeedInsights.mobileSpeed &gt; 69 and pageSpeedInsights.mobileSpeed &lt; 90}"><div th:text="${pageSpeedInsights.mobileSpeed + '/100'}" style="text-align:center;font-size:32pt;color:yellow"></div></th:block>
+	                                	<th:block th:if="${pageSpeedInsights.mobileSpeed &lt; 70}"><div th:text="${pageSpeedInsights.mobileSpeed + '/100'}" style="text-align:center;font-size:32pt;color:red"></div></th:block>
+	                                </th:block>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>
+                    	<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    		<div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                   Mobile Usability </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<th:block th:if="${pageSpeedInsights.mobileUsability != null}">
+	                                	<th:block th:if="${pageSpeedInsights.mobileUsability &gt; 89}"><div th:text="${pageSpeedInsights.mobileUsability + '/100'}" style="text-align:center;font-size:32pt;color:green"></div></th:block>
+	                                	<th:block th:if="${pageSpeedInsights.mobileUsability &gt; 69 and pageSpeedInsights.mobileUsability &lt; 90}"><div th:text="${pageSpeedInsights.mobileUsability + '/100'}" style="text-align:center;font-size:32pt;color:yellow"></div></th:block>
+	                                	<th:block th:if="${pageSpeedInsights.mobileUsability &lt; 70}"><div th:text="${pageSpeedInsights.mobileUsability + '/100'}" style="text-align:center;font-size:32pt;color:red"></div></th:block>
+	                                </th:block>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>
+                    	<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    		<div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                   Desktop Speed </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<th:block th:if="${pageSpeedInsights.desktopSpeed != null}">
+	                                	<th:block th:if="${pageSpeedInsights.desktopSpeed &gt; 89}"><div th:text="${pageSpeedInsights.desktopSpeed + '/100'}" style="text-align:center;font-size:32pt;color:green"></div></th:block>
+	                                	<th:block th:if="${pageSpeedInsights.desktopSpeed &gt; 69 and pageSpeedInsights.desktopSpeed &lt; 90}"><div th:text="${pageSpeedInsights.desktopSpeed + '/100'}" style="text-align:center;font-size:32pt;color:yellow"></div></th:block>
+	                                	<th:block th:if="${pageSpeedInsights.desktopSpeed &lt; 70}"><div th:text="${pageSpeedInsights.desktopSpeed + '/100'}" style="text-align:center;font-size:32pt;color:red"></div></th:block>
+	                                </th:block>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    	
+                    </div>
+                    </th:block>
+                    
                     
                    	<div class="row">
 					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
