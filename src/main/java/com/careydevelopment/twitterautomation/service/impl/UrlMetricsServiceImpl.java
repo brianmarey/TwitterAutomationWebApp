@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.careydevelopment.twitterautomation.domain.MajesticInfoTable;
 import com.careydevelopment.twitterautomation.domain.MajesticInfoTables;
 import com.careydevelopment.twitterautomation.domain.MajesticResults;
+import com.careydevelopment.twitterautomation.jpa.entity.AnchorTextData;
 import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
 import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
 import com.careydevelopment.twitterautomation.jpa.entity.DomainRank;
@@ -17,6 +18,7 @@ import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.IndexItemInfoRow;
 import com.careydevelopment.twitterautomation.jpa.entity.PageSpeedInsights;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
+import com.careydevelopment.twitterautomation.jpa.repository.AnchorTextDataRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.BacklinkDataRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.CompetitorSearchRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.DomainRankRepository;
@@ -27,6 +29,7 @@ import com.careydevelopment.twitterautomation.service.MajesticService;
 import com.careydevelopment.twitterautomation.service.PageSpeedInsightsService;
 import com.careydevelopment.twitterautomation.service.SEMRushService;
 import com.careydevelopment.twitterautomation.service.UrlMetricsService;
+import com.careydevelopment.twitterautomation.util.AnchorTextDataParser;
 import com.careydevelopment.twitterautomation.util.BacklinkDataParser;
 import com.careydevelopment.twitterautomation.util.IndexItemInfoRowParser;
 
@@ -49,6 +52,9 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 	@Autowired
 	BacklinkDataRepository backlinkDataRepository;
 
+	@Autowired
+	AnchorTextDataRepository anchorTextDataRepository;
+	
 	@Autowired
 	SEMRushService semRushService;
 	
@@ -76,6 +82,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 		
 		saveIndexInfo(url);	
 		saveBacklinkData(url);
+		saveAnchorTextData(url);
 	}
 	
 	
@@ -193,9 +200,38 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 				}
 			}
 		} catch (Exception e) {
-			LOGGER.error("Problem saving index item info!",e);
+			LOGGER.error("Problem saving backlink info!",e);
 		}
 	}
+	
+
+	private void saveAnchorTextData(ProjectUrl url) {
+		LOGGER.info("Saving anchor text info");
+		
+		try {
+			MajesticResults anchorTextResults = majesticService.getAnchorTextData(url.getUrl());
+			
+			if (anchorTextResults != null && anchorTextResults.getTables() != null) {
+				MajesticInfoTables tables = anchorTextResults.getTables();
+				
+				if (tables.getDataTable() != null) {
+					MajesticInfoTable table = tables.getDataTable();
+					
+					if (table.getRows() != null && table.getRows().size() > 0) {
+						for (String row : table.getRows()) {
+							LOGGER.info("Parsing " + row);
+							AnchorTextData at = AnchorTextDataParser.getAnchorTextData(row);
+							at.setProjectUrl(url);
+							anchorTextDataRepository.save(at);	
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("Problem saving anchor text info!",e);
+		}
+	}
+
 	
 	
 	private void savePageSpeedInsights(ProjectUrl url) {

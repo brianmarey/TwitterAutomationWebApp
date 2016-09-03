@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.careydevelopment.twitterautomation.jpa.entity.AnchorTextData;
 import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
 import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
 import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
+import com.careydevelopment.twitterautomation.jpa.repository.AnchorTextDataRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.BacklinkDataRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.CompetitorSearchRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
@@ -47,6 +49,9 @@ public class ProjectUrlViewController {
 	
 	@Autowired
 	CompetitorSearchRepository competitorSearchRepository;
+	
+	@Autowired
+	AnchorTextDataRepository anchorTextDataRepository;
 	
     @RequestMapping(value="/projectUrlView", method=RequestMethod.GET)
     public String projectView(HttpServletRequest request, Model model,
@@ -108,6 +113,9 @@ public class ProjectUrlViewController {
     	
     	model.addAttribute("organicCompetitors",organicCompetitors);
     	model.addAttribute("paidCompetitors",paidCompetitors);
+    	
+    	List<AnchorTextData> anchorTextData = anchorTextDataRepository.findTop20ByProjectUrlOrderByIdAsc(projectUrl);
+    	model.addAttribute("anchorTextData", anchorTextData);
     	
         return "projectUrlView";
     }
