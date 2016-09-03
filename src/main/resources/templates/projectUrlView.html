@@ -183,11 +183,39 @@
                     </div>
 					</th:block>
                     </th:block>
-                    
+
+                    <th:block th:if="${backlinks != null}">
+                    <div class="row">
+                    	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    		<div class="portlet light portlet-fit bordered">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <span class="caption-subject font-green sbold uppercase">Follow Breakdown</span>
+                                        </div>                   
+                                    </div>
+                                    <div class="portlet-body">
+                                        <div id="pie_follow" style="width:100%;height:400px"> </div>
+                                    </div>
+                            </div>
+                    	</div>
+                    	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    		<div class="portlet light portlet-fit bordered">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <span class="caption-subject font-green sbold uppercase">Link Types</span>
+                                        </div>                   
+                                    </div>
+                                    <div class="portlet-body">
+                                        <div id="pie_backlink_type" style="width:100%;height:400px"> </div>
+                                    </div>
+                            </div>
+                    	</div>
+                    </div>
+                    </th:block>                    
                     
                     <th:block th:if="${projectUrl.domainRank != null}">
                     <div class="row">
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -215,7 +243,7 @@
 	                        	</div>	                    	
 	                    	</div>
                     	</div>
-                    	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+                    	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -249,7 +277,7 @@
                     
                     <div class="row">
                     <th:block th:if="${organicKeywords != null}">
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -283,7 +311,7 @@
                     	</div>                    
                     </th:block>
                     <th:block th:if="${paidKeywords != null}">
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -320,7 +348,7 @@
 
                     <div class="row">
                     <th:block th:if="${organicCompetitors != null}">
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -352,7 +380,7 @@
                     	</div>                    
                     </th:block>
                     <th:block th:if="${paidCompetitors != null}">
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -434,6 +462,37 @@
                 }
             }
         });
+        </script>
+        </th:block>
+        
+        <th:block th:if="${backlinks != null}">
+        <script>
+        var followData = [
+            			{ label: 'Do Follow',  data: <th:block th:text="${doFollowLinks}"></th:block>},
+            			{ label: 'No Follow',  data: <th:block th:text="${noFollowLinks}"></th:block>}
+            		];
+        $.plot('#pie_follow', followData, {
+            series: {
+                pie: {
+                    show: true
+                }
+            }
+        });
+        
+        var backlinkTypeData = [
+              			{ label: 'Image',  data: <th:block th:text="${imageLinks}"></th:block>},
+              			{ label: 'Text',  data: <th:block th:text="${textLinks}"></th:block>},
+              			{ label: 'Redirect',  data: <th:block th:text="${redirects}"></th:block>},
+              			{ label: 'Frame',  data: <th:block th:text="${frames}"></th:block>},
+              			{ label: 'Mention',  data: <th:block th:text="${mentions}"></th:block>}
+              		];
+          $.plot('#pie_backlink_type', backlinkTypeData, {
+              series: {
+                  pie: {
+                      show: true
+                  }
+              }
+          });
         </script>
         </th:block>
     </body>

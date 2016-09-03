@@ -20,6 +20,7 @@ import com.careydevelopment.twitterautomation.jpa.entity.AnchorTextData;
 import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
 import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
 import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
+import com.careydevelopment.twitterautomation.jpa.entity.LinkType;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.AnchorTextDataRepository;
@@ -95,12 +96,15 @@ public class ProjectUrlViewController {
     	
     	model.addAttribute("projectUrl",projectUrl);
     	
-    	List<BacklinkData> backlinks = backlinkDataRepository.findTop20ByProjectUrlOrderByIdAsc(projectUrl);
-    	model.addAttribute("backlinks", backlinks);
-    	    	    	
-    	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
+    	List<BacklinkData> backlinks = backlinkDataRepository.findByUrl(projectUrl);
     	
+    	if (backlinks != null) {
+        	List<BacklinkData> top20Backlinks = (backlinks.size() > 19) ? backlinks.subList(0, 19) : backlinks;
+        	model.addAttribute("backlinks", top20Backlinks);    		
+    	}
+    	
+    	setBacklinkStats(model, backlinks);
+    	    	    	    	
     	Pageable topTen = new PageRequest(0, 10);
     	List<DomainSearchKeyword> organicKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC, topTen);
     	List<DomainSearchKeyword> paidKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.PAID, topTen);
@@ -117,6 +121,49 @@ public class ProjectUrlViewController {
     	List<AnchorTextData> anchorTextData = anchorTextDataRepository.findTop20ByProjectUrlOrderByIdAsc(projectUrl);
     	model.addAttribute("anchorTextData", anchorTextData);
     	
+    	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
+
         return "projectUrlView";
+    }
+    
+    
+    private void setBacklinkStats (Model model, List<BacklinkData> backlinks) {
+    	Integer noFollowLinks = 0;
+    	Integer doFollowLinks = 0;
+    	
+    	Integer textLinks = 0;
+    	Integer imageLinks = 0;
+    	Integer redirects = 0;
+    	Integer frames = 0;
+    	Integer mentions = 0;
+    	    	
+    	for (BacklinkData backlink : backlinks) {
+    		if (backlink.getFlagNoFollow()) {
+    			noFollowLinks++;
+    		} else {
+    			doFollowLinks++;
+    		}
+    		
+    		if (LinkType.FRAME.equals(backlink.getLinkType())) {
+    			frames++;
+    		} else if (LinkType.MENTION.equals(backlink.getLinkType())) {
+    			mentions++;
+    		} else if (LinkType.REDIRECT.equals(backlink.getLinkType())) {
+    			redirects++;
+    		} else if (LinkType.IMAGE_LINK.equals(backlink.getLinkType())) {
+    			imageLinks++;
+    		} else if (LinkType.TEXT_LINK.equals(backlink.getLinkType())) {
+    			textLinks++;
+    		}
+    	}
+    	
+    	model.addAttribute("noFollowLinks",noFollowLinks);
+    	model.addAttribute("doFollowLinks",doFollowLinks);
+    	model.addAttribute("textLinks",textLinks);
+    	model.addAttribute("imageLinks",imageLinks);
+    	model.addAttribute("redirects",redirects);
+    	model.addAttribute("frames",frames);
+    	model.addAttribute("mentions",mentions);
     }
 }
