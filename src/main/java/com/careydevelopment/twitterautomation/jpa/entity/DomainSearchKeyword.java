@@ -12,6 +12,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "domain_search_keyword")
 public class DomainSearchKeyword {
+	
+	public static final String ORGANIC = "organic";
+	public static final String PAID = "paid";
 
 	
 	@Id

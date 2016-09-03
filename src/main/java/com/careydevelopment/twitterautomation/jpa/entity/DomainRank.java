@@ -107,4 +107,20 @@ public class DomainRank {
 	public void setProjectUrl(ProjectUrl projectUrl) {
 		this.projectUrl = projectUrl;
 	}
+	
+	public String getAdwordsCostDisplay() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("$");
+		sb.append(adwordsCost);
+		
+		return sb.toString();
+	}
+	
+	public String getOrganicCostDisplay() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("$");
+		sb.append(organicCost);
+		
+		return sb.toString();
+	}
 }

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -15,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
+import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
+import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.BacklinkDataRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.CompetitorSearchRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
@@ -35,6 +41,12 @@ public class ProjectUrlViewController {
 	
 	@Autowired
 	BacklinkDataRepository backlinkDataRepository;
+
+	@Autowired
+	DomainSearchKeywordRepository domainSearchKeywordRepository;
+	
+	@Autowired
+	CompetitorSearchRepository competitorSearchRepository;
 	
     @RequestMapping(value="/projectUrlView", method=RequestMethod.GET)
     public String projectView(HttpServletRequest request, Model model,
@@ -80,12 +92,22 @@ public class ProjectUrlViewController {
     	
     	List<BacklinkData> backlinks = backlinkDataRepository.findTop20ByProjectUrlOrderByIdAsc(projectUrl);
     	model.addAttribute("backlinks", backlinks);
-    	
-    	System.err.println("backlinks is " + backlinks);
-    	if (backlinks != null) System.err.println("Size is " + backlinks.size());
-    	    	
+    	    	    	
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
+    	
+    	Pageable topTen = new PageRequest(0, 10);
+    	List<DomainSearchKeyword> organicKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC, topTen);
+    	List<DomainSearchKeyword> paidKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.PAID, topTen);
+    	
+    	model.addAttribute("organicKeywords",organicKeywords);
+    	model.addAttribute("paidKeywords",paidKeywords);
+
+    	List<CompetitorSearch> organicCompetitors = competitorSearchRepository.findLatestByType(projectUrl, CompetitorSearch.ORGANIC, topTen);
+    	List<CompetitorSearch> paidCompetitors = competitorSearchRepository.findLatestByType(projectUrl, CompetitorSearch.PAID, topTen);
+    	
+    	model.addAttribute("organicCompetitors",organicCompetitors);
+    	model.addAttribute("paidCompetitors",paidCompetitors);
     	
         return "projectUrlView";
     }

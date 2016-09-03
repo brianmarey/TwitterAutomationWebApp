@@ -165,8 +165,208 @@
                     	</div>                    	
                     </div>
 					</th:block>
-                    
                     </th:block>
+                    
+                    
+                    <th:block th:if="${projectUrl.domainRank != null}">
+                    <div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+	                        <div class="portlet box blue-hoki">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                    Organic Search </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> Keywords </th>
+	                                                <th> Cost </th>
+	                                                <th> Traffic </th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+	                                        	<tr>
+	                                        		<td th:text="${projectUrl.domainRank.organicKeywords}"></td>
+	                                        		<td th:text="${projectUrl.domainRank.organicCostDisplay}"></td>
+	                                        		<td th:text="${projectUrl.domainRank.organicTraffic}"></td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>
+                    	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+	                        <div class="portlet box blue-hoki">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                    Paid Search </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> Keywords </th>
+	                                                <th> Cost </th>
+	                                                <th> Traffic </th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+	                                        	<tr>
+	                                        		<td th:text="${projectUrl.domainRank.adwordsKeywords}"></td>
+	                                        		<td th:text="${projectUrl.domainRank.adwordsCostDisplay}"></td>
+	                                        		<td th:text="${projectUrl.domainRank.adwordsTraffic}"></td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    	
+                    </div>
+					</th:block>
+                    
+                    
+                    <div class="row">
+                    <th:block th:if="${organicKeywords != null}">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+	                        <div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                   Top Organic Keywords </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> Keyword </th>
+	                                                <th> Position </th>
+	                                                <th> Volume </th>
+	                                                <th> CPC </th>
+	                                                <th> Traffic % </th>
+	                                            </tr>
+	                                        </thead>	
+	                                        <tbody>
+	                                        	<tr th:each="keyword,iterationStatus : ${organicKeywords}">
+	                                        		<td th:text="${keyword.keyword}"></td>
+	                                        		<td th:text="${keyword.position}"></td>
+	                                        		<td th:text="${keyword.searchVolume}"></td>
+	                                        		<td th:text="${keyword.cpc}"></td>
+	                                        		<td th:text="${keyword.trafficPercent}"></td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    
+                    </th:block>
+                    <th:block th:if="${paidKeywords != null}">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+	                        <div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                   Top Paid Keywords </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> Keyword </th>
+	                                                <th> Position </th>
+	                                                <th> Volume </th>
+	                                                <th> CPC </th>
+	                                                <th> Traffic % </th>
+	                                            </tr>
+	                                        </thead>	
+	                                        <tbody>
+	                                        	<tr th:each="keyword,iterationStatus : ${paidKeywords}">
+	                                        		<td th:text="${keyword.keyword}"></td>
+	                                        		<td th:text="${keyword.position}"></td>
+	                                        		<td th:text="${keyword.searchVolume}"></td>
+	                                        		<td th:text="${keyword.cpc}"></td>
+	                                        		<td th:text="${keyword.trafficPercent}"></td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    
+                    </th:block>
+                    </div>
+
+                    <div class="row">
+                    <th:block th:if="${organicCompetitors != null}">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+	                        <div class="portlet box blue-hoki">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                   Top Organic Competitors </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> Competitor </th>
+	                                                <th> Relevance </th>
+	                                                <th> Common Keywords </th>
+	                                                <th> Organic Keywords </th>
+	                                            </tr>
+	                                        </thead>	
+	                                        <tbody>
+	                                        	<tr th:each="competitor,iterationStatus : ${organicCompetitors}">
+	                                        		<td th:text="${competitor.domain}"></td>
+	                                        		<td th:text="${competitor.competitorRelevance}"></td>
+	                                        		<td th:text="${competitor.commonKeywords}"></td>
+	                                        		<td th:text="${competitor.typeKeywords}"></td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    
+                    </th:block>
+                    <th:block th:if="${paidCompetitors != null}">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">                        
+	                        <div class="portlet box blue-hoki">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                   Top Paid Competitors </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> Competitor </th>
+	                                                <th> Relevance </th>
+	                                                <th> Common Keywords </th>
+	                                                <th> Organic Keywords </th>
+	                                            </tr>
+	                                        </thead>	
+	                                        <tbody>
+	                                        	<tr th:each="competitor,iterationStatus : ${paidCompetitors}">
+	                                        		<td th:text="${competitor.domain}"></td>
+	                                        		<td th:text="${competitor.competitorRelevance}"></td>
+	                                        		<td th:text="${competitor.commonKeywords}"></td>
+	                                        		<td th:text="${competitor.typeKeywords}"></td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    
+                    </th:block>
+                    </div>
                     
                    	<div class="row">
 					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
