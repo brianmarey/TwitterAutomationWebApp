@@ -274,6 +274,24 @@
                     </div>
 					</th:block>
                     
+    
+                    <th:block th:if="${organicKeywords != null}">
+                    <div class="row">
+                    	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    		<div class="portlet light portlet-fit bordered">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <span class="caption-subject font-green sbold uppercase">Organic Rank</span>
+                                        </div>                   
+                                    </div>
+                                    <div class="portlet-body">
+                                        <div id="bar_rank" style="width:100%;height:400px"> </div>
+                                    </div>
+                            </div>
+                    	</div>
+                    </div>
+                    </th:block>                
+                    
                     
                     <div class="row">
                     <th:block th:if="${organicKeywords != null}">
@@ -345,6 +363,7 @@
                     	</div>                    
                     </th:block>
                     </div>
+
 
                     <div class="row">
                     <th:block th:if="${organicCompetitors != null}">
@@ -457,9 +476,13 @@
             		];
         $.plot('#pie_anchor', data, {
             series: {
+
                 pie: {
-                    show: true
+                    show: true,
+                    radius: .6,
+                    tilt: 0.4
                 }
+            
             }
         });
         </script>
@@ -474,6 +497,7 @@
         $.plot('#pie_follow', followData, {
             series: {
                 pie: {
+                	innerRadius: 0.5,
                     show: true
                 }
             }
@@ -489,10 +513,47 @@
           $.plot('#pie_backlink_type', backlinkTypeData, {
               series: {
                   pie: {
+                	  innerRadius: 0.5,
                       show: true
                   }
               }
           });
+        </script>
+        </th:block>
+        
+        <th:block th:if="${organicKeywords != null}">
+        <script>
+        var rankDistribution =[ ["Page 1", <th:block th:text="${page1}"></th:block>], ["Page 2", <th:block th:text="${page2}"></th:block>], ["Page 3", <th:block th:text="${page3}"></th:block>], ["Page 4", <th:block th:text="${page4}"></th:block>], ["Page 5", <th:block th:text="${page5}"></th:block>], ["Page 6", <th:block th:text="${page6}"></th:block>], ["Page 7", <th:block th:text="${page7}"></th:block>], ["Page 8", <th:block th:text="${page8}"></th:block>], ["Page 9", <th:block th:text="${page9}"></th:block>] ];
+		
+		$.plot("#bar_rank", [ rankDistribution ], {
+			series: {
+				bars: {
+					show: true,
+					barWidth: 0.4,
+					align: "center",
+					fill:true,
+					fillColor: "#80699B"
+				}
+			},
+			xaxis: {
+				mode: "categories",
+				tickLength: 0,
+				axisLabel: 'Google Page',
+	            axisLabelUseCanvas: true,
+	            axisLabelFontSizePixels: 12,
+	            axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+	            axisLabelPadding: 5
+			},
+			yaxis: {
+				axisLabel: '# of Keywords',
+	            axisLabelUseCanvas: true,
+	            axisLabelFontSizePixels: 12,
+	            axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+	            axisLabelPadding: 5,
+	            minTickSize:1,
+	            tickDecimals:0
+			}
+		});
         </script>
         </th:block>
     </body>

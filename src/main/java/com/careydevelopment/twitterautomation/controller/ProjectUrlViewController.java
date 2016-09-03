@@ -101,17 +101,21 @@ public class ProjectUrlViewController {
     	if (backlinks != null) {
         	List<BacklinkData> top20Backlinks = (backlinks.size() > 19) ? backlinks.subList(0, 19) : backlinks;
         	model.addAttribute("backlinks", top20Backlinks);    		
+        	setBacklinkStats(model, backlinks);
     	}
-    	
-    	setBacklinkStats(model, backlinks);
-    	    	    	    	
+    	    	    	    	    	
     	Pageable topTen = new PageRequest(0, 10);
-    	List<DomainSearchKeyword> organicKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC, topTen);
-    	List<DomainSearchKeyword> paidKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.PAID, topTen);
+    	List<DomainSearchKeyword> organicKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
+    	List<DomainSearchKeyword> paidKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.PAID,topTen);
     	
-    	model.addAttribute("organicKeywords",organicKeywords);
     	model.addAttribute("paidKeywords",paidKeywords);
 
+    	if (organicKeywords != null) {
+    		List<DomainSearchKeyword> topOrganicKeywords = (organicKeywords.size() > 9) ? organicKeywords.subList(0, 9) : organicKeywords;
+    		model.addAttribute("organicKeywords",topOrganicKeywords);
+    		setOrganicKeywordStats(model,organicKeywords);
+    	}
+    	
     	List<CompetitorSearch> organicCompetitors = competitorSearchRepository.findLatestByType(projectUrl, CompetitorSearch.ORGANIC, topTen);
     	List<CompetitorSearch> paidCompetitors = competitorSearchRepository.findLatestByType(projectUrl, CompetitorSearch.PAID, topTen);
     	
@@ -125,6 +129,51 @@ public class ProjectUrlViewController {
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
 
         return "projectUrlView";
+    }
+    
+    
+    private void setOrganicKeywordStats(Model model, List<DomainSearchKeyword> organicKeywords) {
+    	Integer page1 = 0;
+    	Integer page2 = 0;
+    	Integer page3 = 0;
+    	Integer page4 = 0;
+    	Integer page5 = 0;
+    	Integer page6 = 0;
+    	Integer page7 = 0;
+    	Integer page8 = 0;
+    	Integer page9 = 0;
+    	
+    	for (DomainSearchKeyword keyword : organicKeywords) {
+    		if (keyword.getPosition() != null && keyword.getPosition() < 11) {
+    			page1++;
+    		} else if (keyword.getPosition() != null && keyword.getPosition() < 21) {
+    			page2++;
+    		} else if (keyword.getPosition() != null && keyword.getPosition() < 31) {
+    			page3++;
+    		} else if (keyword.getPosition() != null && keyword.getPosition() < 41) {
+    			page4++;
+    		} else if (keyword.getPosition() != null && keyword.getPosition() < 51) {
+    			page5++;
+    		} else if (keyword.getPosition() != null && keyword.getPosition() < 61) {
+    			page6++;
+    		} else if (keyword.getPosition() != null && keyword.getPosition() < 71) {
+    			page7++;
+    		} else if (keyword.getPosition() != null && keyword.getPosition() < 81) {
+    			page8++;
+    		} else if (keyword.getPosition() != null && keyword.getPosition() < 91) {
+    			page9++;
+    		} 
+    	}
+    	
+    	model.addAttribute("page1", page1);
+    	model.addAttribute("page2", page2);
+    	model.addAttribute("page3", page3);
+    	model.addAttribute("page4", page4);
+    	model.addAttribute("page5", page5);
+    	model.addAttribute("page6", page6);
+    	model.addAttribute("page7", page7);
+    	model.addAttribute("page8", page8);
+    	model.addAttribute("page9", page9);
     }
     
     
