@@ -1,7 +1,5 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -15,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.twitterautomation.jpa.entity.Project;
-import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
-import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
@@ -32,9 +28,6 @@ public class ProjectViewController {
 	
 	@Autowired
 	ProjectRepository projectRepository;
-
-	@Autowired
-	ProjectUrlRepository projectUrlRepository;
 	
     @RequestMapping(value="/projectView", method=RequestMethod.GET)
     public String projectView(HttpServletRequest request, Model model,
@@ -62,6 +55,10 @@ public class ProjectViewController {
     		return "redirect:notAuthorized";
     	}
     	
+    	if (user.isBadLogin()) {
+    		return "redirect:badLogin";
+    	}
+    	
     	Project project = projectRepository.findOne(projectId);
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
@@ -70,12 +67,13 @@ public class ProjectViewController {
     	
     	model.addAttribute("project",project);
     	
-    	List<ProjectUrl> projectUrls = projectUrlRepository.findByProject(project);
-    	if (projectUrls.size() == 0) {
+    	model.addAttribute("urls",project.getProjectUrls());
+    	if (project.getProjectUrls() == null || project.getProjectUrls().size() == 0) {
     		model.addAttribute("noUrls",true);
     	}
     	
-    	model.addAttribute("urls",projectUrls);
+    	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
         return "projectView";
     }

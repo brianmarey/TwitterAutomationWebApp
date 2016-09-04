@@ -19,5 +19,11 @@ public interface DomainSearchKeywordRepository extends BaseRepository<DomainSear
 	@Query("SELECT b FROM DomainSearchKeyword b order by id asc")
     Page<DomainSearchKeyword> findLatest(Pageable page);
 	
-	List<DomainSearchKeyword> findTop20ByProjectUrlOrderByIdAsc(ProjectUrl projectUrl);
+	@Query("SELECT b FROM DomainSearchKeyword b where b.projectUrl = :projectUrl and b.type = :type order by id asc")
+    List<DomainSearchKeyword> findLatestByType(@Param("projectUrl") ProjectUrl projectUrl, @Param("type") String type, Pageable page);
+
+	@Query("SELECT b FROM DomainSearchKeyword b where b.projectUrl = :projectUrl and b.type = :type order by id asc")
+    List<DomainSearchKeyword> findLatestByType(@Param("projectUrl") ProjectUrl projectUrl, @Param("type") String type);
+
+	//List<DomainSearchKeyword> findTop10ByProjectUrlOrderByIdAsc(ProjectUrl projectUrl);
 }

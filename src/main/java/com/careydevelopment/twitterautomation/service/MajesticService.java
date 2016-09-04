@@ -7,4 +7,6 @@ public interface MajesticService {
 	public MajesticResults getIndexItemInfo(String url);
 	
 	public MajesticResults getBacklinkData(String url);
+	
+	public MajesticResults getAnchorTextData(String url);
 }

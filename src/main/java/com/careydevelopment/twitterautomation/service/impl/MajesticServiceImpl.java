@@ -65,4 +65,35 @@ public class MajesticServiceImpl implements MajesticService {
 		
 		return iir;
 	}
+	
+	
+	@Override
+	public MajesticResults getAnchorTextData(String url) {
+		MajesticResults iir = null;
+		
+		StringReader reader = new StringReader("<Result Code=\"OK\" ErrorMessage=\"\" FullError=\"\">"+
+			"<GlobalVars IndexBuildDate=\"2014-06-17 14:09:10\" IndexType=\"1\" ServerBuild=\"2014-06-10 17:35:22\" ServerName=\"ECHOLIMA\" ServerVersion=\"1.0.5274.29861\" UniqueIndexID=\"20140617140910-FRESH\"/>"+
+			"<DataTables Count=\"1\"><DataTable Name=\"AnchorText\" RowsCount=\"10\" Headers=\"AnchorText|RefDomains|TotalLinks|DeletedLinks|NoFollowLinks|EstimatedLinkCitationFlow|EstimatedLinkTrustFlow\" AvailableLines=\"50000\" BackLinkItem=\"majestic.com\" BackLinkType=\"BackLinks\" Count=\"5\" From=\"0\" Item=\"majestic.com\" ItemType=\"RootDomain\" MaxRefDomainTopics=\"1\" MaxSourceTopics=\"1\" MaxTargetTopics=\"10\" OrigItem=\"majestic.com\" RefDomainTopicsCount=\"1\" SourceTopicsCount=\"1\" TargetTopicsCount=\"1\" TotalBackLinks=\"7455614\" TotalLines=\"8115767\" TotalMatches=\"5\">"+
+			"<Row>Majestic|2032|21035|8575|1979|72|72</Row>"+
+			"<Row>majestic|596|3525|1228|512|62|59</Row>"+
+			"<Row>www.majestic.com|488|2342|1285|556|48|42</Row>"+
+			"<Row>http://www.majestic.com/|408|3581|973|1068|54|55</Row>"+
+			"<Row>majestic.com|337|1218|412|177|48|39</Row>"+
+			"<Row>http://www.majestic.com|252|1438|297|713|51|38</Row>"+
+			"<Row>majestic|243|865|339|140|52|49</Row>"+
+			"<Row>majestic-seo|203|16420|647|123|63|36</Row>"+
+			"<Row>majestic-seo : competitive link intelligence|103|402|143|127|32|30</Row>"+
+			"<Row>Majestic website|61|168|93|59|35|34</Row>"+
+			"</DataTable></DataTables></Result>");
+			
+		try {
+			JAXBContext jc = JAXBContext.newInstance(MajesticResults.class);
+			Unmarshaller un = jc.createUnmarshaller();
+			iir = (MajesticResults)un.unmarshal(reader);	
+		} catch (Exception e) {
+			LOGGER.error("Problem retrieving Majestic data!",e);
+		}
+		
+		return iir;
+	}
 }

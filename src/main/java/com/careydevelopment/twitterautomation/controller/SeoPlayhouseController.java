@@ -66,6 +66,10 @@ public class SeoPlayhouseController {
     		return "redirect:notAuthorized";
     	}
     	
+    	if (twitterUser.isBadLogin()) {
+    		return "redirect:badLogin";
+    	}
+    	
     	model.addAttribute("localhost",getLocalHostPrefix());
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("dashboardActive", Constants.MENU_CATEGORY_OPEN);

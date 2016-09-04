@@ -12,6 +12,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "domain_search_keyword")
 public class DomainSearchKeyword {
+	
+	public static final String ORGANIC = "organic";
+	public static final String PAID = "paid";
 
 	
 	@Id
@@ -135,6 +138,17 @@ public class DomainSearchKeyword {
 		this.projectUrl = projectUrl;
 	}	
 	
+	public String getKeywordDisplay() {
+		String keywordDisplay = keyword;
+		
+		if (keyword != null) {
+			if (keyword.length() > 30) {
+				keywordDisplay = keyword.substring(0, 30) + "...";
+			} 
+		}
+		
+		return keywordDisplay;
+	}
 }
 
 

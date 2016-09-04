@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>BlastFollow | Create a Project</title>
+        <title>SEO Playhouse | Create a Project</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="" name="description"></meta>
@@ -27,6 +27,13 @@
         
         <!-- for captcha -->
         <script src='https://www.google.com/recaptcha/api.js'></script>
+        
+        <script>
+        	function submitForm() {
+        		$('#submitButton').prop('disabled', true);
+        		$('#projectForm').submit();
+        	}
+        </script>
     </head>
     <!-- END HEAD -->
 
@@ -71,7 +78,7 @@
                     </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
-                        <form action="#" th:action="@{/createProject}" th:object="${project}" method="POST" class="form-horizontal form-bordered">
+                        <form id="projectForm" action="#" th:action="@{/createProject}" th:object="${project}" method="POST" class="form-horizontal form-bordered">
                             <div class="form-body">
                                 <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error : ''">
                                     <label class="control-label col-md-3">Project Name</label>
@@ -91,7 +98,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3">&nbsp;</label>
                                     <div class="col-md-4">
-                                    	<button type="submit" class="btn btn-primary" style="margin-bottom:5px">Create Project</button>
+                                    	<button type="button" id="submitButton" onclick="submitForm()" class="btn btn-primary" style="margin-bottom:5px">Create Project</button>
                                     </div>
                                 </div>
                              </div>

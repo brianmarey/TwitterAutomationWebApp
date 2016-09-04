@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>BlastFollow | Add a URL, Domain, or Subdomain</title>
+        <title>SEO Playhouse | Add a URL, Domain, or Subdomain</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="" name="description"></meta>
@@ -30,6 +30,7 @@
         
         <script>
         	function submitForm() {
+        		$('#submitButton').prop('disabled', true);
  				$('#keepInMindNote').hide();
  				$('#loadingDiv').show();
  				$("#urlForm").submit()
@@ -104,7 +105,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3">&nbsp;</label>
                                     <div class="col-md-4">
-                                    	<button type="button" class="btn btn-primary" style="margin-bottom:5px" onclick="submitForm()">Add URL/Domain</button>
+                                    	<button type="button" id="submitButton" class="btn btn-primary" style="margin-bottom:5px" onclick="submitForm()">Add URL/Domain</button>
                                     </div>
                                 </div>
                                 <div class="form-group">

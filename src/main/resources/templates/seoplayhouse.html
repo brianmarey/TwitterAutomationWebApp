@@ -88,7 +88,7 @@
 		                        <div class="portlet box blue">
 		                            <div class="portlet-title">
 		                                <div class="caption">
-		                                    <i class="fa fa-cogs"></i>Your Projects </div>
+		                                    <i class="fa fa-dashboard"></i>Your Projects </div>
 		                                <!--  <div class="tools">
 		                                    <a href="javascript:;" class="collapse"> </a>
 		                                    <a href="#portlet-config" data-toggle="modal" class="config"> </a>
@@ -111,7 +111,9 @@
 		                                        		<td th:text="${project.name}" style="vertical-align:middle"></td>
 		                                        		<td th:text="${project.numberOfUrls}" style="vertical-align:middle"></td>
 		                                        		<td> <a th:href="@{/projectView(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
-                                                                <i class="fa fa-share"></i> View </a> </td>
+                                                                <i class="fa fa-share"></i> View </a> 
+                                                             <a th:href="@{/editProject(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                                <i class="fa fa-edit"></i> Edit </a> </td>
 													</tr>		                                        
 		                                        </tbody>
 		                                    </table>

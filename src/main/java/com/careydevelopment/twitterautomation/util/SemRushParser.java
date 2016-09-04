@@ -103,7 +103,7 @@ public class SemRushParser {
 					comp.setType(type);
 					comp.setCommonKeywords(new Integer(list.get(2)));
 					comp.setCompetitorRelevance(new Float(list.get(1)));
-					//comp.setDomain(list.get(0));
+					comp.setDomain(list.get(0));
 					comp.setTypeCost(new Float(list.get(5)));
 					comp.setTypeKeywords(new Integer(list.get(3)));
 					comp.setTypeTraffic(new Integer(list.get(4)));

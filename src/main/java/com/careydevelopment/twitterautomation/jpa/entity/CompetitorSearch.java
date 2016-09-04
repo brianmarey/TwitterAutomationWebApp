@@ -12,6 +12,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "competitor_search")
 public class CompetitorSearch {
+	
+	public static final String PAID = "paid";
+	public static final String ORGANIC = "organic";
 
 	@Id
 	@Column(name="id")
@@ -21,6 +24,9 @@ public class CompetitorSearch {
 	@ManyToOne
 	@JoinColumn(name = "url_id")
 	private ProjectUrl projectUrl;
+	
+	@Column(name="domain")
+	private String domain;
 	
 	@Column(name="competitor_relevance")
 	private Float competitorRelevance;
@@ -88,6 +94,12 @@ public class CompetitorSearch {
 	}
 	public void setProjectUrl(ProjectUrl projectUrl) {
 		this.projectUrl = projectUrl;
+	}
+	public String getDomain() {
+		return domain;
+	}
+	public void setDomain(String domain) {
+		this.domain = domain;
 	}	
 	
 }

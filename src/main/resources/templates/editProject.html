@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>SEO Playhouse | Edit a Project</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="" name="description"></meta>
+        <meta content="" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+        
+        <!-- for captcha -->
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        
+        <script>
+        	function submitForm() {
+        		$('#submitButton').prop('disabled', true);
+        		$('#projectForm').submit();
+        	}
+        </script>
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    
+    
+    <div id="fb-root"></div>
+    
+    
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!--  <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>-->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title">Edit a Project</h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    
+                    <div class="portlet-body form">
+                        <!-- BEGIN FORM-->
+                        <form action="#" id="projectForm" th:action="@{/editProject}" th:object="${project}" method="POST" class="form-horizontal form-bordered">
+                            <input type="hidden" th:value="*{id}" th:field="*{id}"/>
+                            <input type="hidden" th:value="*{status}" th:field="*{status}"/>
+                            <div class="form-body">
+                                <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error : ''">
+                                    <label class="control-label col-md-3">Project Name</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" maxlength="32" th:value="*{name}" th:field="*{name}"/>
+                                        <span th:if="${#fields.hasErrors('name')}" class="help-block" th:errors="*{name}">Name Error</span>
+                                        <span th:unless="${#fields.hasErrors('name')}" class="help-block"> Enter a name to describe your project. </span>
+                                    </div>
+                                </div>
+                                <div class="form-group" th:classappend="${captchaFail} ? has-error : ''">
+                                    <label class="control-label col-md-3">&nbsp;</label>
+                                    <div class="col-md-4">
+                                    	<div class="g-recaptcha" data-sitekey="6LdjHygTAAAAAJcDHCTCFJbsNLRGghS3ua43t1nF"></div>
+                                    	<div th:if="${captchaFail}" class="help-block">Captcha validation failure</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">&nbsp;</label>
+                                    <div class="col-md-4">
+                                    	<button type="button" onclick="submitForm()" id="submitButton" class="btn btn-primary" style="margin-bottom:5px">Save Project</button>
+                                    </div>
+                                </div>
+                             </div>
+                          </form>
+                     </div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <script th:src="@{/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js}" type="text/javascript"></script>
+		<script th:src="@{/assets/pages/scripts/components-bootstrap-maxlength.min.js}" type="text/javascript"></script>
+        <!-- END FOOTER -->
+    </body>
+</html>

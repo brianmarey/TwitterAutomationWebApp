@@ -65,16 +65,15 @@ public class ProjectViewControllerTest {
 		TwitterUser owner = ControllerHelper.getBasicUser();
 
 		try {
+			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+						
 			Project project = new Project();
 			project.setId(1l);
 			project.setName("name");
 			project.setOwner(owner);
-
-			when(projectRepository.findOne(1l)).thenReturn(project);
-
-			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+			project.setProjectUrls(projectUrls);
 			
-			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
+			when(projectRepository.findOne(1l)).thenReturn(project);
 			
 			mockMvc.perform(get("/projectView")
 					.sessionAttr(Constants.TWITTER_ENTITY, owner)
