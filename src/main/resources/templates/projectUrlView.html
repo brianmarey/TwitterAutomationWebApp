@@ -99,7 +99,7 @@
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                    Backlink Info </div>
+	                                    <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="A breakdown of backlinks pointing to your site." style="position:relative;top:-2px"></i>Backlink Info </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -139,7 +139,7 @@
                     		<div class="portlet light portlet-fit bordered">
                                     <div class="portlet-title">
                                         <div class="caption">
-                                            <span class="caption-subject font-green sbold uppercase">Anchor Text Distribution</span>
+                                            <span class="caption-subject font-green sbold uppercase"><i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="The top 10 anchor texts that are used in backlinks pointing to the site."></i> Anchor Text Distribution</span>
                                         </div>                   
                                     </div>
                                     <div class="portlet-body">
@@ -156,7 +156,7 @@
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                    Backlinks </div>
+	                                    <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="The top 20 backlinks pointing to the site." style="position:relative;top:-2px"></i>Backlinks </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -190,7 +190,7 @@
                     		<div class="portlet light portlet-fit bordered">
                                     <div class="portlet-title">
                                         <div class="caption">
-                                            <span class="caption-subject font-green sbold uppercase">Follow Breakdown</span>
+                                            <span class="caption-subject font-green sbold uppercase"><i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="A breakdown of no follow and do follow backlinks."></i> Follow Breakdown</span>
                                         </div>                   
                                     </div>
                                     <div class="portlet-body">
@@ -202,7 +202,7 @@
                     		<div class="portlet light portlet-fit bordered">
                                     <div class="portlet-title">
                                         <div class="caption">
-                                            <span class="caption-subject font-green sbold uppercase">Link Types</span>
+                                            <span class="caption-subject font-green sbold uppercase"><i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="A breakdown of the link types: image, text, mention, etc."></i> Link Types</span>
                                         </div>                   
                                     </div>
                                     <div class="portlet-body">
@@ -219,7 +219,7 @@
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                    Organic Search </div>
+	                                    <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="High-level breakdown of the organic keywords people use to reach the site." style="position:relative;top:-2px"></i>Organic Search </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -247,7 +247,7 @@
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                    Paid Search </div>
+	                                    <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="High-level breakdown of the AdWords keywords people use to reach the site." style="position:relative;top:-2px"></i>Paid Search </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -281,7 +281,7 @@
                     		<div class="portlet light portlet-fit bordered">
                                     <div class="portlet-title">
                                         <div class="caption">
-                                            <span class="caption-subject font-green sbold uppercase">Organic Rank</span>
+                                            <span class="caption-subject font-green sbold uppercase"><i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows how many of the top organic keywords appear on a particular page in the SERPs."></i> Organic Rank</span>
                                         </div>                   
                                     </div>
                                     <div class="portlet-body">
@@ -299,7 +299,7 @@
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   Top Organic Keywords </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking organic keywords." style="position:relative;top:-2px"></i>Top Organic Keywords </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -315,7 +315,7 @@
 	                                        </thead>	
 	                                        <tbody>
 	                                        	<tr th:each="keyword,iterationStatus : ${organicKeywords}">
-	                                        		<td th:text="${keyword.keyword}"></td>
+	                                        		<td th:text="${keyword.keywordDisplay}"></td>
 	                                        		<td th:text="${keyword.position}"></td>
 	                                        		<td th:text="${keyword.searchVolume}"></td>
 	                                        		<td th:text="${keyword.cpc}"></td>
@@ -333,7 +333,7 @@
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   Top Paid Keywords </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking paid keywords." style="position:relative;top:-2px"></i>Top Paid Keywords </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -349,7 +349,7 @@
 	                                        </thead>	
 	                                        <tbody>
 	                                        	<tr th:each="keyword,iterationStatus : ${paidKeywords}">
-	                                        		<td th:text="${keyword.keyword}"></td>
+	                                        		<td th:text="${keyword.keywordDisplay}"></td>
 	                                        		<td th:text="${keyword.position}"></td>
 	                                        		<td th:text="${keyword.searchVolume}"></td>
 	                                        		<td th:text="${keyword.cpc}"></td>
@@ -371,7 +371,7 @@
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   Top Organic Competitors </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking organic competitors." style="position:relative;top:-2px"></i>Top Organic Competitors </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -403,7 +403,7 @@
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   Top Paid Competitors </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking AdWords competitors." style="position:relative;top:-2px"></i>Top Paid Competitors </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -439,7 +439,7 @@
                     		<div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   Mobile Speed </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="On a scale of 0-100, this metric measures the speed of the site for mobile users." style="position:relative;top:-2px"></i>Mobile Speed </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<th:block th:if="${pageSpeedInsights.mobileSpeed != null}">
@@ -454,7 +454,7 @@
                     		<div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   Mobile Usability </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="On a scale of 0-100, this metric measures the mobile-friendliness of the site." style="position:relative;top:-2px"></i>Mobile Usability </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<th:block th:if="${pageSpeedInsights.mobileUsability != null}">
@@ -469,7 +469,7 @@
                     		<div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   Desktop Speed </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="On a scale of 0-100, this metric measures the speed of the site for desktop users." style="position:relative;top:-2px"></i>Desktop Speed </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<th:block th:if="${pageSpeedInsights.desktopSpeed != null}">
@@ -481,10 +481,14 @@
 	                    	</div>
                     	</div>                    	
                     </div>
+                    <div class="row">
+                    	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    		<div style="text-align:center"><h4><a target="_blank" th:href="@{https://developers.google.com/speed/pagespeed/insights(url=${projectUrl.url})}">Click here to learn more from PageSpeed Insights</a></h4></div>
+                    	</div>
+                    </div>
                     </th:block>
-                    
-                    
-                   	<div class="row">
+                             
+                   	<div class="row" style="margin-top:20px">
 					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					    	<div class="portlet light tasks-widget bordered">
                             	<div class="portlet-title">
@@ -493,10 +497,11 @@
                                     </div>
                                 </div>
                                 <div class="portlet-body util-btn-margin-bottom-5">
-                                	<div class="clearfix" style="display: flex;justify-content: space-between;">
-								    	<a th:href="@{/createProjectUrl(projectId=${projectUrl.project.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Add a URL/Domain</button></a>
-								    	<a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New Project</button></a>
-									</div>
+                                	<div class="row">
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createProjectUrl(projectId=${projectUrl.project.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Add a URL/Domain</button></a></div>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New Project</button></a></div>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
+                                	</div>
 								</div>
 							</div>
                         </div>
@@ -523,7 +528,7 @@
         <script>
         var data = [
 			<th:block th:each="anchorText,iterationStatus : ${anchorTextData}">
-            			{ label: '<th:block th:text="${anchorText.anchorText}"></th:block>',  data: <th:block th:text="${anchorText.totalLinks}"></th:block>},
+            			{ label: '<th:block th:text="${anchorText.anchorTextDisplay}"></th:block>',  data: <th:block th:text="${anchorText.totalLinks}"></th:block>},
             </th:block>			
             		];
         $.plot('#pie_anchor', data, {

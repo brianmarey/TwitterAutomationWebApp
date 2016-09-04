@@ -115,4 +115,16 @@ public class AnchorTextData {
 		this.anchorText = anchorText;
 	}
 	
+	public String getAnchorTextDisplay() {
+		String anchorTextDisplay = anchorText;
+		
+		if (anchorText != null) {
+			if (anchorText.length() > 30) {
+				anchorTextDisplay = anchorText.substring(0, 30) + "...";
+			} 
+		}
+		
+		return anchorTextDisplay;
+	}
+	
 }
