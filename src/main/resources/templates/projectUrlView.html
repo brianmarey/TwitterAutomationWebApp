@@ -28,6 +28,13 @@
         <!-- for captcha -->
         <script src='https://www.google.com/recaptcha/api.js'></script>
         
+        <script>
+        	function refreshData() {
+        		$('#refreshDiv').hide();
+        		$('#pleaseWaitDiv').show();
+        		document.location="./refreshReport?projectUrlId=<th:block th:text='${projectUrl.id}'></th:block>";
+        	}
+        </script>
     </head>
     <!-- END HEAD -->
 
@@ -60,6 +67,28 @@
                     <small th:text="${projectUrl.url}"></small></h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
+                    
+                    <div class="row" th:if="${refreshEligible}" id="refreshDiv">
+                    	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                    	<div class="note note-success">
+	                        	<h4 class="block">This Report Is Eligible for a Refresh</h4>
+	                             <p> You can refresh this report to get more recent information. <a href="javascript:refreshData()">Click here</a> to refresh. </p>
+	                        </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row" style="display:none" id="pleaseWaitDiv">
+                    	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                    	<div class="note note-success">
+	                        	<h4 class="block">Please Wait</h4>
+	                             <p> Please wait while the data is refreshed.</p>
+	                             <p> Don't click the Back button on your browser.</p>
+	                             <p> Don't stop the page load - it will take a while.</p>
+	                             <p> Feel free to work in a different tab or open a new window.</p>
+	                             <p><img th:src="@{/images/hourglass.gif}" alt="hourglass"/></p>
+	                        </div>
+                        </div>                    
+                    </div>
                     
                     <th:block th:unless="${projectUrl.indexItemInfo == null}">
                     <div class="row">

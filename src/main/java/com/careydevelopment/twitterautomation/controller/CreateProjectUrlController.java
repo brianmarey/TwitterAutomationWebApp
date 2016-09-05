@@ -117,11 +117,19 @@ public class CreateProjectUrlController {
     	
         List<ProjectUrl> urls = projectUrlRepository.findByProject(project);
     
-        if (urls != null && urls.size() >= user.getUserConfig().getMaxUrlsPerProject()) {
-        	model.addAttribute("maxUrlsExceeded",true);
-        	model.addAttribute("maxUrls",user.getUserConfig().getMaxUrlsPerProject());
-        	return "createProjectUrl";
+        if (urls != null) {
+        	if (urls.size() >= user.getUserConfig().getMaxUrlsPerProject()) {
+	        	model.addAttribute("maxUrlsExceeded",true);
+	        	model.addAttribute("maxUrls",user.getUserConfig().getMaxUrlsPerProject());
+	        	return "createProjectUrl";
+        	}
+        	
+        	if (urls.contains(projectUrl)) {
+        		LOGGER.warn("User trying to create a project url that already exists");
+        		return "createProjectUrl";
+        	}
         }
+       
     	
     	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);

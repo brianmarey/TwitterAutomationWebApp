@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -94,6 +96,8 @@ public class ProjectUrlViewController {
     		return "redirect:notAuthorized";
     	}
     	
+    	setEligibleForRefresh(model,projectUrl);
+    	
     	model.addAttribute("projectUrl",projectUrl);
     	
     	List<BacklinkData> backlinks = backlinkDataRepository.findByUrl(projectUrl);
@@ -131,6 +135,22 @@ public class ProjectUrlViewController {
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
         return "projectUrlView";
+    }
+
+    
+    private void setEligibleForRefresh(Model model, ProjectUrl projectUrl) {    	
+    	Date reportDate = projectUrl.getReportDate();
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(reportDate);
+    	cal.add(Calendar.DAY_OF_MONTH, 1);
+    	
+    	Date now = new Date();
+    	
+    	LOGGER.info("Comparing " + now + " to " + cal.getTime());
+    	
+    	if (now.after(cal.getTime())) {
+    		model.addAttribute("refreshEligible",true);
+    	}
     }
     
     

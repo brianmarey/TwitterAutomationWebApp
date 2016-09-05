@@ -17,6 +17,9 @@ public interface CompetitorSearchRepository extends BaseRepository<CompetitorSea
 	@Query("SELECT c FROM CompetitorSearch c where c.projectUrl = :projectUrl")
     List<CompetitorSearch> findByUrl(@Param("projectUrl") ProjectUrl projectUrl);
     
+	@Query("SELECT c FROM CompetitorSearch c where c.projectUrl = :projectUrl and c.domain = :domain and c.type = :type")
+    CompetitorSearch findSpecific(@Param("projectUrl") ProjectUrl projectUrl, @Param("domain") String domain, @Param("type") String type);
+	
 	@Query("SELECT b FROM CompetitorSearch b order by id asc")
     Page<CompetitorSearch> findLatest(Pageable page);
 	
