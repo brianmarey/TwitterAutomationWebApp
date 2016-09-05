@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>SEO Playhouse | Keywords</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="" name="description"></meta>
+        <meta content="" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+        
+        <!-- for captcha -->
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    
+    <div id="fb-root"></div>
+    
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!--  <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>-->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title">Keywords<br/>
+                    <small th:text="${projectUrl.url}"></small></h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    
+                    <div class="row" style="margin-top:20px">
+                    <th:block th:if="${keywords != null}">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:20px">                        
+	                        <div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking organic keywords." style="position:relative;top:-2px"></i>Top Organic Keywords </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> Keyword </th>
+	                                                <th> Position </th>
+	                                                <th> Volume </th>
+	                                                <th> CPC </th>
+	                                                <th> Traffic % </th>
+	                                            </tr>
+	                                        </thead>	
+	                                        <tbody>
+	                                        	<tr th:each="keyword,iterationStatus : ${keywords}">
+	                                        		<td th:text="${keyword.keyword}"></td>
+	                                        		<td th:text="${keyword.position}"></td>
+	                                        		<td th:text="${keyword.searchVolume}"></td>
+	                                        		<td th:text="${keyword.cpc}"></td>
+	                                        		<td th:text="${keyword.trafficPercent}"></td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    
+                    </th:block>
+                    </div>
+                             
+                   	<div class="row" style="margin-top:20px">
+					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					    	<div class="portlet light tasks-widget bordered">
+                            	<div class="portlet-title">
+                                	<div class="caption">
+                                    	<span class="caption-subject font-green-haze bold uppercase">What Would You Like To Do?</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body util-btn-margin-bottom-5">
+                                	<div class="row">
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/projectUrlView(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">View URL Metrics</button></a></div>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New Project</button></a></div>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
+                                	</div>
+								</div>
+							</div>
+                        </div>
+					</div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <!-- END FOOTER -->
+    </body>
+</html>
