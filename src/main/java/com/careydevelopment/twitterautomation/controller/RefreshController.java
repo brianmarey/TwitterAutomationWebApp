@@ -2,15 +2,12 @@ package com.careydevelopment.twitterautomation.controller;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -18,21 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.careydevelopment.twitterautomation.jpa.entity.AnchorTextData;
-import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
-import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
-import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
-import com.careydevelopment.twitterautomation.jpa.entity.LinkType;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
-import com.careydevelopment.twitterautomation.jpa.repository.AnchorTextDataRepository;
-import com.careydevelopment.twitterautomation.jpa.repository.BacklinkDataRepository;
-import com.careydevelopment.twitterautomation.jpa.repository.CompetitorSearchRepository;
-import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
 import com.careydevelopment.twitterautomation.service.UrlMetricsService;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
+import com.careydevelopment.twitterautomation.util.RefreshUtil;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
@@ -48,6 +37,8 @@ public class RefreshController {
 	@Autowired
 	UrlMetricsService urlMetricsService;
 	
+	@Autowired
+	RefreshUtil refreshUtil;
 	
     @RequestMapping(value="/refreshReport", method=RequestMethod.GET)
     public String projectView(HttpServletRequest request, Model model,
@@ -91,10 +82,14 @@ public class RefreshController {
     	
     	model.addAttribute("projectUrl",projectUrl);
     	
+    	if (refreshUtil.isMaxedOut(user.getUserConfig())) {
+    		return "redirect:maxedOutRefreshes";
+    	}
+    	
     	if (isEligibleForRefresh(projectUrl)) {
-    		urlMetricsService.saveUrlMetrics(projectUrl);
     		projectUrl.setReportDate(new Date());
     		projectUrlRepository.save(projectUrl);
+    		urlMetricsService.saveUrlMetrics(projectUrl);
     	}
     	
         return "redirect: projectUrlView?projectUrlId=" + projectUrl.getId();

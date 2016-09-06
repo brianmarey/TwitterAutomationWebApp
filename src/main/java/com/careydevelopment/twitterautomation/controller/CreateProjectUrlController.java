@@ -26,6 +26,7 @@ import com.careydevelopment.twitterautomation.service.UrlMetricsService;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
+import com.careydevelopment.twitterautomation.util.RefreshUtil;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 import com.careydevelopment.twitterautomation.util.UrlHelper;
 
@@ -44,6 +45,9 @@ public class CreateProjectUrlController {
 	
 	@Autowired
 	UrlMetricsService urlMetricsService;
+	
+	@Autowired
+	RefreshUtil refreshUtil;
 	
     @RequestMapping(value="/createProjectUrl", method=RequestMethod.GET)
     public String createProjectUrl(HttpServletRequest request, Model model,
@@ -113,6 +117,10 @@ public class CreateProjectUrlController {
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
+    	}
+    	
+    	if (refreshUtil.isMaxedOut(user.getUserConfig())) {
+    		return "redirect:maxedOutRefreshes";
     	}
     	
         List<ProjectUrl> urls = projectUrlRepository.findByProject(project);

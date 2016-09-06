@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>SEO Playhouse | Maxed Out Reports</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="not authorized" name="description"></meta>
+        <meta content="Carey Development, LLC" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!--  <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>-->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title"> Maxed Out
+                    </h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    <div class="row">
+                        <div class="col-md-12 page-404">
+                            <div class="details">
+                                <h3>You've maxed out the number of reports you can run or refresh for today.</h3>
+                                <p> Please try again tomorrow.</p>
+                                <p><a th:href="@{/seoplayhouse}"> Return to the dashboard </a> or select an item from the side menu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <!-- END FOOTER -->
+    </body>
+</html>
