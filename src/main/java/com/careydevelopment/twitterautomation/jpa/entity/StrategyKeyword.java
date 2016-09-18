@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 
 @Entity
 @Table(name = "strategy_keyword")
@@ -27,6 +29,9 @@ public class StrategyKeyword {
 	
 	@Column(name="original_rank")
 	private Integer originalRank;
+	
+	@Transient
+	private Integer currentRank;
 
 	public Long getId() {
 		return id;
@@ -59,5 +64,15 @@ public class StrategyKeyword {
 	public void setOriginalRank(Integer originalRank) {
 		this.originalRank = originalRank;
 	}
+
+	public Integer getCurrentRank() {
+		return currentRank;
+	}
+
+	public void setCurrentRank(Integer currentRank) {
+		this.currentRank = currentRank;
+	}
+	
+	
 	
 }

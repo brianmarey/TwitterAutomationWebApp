@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>SEO Playhouse | SEO Strategy Details</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="" name="description"></meta>
+        <meta content="" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+        
+        <!-- for captcha -->
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    
+    <div id="fb-root"></div>
+    
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!--  <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>-->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title">SEO Strategy Details<br/>
+                    <small th:text="${projectUrl.url}"></small></h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+                    
+                    <div class="row">
+                    	<div class="col-md-12">
+	                        <div class="portlet box blue">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                    <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Detail about this SEO strategy." style="position:relative;top:-2px"></i>Details </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+									<form class="form-horizontal">
+                                       <div class="form-group">
+                                           <label class="col-md-3 control-label" for="title">Name:</label>
+                                           <label class="col-md-5 control-label" style="text-align:left" th:text="${seoStrategy.name}"></label>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="col-md-3 control-label" for="title">Type:</label>
+                                           <label class="col-md-5 control-label" style="text-align:left" th:text="${seoStrategy.strategyType}"></label>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="col-md-3 control-label" for="title">Source:</label>
+                                           <label class="col-md-5 control-label" style="text-align:left" th:text="${seoStrategy.strategySource}"></label>
+                                       </div>
+                                       <th:block th:if="${seoStrategy.strategySource == 'Outsourcing it'}">
+                                       <div class="form-group">
+                                           <label class="col-md-3 control-label" for="title">Outsourced To:</label>
+                                           <label class="col-md-5 control-label" style="text-align:left" th:text="${seoStrategy.purchasedName}"></label>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="col-md-3 control-label" for="title">Outsource URL:</label>
+                                           <label class="col-md-5 control-label" style="text-align:left"><a target="_blank" th:href="${seoStrategy.purchasedUrl}" th:text="${seoStrategy.purchasedUrl}"></a></label>
+                                       </div>
+                                       </th:block>
+                                       <div class="form-group">
+                                           <label class="col-md-3 control-label" for="title">Description:</label>
+                                           <label class="col-md-5 control-label" style="text-align:left" th:text="${seoStrategy.strategyDescription}"></label>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="col-md-3 control-label" for="title">Status:</label>
+                                           <th:block th:if='${seoStrategy.strategyStatus == "Closed"}'>
+                                           <label class="col-md-5 control-label" style="text-align:left;font-weight:bold;color:#d91e18" th:text="${seoStrategy.strategyStatus}"></label>
+                                           </th:block>
+                                           <th:block th:unless='${seoStrategy.strategyStatus == "Closed"}'>
+                                           <label class="col-md-5 control-label" style="text-align:left;font-weight:bold;color:#26c281" th:text="${seoStrategy.strategyStatus}"></label>
+                                           </th:block>
+                                       </div>
+                                       <div class="form-group">
+                                           <label class="col-md-3 control-label" for="title">Start Date:</label>
+                                           <label class="col-md-5 control-label" style="text-align:left" th:text="${seoStrategy.startDateDisplay}"></label>
+                                       </div>
+                                    </form>
+                        		</div>	                    	
+	                    	</div>
+                    	</div>                    	
+                    </div>
+                    
+
+
+                   	<div class="row" style="margin-top:20px">
+					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					    	<div class="portlet light tasks-widget bordered">
+                            	<div class="portlet-title">
+                                	<div class="caption">
+                                    	<span class="caption-subject font-green-haze bold uppercase">What Would You Like To Do?</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body util-btn-margin-bottom-5">
+                                	<div class="row">
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createProjectUrl(projectId=${projectUrl.project.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Add a URL/Domain</button></a></div>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New SEO Strategy</button></a></div>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
+                                	</div>
+								</div>
+							</div>
+                        </div>
+					</div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <!-- END FOOTER -->
+    </body>
+</html>

@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -12,19 +14,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
-
-import com.careydevelopment.twitterautomation.util.UrlHelper;
 
 @Entity
 @Table(name = "seo_strategy")
 public class SeoStrategy {
-	
+
 	public static final String STATUS_OPEN = "Open";
 	public static final String STATUS_CLOSED = "Closed";
 
+	@Transient
+	private DateFormat df = new SimpleDateFormat("MM/dd/YYYY");
+	
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -151,5 +154,23 @@ public class SeoStrategy {
 		this.strategyStatus = strategyStatus;
 	}
 
+	public Integer getNumberOfKeywords() {
+		Integer keywords = 0;
+		
+		if (strategyKeywords != null) {
+			keywords = strategyKeywords.size();
+		}
+		
+		return keywords;
+	}
 	
+	public String getStartDateDisplay() {
+		String startDateDisplay = "";
+		
+		if (startDate != null) {
+			startDateDisplay = df.format(startDate);
+		}
+		
+		return startDateDisplay;
+	}
 }
