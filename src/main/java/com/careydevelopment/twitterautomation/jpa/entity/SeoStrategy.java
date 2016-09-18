@@ -21,6 +21,9 @@ import com.careydevelopment.twitterautomation.util.UrlHelper;
 @Entity
 @Table(name = "seo_strategy")
 public class SeoStrategy {
+	
+	public static final String STATUS_OPEN = "Open";
+	public static final String STATUS_CLOSED = "Closed";
 
 	@Id
 	@Column(name = "id")

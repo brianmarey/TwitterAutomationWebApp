@@ -1,6 +1,7 @@
 package com.careydevelopment.twitterautomation.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,15 +22,16 @@ import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.SeoStrategy;
+import com.careydevelopment.twitterautomation.jpa.entity.StrategyKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
-import com.careydevelopment.twitterautomation.service.UrlMetricsService;
+import com.careydevelopment.twitterautomation.jpa.repository.SeoStrategyRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.StrategyKeywordRepository;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
-import com.careydevelopment.twitterautomation.util.RefreshUtil;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
@@ -44,15 +46,15 @@ public class CreateSeoStrategyController {
 	
 	@Autowired
 	ProjectUrlRepository projectUrlRepository;
-	
-	@Autowired
-	UrlMetricsService urlMetricsService;
-	
-	@Autowired
-	RefreshUtil refreshUtil;
-	
+		
 	@Autowired
 	DomainSearchKeywordRepository domainSearchKeywordRepository;
+	
+	@Autowired
+	SeoStrategyRepository seoStrategyRepository;
+	
+	@Autowired
+	StrategyKeywordRepository strategyKeywordRepository;
 	
     @RequestMapping(value="/createSeoStrategy", method=RequestMethod.GET)
     public String createProjectUrl(HttpServletRequest request, Model model,
@@ -169,8 +171,54 @@ public class CreateSeoStrategyController {
             return "createSeoStrategy";
         }
         
-        //urlMetricsService.saveUrlMetrics(projectUrl);
+        persist(seoStrategy,projectUrl,keywords,selectedOnes,addedKeywords);
         
         return "redirect:/projectView?projectId=" + projectUrl.getProject().getId();
+    }
+    
+    
+    private void persist(SeoStrategy seoStrategy, ProjectUrl projectUrl, List<DomainSearchKeyword> keywords, List<String> selectedOnes, String addedKeywords) {
+        seoStrategy.setProjectUrl(projectUrl);
+        seoStrategy.setStartDate(new Date());
+        seoStrategy.setStrategyStatus(SeoStrategy.STATUS_OPEN);
+        
+        seoStrategyRepository.save(seoStrategy);
+        
+        for (String key : selectedOnes) {
+        	StrategyKeyword sk = new StrategyKeyword();
+        	sk.setKeyword(key);
+        	sk.setOriginalRank(getOriginalRank(key,keywords));
+        	sk.setSeoStrategy(seoStrategy);
+        	
+        	strategyKeywordRepository.save(sk);
+        }
+
+        if (addedKeywords != null) {
+        	String[] keys = addedKeywords.split(",");
+        	for (String key : keys) {
+        		if (key.trim().length() > 0) {
+                	StrategyKeyword sk = new StrategyKeyword();
+                	sk.setKeyword(key);
+                	sk.setOriginalRank(getOriginalRank(key,keywords));
+                	sk.setSeoStrategy(seoStrategy);
+                	
+                	strategyKeywordRepository.save(sk);
+        		}
+        	}
+        }
+    }
+    
+    
+    private Integer getOriginalRank(String key, List<DomainSearchKeyword> keywords) {
+    	Integer rank = 0;
+    	
+    	for (DomainSearchKeyword keyword : keywords) {
+    		if (keyword.getKeyword().equals(key)) {
+    			rank = keyword.getPosition();
+    			break;
+    		}
+    	}
+    	
+    	return rank;
     }
 }
