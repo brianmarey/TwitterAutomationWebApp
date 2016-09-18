@@ -1,6 +1,6 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,6 @@ import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RefreshUtil;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
-import com.careydevelopment.twitterautomation.util.UrlHelper;
 
 @Controller
 public class CreateSeoStrategyController {
@@ -138,14 +137,38 @@ public class CreateSeoStrategyController {
         String projectUrlIdS = request.getParameter("projectUrlId");
     	ProjectUrl projectUrl = projectUrlRepository.findOne(new Long(projectUrlIdS));
     	model.addAttribute("projectUrl",projectUrl);
+
+        String addedKeywords = request.getParameter("addedKeywords");
+        model.addAttribute("addedKeywords",addedKeywords);
+        
+        String selectedKeywords = request.getParameter("selectedKeywordsVal");
+        List<String> selectedOnes = new ArrayList<String>();
+        
+        if (selectedKeywords != null) {
+        	String[] keys = selectedKeywords.split(",");
+        	for (String key : keys) {
+        		if (key.trim().length() > 0) {
+        			selectedOnes.add(key);
+        		}
+        	}
+        	
+        	model.addAttribute("selectedKeywords", selectedOnes);
+        }
+
+    	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
+    	model.addAttribute("keywords", keywords);
     	
+    	if (keywords != null && keywords.size() > 0) {
+    		model.addAttribute("hasKeywords",true);
+    	}
+        
     	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);
     	
         if (bindingResult.hasErrors() || !passedCaptcha) {
             return "createSeoStrategy";
         }
-                
+        
         //urlMetricsService.saveUrlMetrics(projectUrl);
         
         return "redirect:/projectView?projectId=" + projectUrl.getProject().getId();
