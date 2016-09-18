@@ -63,7 +63,7 @@
                     </div>-->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">URL Details<br/>
+                    <h1 class="page-title">URL Detailsa<br/>
                     <small th:text="${projectUrl.url}"></small></h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
@@ -540,7 +540,7 @@
                                 <div class="portlet-body util-btn-margin-bottom-5">
                                 	<div class="row">
                                 		<div class="col-md-4" style="text-align:center"><a th:href="@{/createProjectUrl(projectId=${projectUrl.project.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Add a URL/Domain</button></a></div>
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New Project</button></a></div>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New SEO Strategy</button></a></div>
                                 		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
                                 	</div>
 								</div>
