@@ -114,7 +114,7 @@ public class CreateSeoStrategyController {
     
     
     @RequestMapping(value="/createSeoStrategy", method=RequestMethod.POST)
-    public String createProjectSubmit(@Valid ProjectUrl projectUrl, BindingResult bindingResult,
+    public String createProjectSubmit(@Valid SeoStrategy seoStrategy, BindingResult bindingResult,
     	HttpServletRequest request, Model model) { 
     	
     	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
@@ -134,44 +134,19 @@ public class CreateSeoStrategyController {
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
     	}
-    	
-    	if (refreshUtil.isMaxedOut(user.getUserConfig())) {
-    		return "redirect:maxedOutRefreshes";
-    	}
-    	
-        List<ProjectUrl> urls = projectUrlRepository.findByProject(project);
-    
-        if (urls != null) {
-        	if (urls.size() >= user.getUserConfig().getMaxUrlsPerProject()) {
-	        	model.addAttribute("maxUrlsExceeded",true);
-	        	model.addAttribute("maxUrls",user.getUserConfig().getMaxUrlsPerProject());
-	        	return "createProjectUrl";
-        	}
-        	
-        	if (urls.contains(projectUrl)) {
-        		LOGGER.warn("User trying to create a project url that already exists");
-        		return "createProjectUrl";
-        	}
-        }
-       
+
+        String projectUrlIdS = request.getParameter("projectUrlId");
+    	ProjectUrl projectUrl = projectUrlRepository.findOne(new Long(projectUrlIdS));
+    	model.addAttribute("projectUrl",projectUrl);
     	
     	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);
     	
         if (bindingResult.hasErrors() || !passedCaptcha) {
-            return "createProjectUrl";
+            return "createSeoStrategy";
         }
-
-        if (!UrlHelper.isValidUrl(projectUrl.getUrl())) {
-        	model.addAttribute("invalidUrl",true);
-        	return "createProjectUrl";
-        }                
-        
-        projectUrl.setProject(project);
-        projectUrl.setReportDate(new Date());
-        projectUrl = projectUrlRepository.save(projectUrl);
-        
-        urlMetricsService.saveUrlMetrics(projectUrl);
+                
+        //urlMetricsService.saveUrlMetrics(projectUrl);
         
         return "redirect:/projectView?projectId=" + projectUrl.getProject().getId();
     }
