@@ -73,6 +73,68 @@ public class StrategyKeyword {
 		this.currentRank = currentRank;
 	}
 	
+	public String getOriginalRankDisplay() {
+		String display = "N/A";
+		
+		if (originalRank != null && originalRank > 0) {
+			display = originalRank.toString();
+		}
+		
+		return display;
+	}
 	
 	
+	public String getCurrentRankDisplay() {
+		String display = "N/A";
+		
+		if (currentRank != null && currentRank > 0) {
+			display = currentRank.toString();
+		}
+		
+		return display;
+	}
+	
+	
+	public boolean getImprovement() {
+		boolean improvement = false;
+		
+		if (originalRank != null && currentRank != null) {
+			if (originalRank == 0 && currentRank > 0) {
+				improvement = true;
+			} else if (originalRank > currentRank) {
+				improvement = true;
+			}
+		}
+		
+		return improvement;
+	}
+	
+	
+	public boolean getSame() {
+		boolean same = true;
+		
+		if (originalRank != null && currentRank != null) {
+			if (originalRank != currentRank) {
+				same = false;
+			}
+		}
+		
+		return same;
+	}
+	
+	
+	public String getDifference() {
+		String difference = "";
+		String orig = getOriginalRankDisplay();
+		
+		if (!getSame() && !"N/A".equals(orig)) {
+			if (originalRank > currentRank) {
+				difference = "+" + (originalRank - currentRank);
+			} else {
+				difference = "" + (originalRank - currentRank);
+			}
+		}
+		
+		return difference;
+	}
 }

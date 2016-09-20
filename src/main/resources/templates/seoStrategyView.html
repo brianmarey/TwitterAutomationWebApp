@@ -115,6 +115,58 @@
                     	</div>                    	
                     </div>
                     
+                    <div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
+	                        <div class="portlet box blue-hoki">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                    <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="The keywords you're trying to rank with this URL." style="position:relative;top:-2px"></i>Keywords </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> Keyword </th>
+	                                                <th style="width:150px;text-align:center"> Original Rank </th>
+	                                                <th style="width:150px;text-align:center"> Current Rank </th>
+	                                                <th style="width:150px;text-align:center"> Change </th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+	                                        	<tr th:each="keyword,iterationStatus : ${keywords}">
+	                                        		<td th:text="${keyword.keyword}"></td>
+	                                        		<td th:text="${keyword.originalRankDisplay}" style="text-align:center"></td>
+	                                        		<td style="text-align:center">
+	                                        		<th:block th:if="${keyword.improvement}">
+	                                        		<span th:text="${keyword.currentRankDisplay}" style="color:#26c281"></span>
+	                                        		</th:block>
+	                                        		<th:block th:if="${keyword.same}">
+	                                        		<span th:text="${keyword.currentRankDisplay}"></span>
+	                                        		</th:block>
+	                                        		<th:block th:if="${!keyword.improvement and !keyword.same}">
+	                                        		<span th:text="${keyword.currentRankDisplay}" style="color:#d91e18"></span>
+	                                        		</th:block>
+	                                        		</td>
+	                                        		<td style="text-align:center">
+	                                        		<th:block th:if="${keyword.improvement}">
+	                                        		<span th:text="${keyword.difference}" style="color:#26c281"></span>
+	                                        		</th:block>
+	                                        		<th:block th:if="${keyword.same}">
+	                                        		<span th:text="${keyword.difference}"></span>
+	                                        		</th:block>
+	                                        		<th:block th:if="${!keyword.improvement and !keyword.same}">
+	                                        		<span th:text="${keyword.difference}" style="color:#d91e18"></span>
+	                                        		</th:block>
+	                                        		</td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    	
+                    </div>
 
 
                    	<div class="row" style="margin-top:20px">
@@ -127,7 +179,7 @@
                                 </div>
                                 <div class="portlet-body util-btn-margin-bottom-5">
                                 	<div class="row">
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createProjectUrl(projectId=${projectUrl.project.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Add a URL/Domain</button></a></div>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/editSeoStrategy(strategyId=${seoStrategy.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Edit This Strategy</button></a></div>
                                 		<div class="col-md-4" style="text-align:center"><a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New SEO Strategy</button></a></div>
                                 		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
                                 	</div>

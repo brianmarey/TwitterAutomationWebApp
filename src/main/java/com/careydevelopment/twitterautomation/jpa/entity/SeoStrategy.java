@@ -24,6 +24,9 @@ public class SeoStrategy {
 
 	public static final String STATUS_OPEN = "Open";
 	public static final String STATUS_CLOSED = "Closed";
+	
+	public static final String SUCCESS = "Success";
+	public static final String FAILURE = "Failure";
 
 	@Transient
 	private DateFormat df = new SimpleDateFormat("MM/dd/YYYY");
@@ -65,6 +68,9 @@ public class SeoStrategy {
 
 	@Column(name = "strategy_status")
 	private String strategyStatus;
+	
+	@Column(name = "strategy_success")
+	private String strategySuccess;
 
 	public Long getId() {
 		return id;
@@ -172,5 +178,13 @@ public class SeoStrategy {
 		}
 		
 		return startDateDisplay;
+	}
+
+	public String getStrategySuccess() {
+		return strategySuccess;
+	}
+
+	public void setStrategySuccess(String strategySuccess) {
+		this.strategySuccess = strategySuccess;
 	}
 }

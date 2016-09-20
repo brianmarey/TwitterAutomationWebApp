@@ -1,7 +1,5 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -18,17 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.careydevelopment.twitterautomation.jpa.entity.AnchorTextData;
-import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
-import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
 import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
-import com.careydevelopment.twitterautomation.jpa.entity.LinkType;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.SeoStrategy;
+import com.careydevelopment.twitterautomation.jpa.entity.StrategyKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
-import com.careydevelopment.twitterautomation.jpa.repository.AnchorTextDataRepository;
-import com.careydevelopment.twitterautomation.jpa.repository.BacklinkDataRepository;
-import com.careydevelopment.twitterautomation.jpa.repository.CompetitorSearchRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.SeoStrategyRepository;
@@ -97,6 +87,8 @@ public class SeoStrategyViewController {
     		return "redirect:notAuthorized";
     	}
     	
+    	handleKeywords(seoStrategy,projectUrl,model);
+    	    	
     	model.addAttribute("projectUrl",projectUrl);
     	model.addAttribute("seoStrategy", seoStrategy);
     	
@@ -104,5 +96,35 @@ public class SeoStrategyViewController {
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
         return "seoStrategyView";
+    }
+
+    
+    private void handleKeywords(SeoStrategy seoStrategy, ProjectUrl projectUrl, Model model) {
+    	List<DomainSearchKeyword> domainSearchKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
+    	
+    	List<StrategyKeyword> keywords = seoStrategy.getStrategyKeywords();
+    	if (keywords != null) {
+    		for (StrategyKeyword keyword : keywords) {
+    			String key = keyword.getKeyword();
+    			Integer currentRank = getCurrentRank(key, domainSearchKeywords);
+    			keyword.setCurrentRank(currentRank);
+    		}
+    	}
+    	
+    	model.addAttribute("keywords",keywords);
+    }
+    
+    
+    private Integer getCurrentRank(String key, List<DomainSearchKeyword> keywords) {
+    	Integer rank = 0;
+    	
+    	for (DomainSearchKeyword keyword : keywords) {
+    		if (keyword.getKeyword().equals(key)) {
+    			rank = keyword.getPosition();
+    			break;
+    		}
+    	}
+    	
+    	return rank;
     }
 }

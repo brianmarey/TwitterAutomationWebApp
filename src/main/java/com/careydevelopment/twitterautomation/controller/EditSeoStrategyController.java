@@ -35,8 +35,8 @@ import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
-public class CreateSeoStrategyController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CreateSeoStrategyController.class);
+public class EditSeoStrategyController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(EditSeoStrategyController.class);
 	
 	@Autowired
 	LoginService loginService;
@@ -56,9 +56,9 @@ public class CreateSeoStrategyController {
 	@Autowired
 	StrategyKeywordRepository strategyKeywordRepository;
 	
-    @RequestMapping(value="/createSeoStrategy", method=RequestMethod.GET)
+    @RequestMapping(value="/editSeoStrategy", method=RequestMethod.GET)
     public String createProjectUrl(HttpServletRequest request, Model model,
-    	@RequestParam(value="projectUrlId", required=true) Long projectUrlId,
+    	@RequestParam(value="strategyId", required=true) Long strategyId,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
     	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
     	
@@ -86,8 +86,12 @@ public class CreateSeoStrategyController {
     		return "redirect:badLogin";
     	}
     	
-    	ProjectUrl projectUrl = projectUrlRepository.findOne(projectUrlId);
+    	SeoStrategy seoStrategy = seoStrategyRepository.findOne(strategyId);
+    	if (seoStrategy == null) {
+    		return "redirect:notAuthorized";
+    	}
     	
+    	ProjectUrl projectUrl = seoStrategy.getProjectUrl();    	
     	Project project = projectUrl.getProject();
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
@@ -101,20 +105,21 @@ public class CreateSeoStrategyController {
     		model.addAttribute("hasKeywords",true);
     	}
     	
-    	model.addAttribute("project",project);
-    	model.addAttribute("projectUrl",projectUrl);
+    	List<StrategyKeyword> strategyKeywords = seoStrategy.getStrategyKeywords();
+    	model.addAttribute("strategyKeywords",strategyKeywords);
     	
-    	SeoStrategy seoStrategy = new SeoStrategy();
+    	model.addAttribute("project",project);
+    	model.addAttribute("projectUrl",projectUrl);    	
     	model.addAttribute("seoStrategy",seoStrategy);
     	
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
-        return "createSeoStrategy";
+        return "editSeoStrategy";
     }
     
     
-    @RequestMapping(value="/createSeoStrategy", method=RequestMethod.POST)
+    @RequestMapping(value="/editSeoStrategy", method=RequestMethod.POST)
     public String createProjectSubmit(@Valid SeoStrategy seoStrategy, BindingResult bindingResult,
     	HttpServletRequest request, Model model) { 
     	
@@ -139,31 +144,14 @@ public class CreateSeoStrategyController {
         String projectUrlIdS = request.getParameter("projectUrlId");
     	ProjectUrl projectUrl = projectUrlRepository.findOne(new Long(projectUrlIdS));
     	model.addAttribute("projectUrl",projectUrl);
-
-        String addedKeywords = request.getParameter("addedKeywords");
-        model.addAttribute("addedKeywords",addedKeywords);
         
-        String selectedKeywords = request.getParameter("selectedKeywordsVal");
-        List<String> selectedOnes = new ArrayList<String>();
-        
-        if (selectedKeywords != null) {
-        	String[] keys = selectedKeywords.split(",");
-        	for (String key : keys) {
-        		if (key.trim().length() > 0) {
-        			selectedOnes.add(key);
-        		}
-        	}
-        	
-        	model.addAttribute("selectedKeywords", selectedOnes);
-        }
-
-    	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
-    	model.addAttribute("keywords", keywords);
+    	String seoStrategyIdS = request.getParameter("strategyId");
+    	SeoStrategy savedSeoStrategy = seoStrategyRepository.findOne(new Long(seoStrategyIdS));
     	
-    	if (keywords != null && keywords.size() > 0) {
-    		model.addAttribute("hasKeywords",true);
+    	if (savedSeoStrategy == null) {
+    		return "redirect:notAuthorized";
     	}
-        
+    	
     	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);
     	
@@ -171,54 +159,22 @@ public class CreateSeoStrategyController {
             return "createSeoStrategy";
         }
         
-        persist(seoStrategy,projectUrl,keywords,selectedOnes,addedKeywords);
+        persist(seoStrategy,projectUrl,savedSeoStrategy);
         
-        return "redirect:/seoStrategyView?strategyId=" + seoStrategy.getId();
+        return "redirect:/seoStrategyView?strategyId=" + savedSeoStrategy.getId();
     }
     
     
-    private void persist(SeoStrategy seoStrategy, ProjectUrl projectUrl, List<DomainSearchKeyword> keywords, List<String> selectedOnes, String addedKeywords) {
-        seoStrategy.setProjectUrl(projectUrl);
-        seoStrategy.setStartDate(new Date());
-        seoStrategy.setStrategyStatus(SeoStrategy.STATUS_OPEN);
+    private void persist(SeoStrategy seoStrategy, ProjectUrl projectUrl, SeoStrategy savedSeoStrategy) {
+        savedSeoStrategy.setName(seoStrategy.getName());
+        savedSeoStrategy.setPurchasedName(seoStrategy.getPurchasedName());
+        savedSeoStrategy.setPurchasedUrl(seoStrategy.getPurchasedUrl());
+        savedSeoStrategy.setStrategyDescription(seoStrategy.getStrategyDescription());
+        savedSeoStrategy.setStrategySource(seoStrategy.getStrategySource());
+        savedSeoStrategy.setStrategyStatus(seoStrategy.getStrategyStatus());
+        savedSeoStrategy.setStrategyType(seoStrategy.getStrategyType());
         
-        seoStrategyRepository.save(seoStrategy);
-        
-        for (String key : selectedOnes) {
-        	StrategyKeyword sk = new StrategyKeyword();
-        	sk.setKeyword(key);
-        	sk.setOriginalRank(getOriginalRank(key,keywords));
-        	sk.setSeoStrategy(seoStrategy);
-        	
-        	strategyKeywordRepository.save(sk);
-        }
-
-        if (addedKeywords != null) {
-        	String[] keys = addedKeywords.split(",");
-        	for (String key : keys) {
-        		if (key.trim().length() > 0) {
-                	StrategyKeyword sk = new StrategyKeyword();
-                	sk.setKeyword(key);
-                	sk.setOriginalRank(getOriginalRank(key,keywords));
-                	sk.setSeoStrategy(seoStrategy);
-                	
-                	strategyKeywordRepository.save(sk);
-        		}
-        	}
-        }
+        seoStrategyRepository.save(savedSeoStrategy);
     }
     
-    
-    private Integer getOriginalRank(String key, List<DomainSearchKeyword> keywords) {
-    	Integer rank = 0;
-    	
-    	for (DomainSearchKeyword keyword : keywords) {
-    		if (keyword.getKeyword().equals(key)) {
-    			rank = keyword.getPosition();
-    			break;
-    		}
-    	}
-    	
-    	return rank;
-    }
 }

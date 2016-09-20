@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>SEO Playhouse | Create SEO Strategy</title>
+        <title>SEO Playhouse | Edit SEO Strategy</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="" name="description"></meta>
@@ -48,7 +48,6 @@
             	});	
         	}
         	
-        	
         	function sourceSelected() {
         		var strategySource = $('#strategySource').val();
         		
@@ -59,26 +58,27 @@
         		}
         	}
         	
+        	function statusChanged() {
+        		var status = $('#strategyStatus').val();
+        		
+        		if (status == 'Open') {
+        			document.getElementById('successDiv').style.display='none';
+        		} else {
+        			document.getElementById('successDiv').style.display='inline';
+        		}
+        	}
         	
         	function submitForm() {
-        		var selectedKeywords = $('#selectedKeywords').val();
-        		var addedKeywords = $('#addedKeywords').val();
+        		var success = $('#strategySuccess').val();
+        		var status = $('#strategyStatus').val();
         		
-        		if (selectedKeywords == null || selectedKeywords.length == 0) {
-        			if (addedKeywords == null || addedKeywords.trim().length == 0) {
-        				displayError('Please enter at least one keyword to track.');
-        				return;
+        		if (status == 'Closed') {
+        			if (success == '') {
+	        			$('#strategySuccess').focus();
+	        			displayError("Please answer whether this strategy was a success or failure.");        			
+	        			return;
         			}
-        		}        		
-        		
-        		var selectedVal = "";
-        		if (selectedKeywords) {
-        			$('#selectedKeywords :selected').each(function(i, sel){ 
-        			    selectedVal+=$(sel).val()+",";
-        			});
         		}
-
-        		$('#selectedKeywordsVal').val(selectedVal);
         		
         		$('#submitButton').prop('disabled', true);
  				$("#strategyForm").submit()
@@ -119,17 +119,17 @@
                     </div>-->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">Create SEO Strategy<br/>
+                    <h1 class="page-title">Edit SEO Strategy<br/>
                     <small th:text="${projectUrl.url}"></small></h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
 
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
-                        <form action="#" th:action="@{/createSeoStrategy}" th:object="${seoStrategy}" method="POST" class="form-horizontal form-bordered" id="strategyForm">
+                        <form action="#" th:action="@{/editSeoStrategy}" th:object="${seoStrategy}" method="POST" class="form-horizontal form-bordered" id="strategyForm">
                            	<input type="hidden" id="projectId" name="projectId" th:value="${project.id}"/>
                         	<input type="hidden" id="projectUrlId" name="projectUrlId" th:value="${projectUrl.id}"/>
-                        	<input type="hidden" id="selectedKeywordsVal" name="selectedKeywordsVal" value=""/>
+                        	<input type="hidden" id="strategyId" name="strategyId" th:value="${seoStrategy.id}"/>
                         	
                             <div class="form-body">
                                 <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error : ''">
@@ -201,25 +201,33 @@
                                         	<textarea id="maxlength_textarea" class="form-control" th:value="*{strategyDescription}" th:field="*{strategyDescription}" maxlength="512" rows="3" placeholder="Enter a description of this SEO strategy."></textarea>
                                     </div>
                                 </div>
-                                <div class="form-group" th:if="${hasKeywords}">
-                                    <label class="control-label col-md-3">Select Keywords</label>
-                                   	<div class="col-md-4">
-                                        <select class="bs-select form-control" id="selectedKeywords" name="selectedKeywords" multiple="multiple" data-width="95%">
-                                        <th:block th:each="keyword,iterationStatus : ${keywords}">
-                                            <option th:value="${keyword.keyword}" th:text="${keyword.keyword}"></option>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Keywords</label>
+                                   	<div class="col-md-4" style="margin-top:7px">
+                                        <th:block th:each="keyword,iterationStatus : ${strategyKeywords}">
+                                            <span th:text="${keyword.keyword}"></span><br/>
                                         </th:block>
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-md-3" th:if="${hasKeywords}">Additional Keywords</label>
-                                    <label class="control-label col-md-3" th:unless="${hasKeywords}">Additional Keywords</label>
-                                   	<div class="col-md-4">
-										<input type="text" th:value="${addedKeywords}" id="addedKeywords" name="addedKeywords" style="width:95% !important" data-role="tagsinput"/> 
-										<span class="help-block" th:if="${hasKeywords}"> Enter additional keywords for this strategy. Type keywords and hit Enter between each one.</span>
-										<span class="help-block" th:unless="${hasKeywords}"> Enter keywords for this strategy. Type keywords and hit Enter between each one.</span>
-                                    </div>
-                                </div>                                
+                                	<label class="control-label col-md-3">Status</label>
+                                	<div class="col-md-4">
+                                		<select class="form-control" th:value="*{strategyStatus}" th:field="*{strategyStatus}" onchange="statusChanged()">
+                                			<option value="Open">Open</option>
+                                			<option value="Closed">Closed</option>
+                                		</select>
+                                	</div>
+                                </div>
+                                <div class="form-group" id="successDiv" style="display:none">
+                                	<label class="control-label col-md-3">Successful Strategy?</label>
+                                	<div class="col-md-4">
+                                		<select class="form-control" th:value="*{strategySuccess}" th:field="*{strategySuccess}" id="successSelect">
+                                			<option value="">-- SELECT --</option>
+                                			<option value="Success">Success</option>
+                                			<option value="Failure">Failure</option>
+                                		</select>
+                                	</div>
+                                </div>
                                 <div class="form-group" th:classappend="${captchaFail} ? has-error : ''">
                                     <label class="control-label col-md-3">&nbsp;</label>
                                     <div class="col-md-4">
@@ -256,12 +264,11 @@
         <!-- END FOOTER -->
         
         <script>
-        <th:block th:if="${selectedKeywords != null}">
-	        <th:block th:each="keyword,iterationStatus : ${selectedKeywords}">
-	        $('#selectedKeywords option[value="<th:block th:text='${keyword}'></th:block>"]').attr("selected", "selected");
-	        </th:block>
+        <th:block th:if="${seoStrategy.strategyStatus == 'Closed'}">
+	        $('#strategyStatus option[value="Closed"]').attr("selected", "selected");
         </th:block>
         
+        statusChanged();
         sourceSelected();
         </script>
     </body>
