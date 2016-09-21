@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +24,14 @@ import com.careydevelopment.twitterautomation.jpa.entity.CompetitorSearch;
 import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.LinkType;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
+import com.careydevelopment.twitterautomation.jpa.entity.SeoStrategy;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.AnchorTextDataRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.BacklinkDataRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.CompetitorSearchRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.SeoStrategyRepository;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
@@ -53,6 +57,9 @@ public class ProjectUrlViewController {
 	
 	@Autowired
 	AnchorTextDataRepository anchorTextDataRepository;
+	
+	@Autowired
+	SeoStrategyRepository seoStrategyRepository;
 	
     @RequestMapping(value="/projectUrlView", method=RequestMethod.GET)
     public String projectView(HttpServletRequest request, Model model,
@@ -94,6 +101,8 @@ public class ProjectUrlViewController {
     		return "redirect:notAuthorized";
     	}
     	
+    	setEligibleForRefresh(model,projectUrl);
+    	
     	model.addAttribute("projectUrl",projectUrl);
     	
     	List<BacklinkData> backlinks = backlinkDataRepository.findByUrl(projectUrl);
@@ -126,11 +135,30 @@ public class ProjectUrlViewController {
     	model.addAttribute("anchorTextData", anchorTextData);
 
     	model.addAttribute("pageSpeedInsights", projectUrl.getPageSpeedInsights());
+    	
+    	List<SeoStrategy> seoStrategies = seoStrategyRepository.findOpenByProjectUrl(projectUrl);
+    	model.addAttribute("seoStrategies",seoStrategies);
 
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
         return "projectUrlView";
+    }
+
+    
+    private void setEligibleForRefresh(Model model, ProjectUrl projectUrl) {    	
+    	Date reportDate = projectUrl.getReportDate();
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(reportDate);
+    	cal.add(Calendar.DAY_OF_MONTH, 1);
+    	
+    	Date now = new Date();
+    	
+    	LOGGER.info("Comparing " + now + " to " + cal.getTime());
+    	
+    	if (now.after(cal.getTime())) {
+    		model.addAttribute("refreshEligible",true);
+    	}
     }
     
     

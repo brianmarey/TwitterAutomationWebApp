@@ -110,8 +110,26 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 			
 			if (list != null) {
 				for (CompetitorSearch key : list) {
-					key.setProjectUrl(url);
-					competitorSearchRepository.save(key);
+					try {
+						key.setProjectUrl(url);
+						
+						CompetitorSearch existingCompetitor = competitorSearchRepository.findSpecific(url, key.getDomain(), type);
+	
+						if (existingCompetitor == null) {
+							LOGGER.info("adding new competitor");
+							competitorSearchRepository.save(key);	
+						} else {
+							LOGGER.info("updating competitor");
+							existingCompetitor.setCommonKeywords(key.getCommonKeywords());
+							existingCompetitor.setCompetitorRelevance(key.getCompetitorRelevance());
+							existingCompetitor.setTypeCost(key.getTypeCost());
+							existingCompetitor.setTypeKeywords(key.getTypeKeywords());
+							existingCompetitor.setTypeTraffic(key.getTypeTraffic());
+							competitorSearchRepository.save(existingCompetitor);
+						}
+					} catch (Exception e) {
+						LOGGER.error("Problem saving competitor " + key.getDomain() + " " + key.getId(),e);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -128,8 +146,30 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 			
 			if (list != null) {
 				for (DomainSearchKeyword key : list) {
-					key.setProjectUrl(url);
-					domainSearchKeywordRepository.save(key);
+					try {
+						key.setProjectUrl(url);
+						
+						DomainSearchKeyword existingKeyword = domainSearchKeywordRepository.findSpecific(url, key.getKeyword(), type);
+	
+						if (existingKeyword == null) {
+							LOGGER.info("adding new keyword");
+							domainSearchKeywordRepository.save(key);	
+						} else {
+							LOGGER.info("updating keyword");
+							existingKeyword.setCompetition(key.getCompetition());
+							existingKeyword.setCpc(key.getCpc());
+							existingKeyword.setNumberOfResults(key.getNumberOfResults());
+							existingKeyword.setPosition(key.getPosition());
+							existingKeyword.setPositionDifference(key.getPositionDifference());
+							existingKeyword.setPreviousPosition(key.getPreviousPosition());
+							existingKeyword.setSearchVolume(key.getSearchVolume());
+							existingKeyword.setTrafficCostPercent(key.getTrafficCostPercent());
+							existingKeyword.setTrafficPercent(key.getTrafficPercent());
+							domainSearchKeywordRepository.save(existingKeyword);
+						}	
+					} catch (Exception e) {
+						LOGGER.error("Problem saving keyword " + key.getKeyword() + " " + key.getId(),e);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -144,7 +184,23 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 		try {
 			DomainRank info = semRushService.getDomainRank(url);
 			info.setProjectUrl(url);
-			domainRankRepository.save(info);
+			
+			DomainRank oldInfo = domainRankRepository.findByUrl(url);
+			
+			if (oldInfo == null) {
+				LOGGER.info("adding new domain rank info");
+				domainRankRepository.save(info);	
+			} else {
+				LOGGER.info("updating domain rank info");
+				oldInfo.setAdwordsCost(info.getAdwordsCost());
+				oldInfo.setAdwordsKeywords(info.getAdwordsKeywords());
+				oldInfo.setAdwordsTraffic(info.getAdwordsTraffic());
+				oldInfo.setOrganicCost(info.getOrganicCost());
+				oldInfo.setOrganicKeywords(info.getOrganicKeywords());
+				oldInfo.setOrganicTraffic(info.getOrganicTraffic());
+				oldInfo.setRank(info.getRank());
+				domainRankRepository.save(oldInfo);
+			}
 		} catch (Exception e) {
 			LOGGER.error("Problem saving rank info!",e);
 		}
@@ -167,7 +223,31 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 						LOGGER.info("Parsing " + row);
 						IndexItemInfoRow res = IndexItemInfoRowParser.getIndexItemInfoRow(row);
 						res.setProjectUrl(url);
-						indexItemInfoRepository.save(res);
+						
+						IndexItemInfoRow oldRes = indexItemInfoRepository.findByUrl(url);
+						
+						if (oldRes == null) {
+							LOGGER.info("adding new index item info");
+							indexItemInfoRepository.save(res);	
+						} else {
+							LOGGER.info("updating index item info");
+							oldRes.setCitationFlow(res.getCitationFlow());
+							oldRes.setExtBacklinks(res.getExtBacklinks());
+							oldRes.setExtBacklinksEdu(res.getExtBacklinksEdu());
+							oldRes.setExtBacklinksEduExact(res.getExtBacklinksEduExact());
+							oldRes.setExtBacklinksGov(res.getExtBacklinksGov());
+							oldRes.setExtBacklinksGovExact(res.getExtBacklinksGovExact());
+							oldRes.setItem(res.getItem());
+							oldRes.setItemType(res.getItemType());
+							oldRes.setRefDomains(res.getRefDomains());
+							oldRes.setRefDomainsEduExact(res.getRefDomainsEdu());
+							oldRes.setRefDomainsEduExact(res.getRefDomainsEduExact());
+							oldRes.setRefDomainsGov(res.getRefDomainsGov());
+							oldRes.setRefDomainsGovExact(res.getRefDomainsGovExact());
+							oldRes.setRefIps(res.getRefIps());
+							
+							indexItemInfoRepository.save(oldRes);
+						}
 					}
 				}
 			}
@@ -191,10 +271,39 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 					
 					if (table.getRows() != null && table.getRows().size() > 0) {
 						for (String row : table.getRows()) {
-							LOGGER.info("Parsing " + row);
-							BacklinkData bd = BacklinkDataParser.getBacklinkData(row);
-							bd.setProjectUrl(url);
-							backlinkDataRepository.save(bd);	
+							try {
+								LOGGER.info("Parsing " + row);
+								BacklinkData bd = BacklinkDataParser.getBacklinkData(row);
+								bd.setProjectUrl(url);
+								
+								BacklinkData oldBd = backlinkDataRepository.findSpecific(url, bd.getSourceUrl());
+								
+								if (oldBd == null) {
+									LOGGER.info("adding new backlink");
+									backlinkDataRepository.save(bd);		
+								} else {
+									LOGGER.info("updating backlink");
+									oldBd.setAnchorText(bd.getAnchorText());
+									oldBd.setDateLost(bd.getDateLost());
+									oldBd.setFirstIndexedDate(bd.getFirstIndexedDate());
+									oldBd.setFlagAltText(bd.getFlagAltText());
+									oldBd.setFlagDeleted(bd.getFlagDeleted());
+									oldBd.setFlagNoFollow(bd.getFlagNoFollow());
+									oldBd.setLastSeenDate(bd.getLastSeenDate());
+									oldBd.setLinkSubtype(bd.getLinkSubtype());
+									oldBd.setLinkType(bd.getLinkType());
+									oldBd.setReasonLost(bd.getReasonLost());
+									oldBd.setSourceCitationFlow(bd.getSourceCitationFlow());
+									oldBd.setSourceTrustFlow(bd.getSourceTrustFlow());
+									oldBd.setTargetCitationFlow(bd.getTargetCitationFlow());
+									oldBd.setTargetTrustFlow(bd.getTargetTrustFlow());
+									oldBd.setTargetUrl(bd.getTargetUrl());
+									
+									backlinkDataRepository.save(oldBd);
+								}
+							} catch (Exception e) {
+								LOGGER.error("Problem saving backlink data " + row,e);
+							}
 						}
 					}
 				}
@@ -219,10 +328,31 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 					
 					if (table.getRows() != null && table.getRows().size() > 0) {
 						for (String row : table.getRows()) {
-							LOGGER.info("Parsing " + row);
-							AnchorTextData at = AnchorTextDataParser.getAnchorTextData(row);
-							at.setProjectUrl(url);
-							anchorTextDataRepository.save(at);	
+							try {
+								LOGGER.info("Parsing " + row);
+								AnchorTextData at = AnchorTextDataParser.getAnchorTextData(row);
+								at.setProjectUrl(url);
+								
+								LOGGER.debug("Searching for anchor text " + at.getAnchorText());
+								AnchorTextData oldAt = anchorTextDataRepository.findSpecific(url, at.getAnchorText());
+								
+								if (oldAt == null) {
+									LOGGER.info("adding new anchor text");
+									anchorTextDataRepository.save(at);		
+								} else {
+									LOGGER.info("updating anchor text");
+									oldAt.setCitationFlow(at.getCitationFlow());
+									oldAt.setDeletedLinks(at.getDeletedLinks());
+									oldAt.setNofollowLinks(at.getNofollowLinks());
+									oldAt.setReferringDomains(at.getReferringDomains());
+									oldAt.setTotalLinks(at.getTotalLinks());
+									oldAt.setTrustFlow(at.getTrustFlow());
+									
+									anchorTextDataRepository.save(oldAt);
+								}
+							} catch (Exception e) {
+								LOGGER.error("Problem saving anchor text " + row,e);
+							}
 						}
 					}
 				}
@@ -231,17 +361,27 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 			LOGGER.error("Problem saving anchor text info!",e);
 		}
 	}
-
 	
 	
 	private void savePageSpeedInsights(ProjectUrl url) {
 		try {
 			LOGGER.info("Retrieving insights for url " + url.getUrl());
 			
-			PageSpeedInsights insights = pageSpeedInsightsService.getPageSpeedInsights(url.getUrl());
-			insights.setProjectUrl(url);
+			PageSpeedInsights insights = pageSpeedInsightsRepository.findByProjectUrl(url);
 			
-			pageSpeedInsightsRepository.save(insights);
+			PageSpeedInsights newInsights = pageSpeedInsightsService.getPageSpeedInsights(url);
+			newInsights.setProjectUrl(url);	
+			
+			if (insights != null) {
+				LOGGER.info("updating page speed insights");
+				insights.setDesktopSpeed(newInsights.getDesktopSpeed());
+				insights.setMobileSpeed(newInsights.getMobileSpeed());
+				insights.setMobileUsability(newInsights.getMobileUsability());
+				pageSpeedInsightsRepository.save(insights);	
+			} else {
+				LOGGER.info("adding new page speed insights");
+				pageSpeedInsightsRepository.save(newInsights);
+			}
 		} catch (Exception e) {
 			LOGGER.error("Problem saving page speed insights!",e);
 		}

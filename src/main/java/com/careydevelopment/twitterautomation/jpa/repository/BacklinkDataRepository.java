@@ -14,6 +14,9 @@ public interface BacklinkDataRepository extends BaseRepository<BacklinkData,Long
 
 	@Query("SELECT b FROM BacklinkData b where b.projectUrl = :projectUrl")
     List<BacklinkData> findByUrl(@Param("projectUrl") ProjectUrl projectUrl);
+	
+	@Query("SELECT b FROM BacklinkData b where b.projectUrl = :projectUrl and b.sourceUrl = :sourceUrl")
+    BacklinkData findSpecific(@Param("projectUrl") ProjectUrl projectUrl, @Param("sourceUrl") String sourceUrl);
     
 	@Query("SELECT b FROM BacklinkData b order by id asc")
     Page<BacklinkData> findLatest(Pageable page);

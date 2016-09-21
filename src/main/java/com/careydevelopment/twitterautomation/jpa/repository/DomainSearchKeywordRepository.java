@@ -15,6 +15,9 @@ public interface DomainSearchKeywordRepository extends BaseRepository<DomainSear
 
 	@Query("SELECT b FROM DomainSearchKeyword b where b.projectUrl = :projectUrl")
     List<DomainSearchKeyword> findByUrl(@Param("projectUrl") ProjectUrl projectUrl);
+	
+	@Query("SELECT b FROM DomainSearchKeyword b where b.projectUrl = :projectUrl and b.keyword = :keyword and b.type = :type")
+    DomainSearchKeyword findSpecific(@Param("projectUrl") ProjectUrl projectUrl, @Param("keyword") String keyword, @Param("type") String type);
     
 	@Query("SELECT b FROM DomainSearchKeyword b order by id asc")
     Page<DomainSearchKeyword> findLatest(Pageable page);

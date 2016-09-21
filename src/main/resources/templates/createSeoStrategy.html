@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    
+    <head>
+        <meta charset="utf-8"></meta>
+        <title>SEO Playhouse | Create SEO Strategy</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
+        <meta content="" name="description"></meta>
+        <meta content="" name="author"></meta>                
+        <link th:href="@{/assets/global/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/global/css/components.min.css}" rel="stylesheet" id="style_components" type="text/css"></link>
+        <link th:href="@{/assets/global/css/plugins.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/layout.min.css}" rel="stylesheet" type="text/css"></link>
+        <link th:href="@{/assets/layouts/layout/css/themes/darkblue.min.css}" rel="stylesheet" type="text/css" id="style_color"></link>
+        <link th:href="@{/assets/layouts/layout/css/custom.min.css}" rel="stylesheet" type="text/css"></link>
+        <link rel="shortcut icon" th:href="@{/images/favicon.ico}"></link>
+        
+        <link th:href="@{/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css}" rel="stylesheet" type="text/css" />
+        
+        <!-- for captcha -->
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        
+        <script>
+        	function displayError(errorMessage) {
+                $.bootstrapGrowl(errorMessage, {
+                    ele: 'body', // which element to append to
+                    type:'danger', // (null, 'info', 'danger', 'success', 'warning')
+                    offset: {
+                        from: 'top',
+                        amount: 100
+                    }, // 'top', or 'bottom'
+                    align: 'center', // ('left', 'right', or 'center')
+                    width: 'auto', // (integer, or 'auto')
+                    delay: 20000, // Time while the message will be displayed. It's not equivalent to the *demo* timeOut!
+                    allow_dismiss: true, // If true then will display a cross to close the popup.
+                    stackup_spacing: 10 // spacing between consecutively stacked growls.
+            	});	
+        	}
+        	
+        	
+        	function sourceSelected() {
+        		var strategySource = $('#strategySource').val();
+        		
+        		if (strategySource == 'Doing it myself') {
+        			document.getElementById('purchasedDiv').style.display='none';
+        		} else {
+        			document.getElementById('purchasedDiv').style.display='inline';
+        		}
+        	}
+        	
+        	
+        	function submitForm() {
+        		var selectedKeywords = $('#selectedKeywords').val();
+        		var addedKeywords = $('#addedKeywords').val();
+        		
+        		if (selectedKeywords == null || selectedKeywords.length == 0) {
+        			if (addedKeywords == null || addedKeywords.trim().length == 0) {
+        				displayError('Please enter at least one keyword to track.');
+        				return;
+        			}
+        		}        		
+        		
+        		var selectedVal = "";
+        		if (selectedKeywords) {
+        			$('#selectedKeywords :selected').each(function(i, sel){ 
+        			    selectedVal+=$(sel).val()+",";
+        			});
+        		}
+
+        		$('#selectedKeywordsVal').val(selectedVal);
+        		
+        		$('#submitButton').prop('disabled', true);
+ 				$("#strategyForm").submit()
+        	}        	
+        </script>
+        
+        <style>
+	        .bootstrap-tagsinput {
+	        	width: 95% !important;
+	        }
+        </style>
+    </head>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    
+    <div id="fb-root"></div>
+    
+    
+        <!-- BEGIN HEADER -->
+        <div th:include="fragments/header :: header"></div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div th:include="fragments/sidebar :: sidebar"></div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+                    <!-- BEGIN PAGE BAR -->
+                    <!--  <div class="page-bar">
+                       	<div th:include="fragments/breadcrumbs :: breadcrumbs"></div>
+                        <div th:include="fragments/actionbar :: actionbar"></div>
+                    </div>-->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE TITLE-->
+                    <h1 class="page-title">Create SEO Strategy<br/>
+                    <small th:text="${projectUrl.url}"></small></h1>
+                    <!-- END PAGE TITLE-->
+                    <!-- END PAGE HEADER-->
+
+                    <div class="portlet-body form">
+                        <!-- BEGIN FORM-->
+                        <form action="#" th:action="@{/createSeoStrategy}" th:object="${seoStrategy}" method="POST" class="form-horizontal form-bordered" id="strategyForm">
+                           	<input type="hidden" id="projectId" name="projectId" th:value="${project.id}"/>
+                        	<input type="hidden" id="projectUrlId" name="projectUrlId" th:value="${projectUrl.id}"/>
+                        	<input type="hidden" id="selectedKeywordsVal" name="selectedKeywordsVal" value=""/>
+                        	
+                            <div class="form-body">
+                                <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error : ''">
+                                    <label class="control-label col-md-3">Strategy Name</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" maxlength="32" th:value="*{name}" th:field="*{name}"/>
+                                        <span th:if="${#fields.hasErrors('name')}" class="help-block" th:errors="*{name}"></span>
+                                        <span th:unless="${#fields.hasErrors('name')}" class="help-block"> Enter a name for your strategy that makes it easy to identify.</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" th:classappend="${#fields.hasErrors('strategyType')} ? has-error : ''">
+                                    <label class="control-label col-md-3">Strategy Type</label>
+                                    <div class="col-md-4">
+                                    	<select class="form-control" th:field="*{strategyType}">
+                                           <option value="Diversified Link Building">Diversified Link Building</option>
+                                           <option value="Guest Posting">Guest Posting</option>
+                                           <option value="Ongoing Content Marketing">Ongoing Content Marketing</option>
+                                           <option value="PBN Backlinks">PBN Backlinks</option>
+                                           <option value="Blog Comments">Blog Comments</option>
+                                           <option value="Automated">Automated Link Building (GSA SER, etc.)</option>
+                                           <option value="Directory Submissions">Directory Submissions</option>
+                                           <option value="Onsite SEO">Onsite SEO</option>
+                                           <option value="Social Media">Social Media</option>
+                                           <option value="Basic Indexing">Basic Indexing</option>
+                                           <option value="Press Releases">Press Releases</option>
+                                           <option value="Mobile Optimization">Mobile Optimization</option>
+                                           <option value="Parasites">Parasites</option>
+                                           <option value="301 Redirect">301 Redirect</option>
+                                           <option value="Other">Other</option>
+                                        </select>
+                                        <span th:if="${#fields.hasErrors('strategyType')}" class="help-block" th:errors="*{strategyType}"></span>
+                                        <span th:unless="${#fields.hasErrors('strategyType')}" class="help-block"> What type of SEO strategy is this?</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" th:classappend="${#fields.hasErrors('strategySource')} ? has-error : ''">
+                                    <label class="control-label col-md-3">Strategy Source</label>
+                                    <div class="col-md-4">
+                                        <select class="form-control" th:field="*{strategySource}" onchange="sourceSelected()">
+                                           <option value="Doing it myself">Doing it myself</option>
+                                           <option value="Outsourcing it">Outsourcing it</option>
+                                        </select>
+										<span th:if="${#fields.hasErrors('strategySource')}" class="help-block" th:errors="*{strategySource}"></span>
+                                        <span th:unless="${#fields.hasErrors('strategySource')}" class="help-block"> Are you doing this strategy yourself or are you outsourcing it?</span>
+                                    </div>
+                                </div>
+                                
+                                <div id="purchasedDiv" style="display:none">
+	                                <div class="form-group" th:classappend="${#fields.hasErrors('purchasedName')} ? has-error : ''">
+	                                    <label class="control-label col-md-3"> Outsourced From</label>
+	                                    <div class="col-md-4">
+	                                        <input type="text" class="form-control" maxlength="32" th:value="*{purchasedName}" th:field="*{purchasedName}"/>
+	                                        <span th:if="${#fields.hasErrors('purchasedName')}" class="help-block" th:errors="*{purchasedName}"></span>
+	                                        <span th:unless="${#fields.hasErrors('purchasedName')}" class="help-block"> Who are you outsourcing this work from?</span>
+	                                    </div>
+	                                </div>
+	                                <div class="form-group" th:classappend="${#fields.hasErrors('purchasedUrl')} ? has-error : ''">
+	                                    <label class="control-label col-md-3"> Outsource URL</label>
+	                                    <div class="col-md-4">
+	                                        <input type="text" class="form-control" maxlength="32" th:value="*{purchasedUrl}" th:field="*{purchasedUrl}"/>
+	                                        <span th:if="${#fields.hasErrors('purchasedUrl')}" class="help-block" th:errors="*{purchasedUrl}"></span>
+	                                        <span th:unless="${#fields.hasErrors('purchasedUrl')}" class="help-block"> Enter a link to the person or company performing the SEO work.</span>
+	                                    </div>
+	                                </div>
+                                </div>
+                                
+                                <div class="form-group" th:classappend="${#fields.hasErrors('strategyDescription')} ? has-error : ''">
+                                    <label class="control-label col-md-3">Description</label>
+                                   	<div class="col-md-4">
+                                        	<textarea id="maxlength_textarea" class="form-control" th:value="*{strategyDescription}" th:field="*{strategyDescription}" maxlength="512" rows="3" placeholder="Enter a description of this SEO strategy."></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group" th:if="${hasKeywords}">
+                                    <label class="control-label col-md-3">Select Keywords</label>
+                                   	<div class="col-md-4">
+                                        <select class="bs-select form-control" id="selectedKeywords" name="selectedKeywords" multiple="multiple" data-width="95%">
+                                        <th:block th:each="keyword,iterationStatus : ${keywords}">
+                                            <option th:value="${keyword.keyword}" th:text="${keyword.keyword}"></option>
+                                        </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3" th:if="${hasKeywords}">Additional Keywords</label>
+                                    <label class="control-label col-md-3" th:unless="${hasKeywords}">Additional Keywords</label>
+                                   	<div class="col-md-4">
+										<input type="text" th:value="${addedKeywords}" id="addedKeywords" name="addedKeywords" style="width:95% !important" data-role="tagsinput"/> 
+										<span class="help-block" th:if="${hasKeywords}"> Enter additional keywords for this strategy. Type keywords and hit Enter between each one.</span>
+										<span class="help-block" th:unless="${hasKeywords}"> Enter keywords for this strategy. Type keywords and hit Enter between each one.</span>
+                                    </div>
+                                </div>                                
+                                <div class="form-group" th:classappend="${captchaFail} ? has-error : ''">
+                                    <label class="control-label col-md-3">&nbsp;</label>
+                                    <div class="col-md-4">
+                                    	<div class="g-recaptcha" data-sitekey="6LdjHygTAAAAAJcDHCTCFJbsNLRGghS3ua43t1nF"></div>
+                                    	<div th:if="${captchaFail}" class="help-block">Captcha validation failure</div>
+                                    </div>
+                                </div>
+                            <div class="form-group">
+                                    <label class="control-label col-md-3">&nbsp;</label>
+                                    <div class="col-md-4">
+                                    	<button type="button" id="submitButton" class="btn btn-primary" style="margin-bottom:5px" onclick="submitForm()">Submit Strategy</button>
+                                    </div>
+                                </div>
+                             </div>
+                        </form>
+                     </div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div th:include="fragments/footer :: footer"></div>
+        <script th:src="@{/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js}" type="text/javascript"></script>
+		<script th:src="@{/assets/pages/scripts/components-bootstrap-maxlength.min.js}" type="text/javascript"></script>
+		
+		<script th:src="@{/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js}" type="text/javascript"></script>
+        <script th:src="@{/assets/pages/scripts/components-bootstrap-tagsinput.min.js}" type="text/javascript"></script>
+        <script th:src="@{/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js}" type="text/javascript"></script>
+        <script th:src="@{/assets/pages/scripts/components-bootstrap-select.min.js}" type="text/javascript"></script>
+        <script th:src="@{/assets/global/plugins/bootstrap-growl/jquery.bootstrap-growl.min.js}" type="text/javascript"></script>
+        <script th:src="@{/assets/pages/scripts/ui-bootstrap-growl.min.js}" type="text/javascript"></script>
+        <!-- END FOOTER -->
+        
+        <script>
+        <th:block th:if="${selectedKeywords != null}">
+	        <th:block th:each="keyword,iterationStatus : ${selectedKeywords}">
+	        $('#selectedKeywords option[value="<th:block th:text='${keyword}'></th:block>"]').attr("selected", "selected");
+	        </th:block>
+        </th:block>
+        
+        sourceSelected();
+        </script>
+    </body>
+</html>

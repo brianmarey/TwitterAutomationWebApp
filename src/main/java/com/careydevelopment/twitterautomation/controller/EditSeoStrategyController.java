@@ -1,5 +1,6 @@
 package com.careydevelopment.twitterautomation.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,22 +18,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
+import com.careydevelopment.twitterautomation.jpa.entity.SeoStrategy;
+import com.careydevelopment.twitterautomation.jpa.entity.StrategyKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
+import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
-import com.careydevelopment.twitterautomation.service.UrlMetricsService;
+import com.careydevelopment.twitterautomation.jpa.repository.SeoStrategyRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.StrategyKeywordRepository;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
-import com.careydevelopment.twitterautomation.util.RefreshUtil;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
-import com.careydevelopment.twitterautomation.util.UrlHelper;
 
 @Controller
-public class CreateProjectUrlController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CreateProjectUrlController.class);
+public class EditSeoStrategyController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(EditSeoStrategyController.class);
 	
 	@Autowired
 	LoginService loginService;
@@ -42,16 +46,19 @@ public class CreateProjectUrlController {
 	
 	@Autowired
 	ProjectUrlRepository projectUrlRepository;
+		
+	@Autowired
+	DomainSearchKeywordRepository domainSearchKeywordRepository;
 	
 	@Autowired
-	UrlMetricsService urlMetricsService;
+	SeoStrategyRepository seoStrategyRepository;
 	
 	@Autowired
-	RefreshUtil refreshUtil;
+	StrategyKeywordRepository strategyKeywordRepository;
 	
-    @RequestMapping(value="/createProjectUrl", method=RequestMethod.GET)
+    @RequestMapping(value="/editSeoStrategy", method=RequestMethod.GET)
     public String createProjectUrl(HttpServletRequest request, Model model,
-    	@RequestParam(value="projectId", required=true) Long projectId,
+    	@RequestParam(value="strategyId", required=true) Long strategyId,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
     	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
     	
@@ -79,26 +86,41 @@ public class CreateProjectUrlController {
     		return "redirect:badLogin";
     	}
     	
-    	Project project = projectRepository.findOne(projectId);
+    	SeoStrategy seoStrategy = seoStrategyRepository.findOne(strategyId);
+    	if (seoStrategy == null) {
+    		return "redirect:notAuthorized";
+    	}
+    	
+    	ProjectUrl projectUrl = seoStrategy.getProjectUrl();    	
+    	Project project = projectUrl.getProject();
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
     	}
     	
-    	model.addAttribute("project",project);
+    	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
+    	model.addAttribute("keywords", keywords);
     	
-    	ProjectUrl projectUrl = new ProjectUrl();
-    	model.addAttribute("projectUrl",projectUrl);
+    	if (keywords != null && keywords.size() > 0) {
+    		model.addAttribute("hasKeywords",true);
+    	}
+    	
+    	List<StrategyKeyword> strategyKeywords = seoStrategy.getStrategyKeywords();
+    	model.addAttribute("strategyKeywords",strategyKeywords);
+    	
+    	model.addAttribute("project",project);
+    	model.addAttribute("projectUrl",projectUrl);    	
+    	model.addAttribute("seoStrategy",seoStrategy);
     	
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
-        return "createProjectUrl";
+        return "editSeoStrategy";
     }
     
     
-    @RequestMapping(value="/createProjectUrl", method=RequestMethod.POST)
-    public String createProjectSubmit(@Valid ProjectUrl projectUrl, BindingResult bindingResult,
+    @RequestMapping(value="/editSeoStrategy", method=RequestMethod.POST)
+    public String createProjectSubmit(@Valid SeoStrategy seoStrategy, BindingResult bindingResult,
     	HttpServletRequest request, Model model) { 
     	
     	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
@@ -118,45 +140,41 @@ public class CreateProjectUrlController {
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
     	}
+
+        String projectUrlIdS = request.getParameter("projectUrlId");
+    	ProjectUrl projectUrl = projectUrlRepository.findOne(new Long(projectUrlIdS));
+    	model.addAttribute("projectUrl",projectUrl);
+        
+    	String seoStrategyIdS = request.getParameter("strategyId");
+    	SeoStrategy savedSeoStrategy = seoStrategyRepository.findOne(new Long(seoStrategyIdS));
     	
-    	if (refreshUtil.isMaxedOut(user.getUserConfig())) {
-    		return "redirect:maxedOutRefreshes";
+    	if (savedSeoStrategy == null) {
+    		return "redirect:notAuthorized";
     	}
-    	
-        List<ProjectUrl> urls = projectUrlRepository.findByProject(project);
-    
-        if (urls != null) {
-        	if (urls.size() >= user.getUserConfig().getMaxUrlsPerProject()) {
-	        	model.addAttribute("maxUrlsExceeded",true);
-	        	model.addAttribute("maxUrls",user.getUserConfig().getMaxUrlsPerProject());
-	        	return "createProjectUrl";
-        	}
-        	
-        	if (urls.contains(projectUrl)) {
-        		LOGGER.warn("User trying to create a project url that already exists");
-        		return "createProjectUrl";
-        	}
-        }
-       
     	
     	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);
     	
         if (bindingResult.hasErrors() || !passedCaptcha) {
-            return "createProjectUrl";
+            return "createSeoStrategy";
         }
-
-        if (!UrlHelper.isValidUrl(projectUrl.getUrl())) {
-        	model.addAttribute("invalidUrl",true);
-        	return "createProjectUrl";
-        }                
         
-        projectUrl.setProject(project);
-        projectUrl.setReportDate(new Date());
-        projectUrl = projectUrlRepository.save(projectUrl);
+        persist(seoStrategy,projectUrl,savedSeoStrategy);
         
-        urlMetricsService.saveUrlMetrics(projectUrl);
-        
-        return "redirect:/projectView?projectId=" + projectUrl.getProject().getId();
+        return "redirect:/seoStrategyView?strategyId=" + savedSeoStrategy.getId();
     }
+    
+    
+    private void persist(SeoStrategy seoStrategy, ProjectUrl projectUrl, SeoStrategy savedSeoStrategy) {
+        savedSeoStrategy.setName(seoStrategy.getName());
+        savedSeoStrategy.setPurchasedName(seoStrategy.getPurchasedName());
+        savedSeoStrategy.setPurchasedUrl(seoStrategy.getPurchasedUrl());
+        savedSeoStrategy.setStrategyDescription(seoStrategy.getStrategyDescription());
+        savedSeoStrategy.setStrategySource(seoStrategy.getStrategySource());
+        savedSeoStrategy.setStrategyStatus(seoStrategy.getStrategyStatus());
+        savedSeoStrategy.setStrategyType(seoStrategy.getStrategyType());
+        
+        seoStrategyRepository.save(savedSeoStrategy);
+    }
+    
 }

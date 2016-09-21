@@ -136,4 +136,23 @@ public class ProjectUrl {
 		
 		return sb.toString();
 	}
+	
+	
+	public boolean equals(Object o) {
+		boolean equals = false;
+		
+		if (o != null) {
+			if (o instanceof ProjectUrl) {
+				ProjectUrl other = (ProjectUrl)o;
+				
+				if (other.getProject().getId() != null && id != null && other.getProject().getId().equals(id)) {
+					if (other.getUrl() != null && url != null && other.getUrl().equals(url)) {
+						equals = true;
+					}					
+				}
+			}
+		}
+		
+		return equals;
+	}
 }

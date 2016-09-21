@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +25,16 @@ public class UserConfig {
 
 	@Column(name = "max_urls")
 	private Integer maxUrlsPerProject;
-
+	
+	@Column(name="refresh_date")
+	private Date refreshDate;
+	
+	@Column(name="current_refreshes")
+	private Integer currentRefreshes;
+	
+	@Column(name="max_refreshes")
+	private Integer maxRefreshes;
+	
 	//a config belongs to one and only one user
 	//and a user has only one config
 	@OneToOne
@@ -63,6 +74,30 @@ public class UserConfig {
 
 	public void setMaxUrlsPerProject(Integer maxUrlsPerProject) {
 		this.maxUrlsPerProject = maxUrlsPerProject;
+	}
+
+	public Date getRefreshDate() {
+		return refreshDate;
+	}
+
+	public void setRefreshDate(Date refreshDate) {
+		this.refreshDate = refreshDate;
+	}
+
+	public Integer getCurrentRefreshes() {
+		return currentRefreshes;
+	}
+
+	public void setCurrentRefreshes(Integer currentRefreshes) {
+		this.currentRefreshes = currentRefreshes;
+	}
+
+	public Integer getMaxRefreshes() {
+		return maxRefreshes;
+	}
+
+	public void setMaxRefreshes(Integer maxRefreshes) {
+		this.maxRefreshes = maxRefreshes;
 	}
 	
 }

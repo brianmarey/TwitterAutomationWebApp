@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
 import com.careydevelopment.twitterautomation.jpa.entity.PageSpeedInsights;
+import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.service.PageSpeedInsightsService;
 import com.careydevelopment.twitterautomation.util.JsonParser;
 import com.careydevelopment.twitterautomation.util.UrlHelper;
@@ -21,12 +22,12 @@ public class PageSpeedInsightsServiceImpl implements PageSpeedInsightsService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PageSpeedInsightsServiceImpl.class);
 	
 	@Override
-	public PageSpeedInsights getPageSpeedInsights(String url) {
+	public PageSpeedInsights getPageSpeedInsights(ProjectUrl url) {
 		PageSpeedInsights insights = new PageSpeedInsights();
 		
 		try {
-			setInsights(url,PageSpeedInsightsService.MOBILE_STRATEGY,insights);
-			setInsights(url,PageSpeedInsightsService.DESKTOP_STRATEGY,insights);			
+			setInsights(url.getUrl(),PageSpeedInsightsService.MOBILE_STRATEGY,insights);
+			setInsights(url.getUrl(),PageSpeedInsightsService.DESKTOP_STRATEGY,insights);			
 		} catch (Exception e) {
 			LOGGER.error("Problem retrieving page speed insights for " + url,e);
 		}

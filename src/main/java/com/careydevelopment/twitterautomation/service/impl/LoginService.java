@@ -156,6 +156,9 @@ public class LoginService {
     	UserConfig uc = new UserConfig();
     	uc.setMaxProjects(Constants.DEFAULT_MAX_PROJECTS);
     	uc.setMaxUrlsPerProject(Constants.DEFAULT_MAX_URLS_PER_PROJECT);
+    	uc.setCurrentRefreshes(0);
+    	uc.setMaxRefreshes(Constants.DEFAULT_MAX_REFRESHES);
+    	uc.setRefreshDate(new Date());
     	uc.setUser(u);
     	
     	userConfigRepository.save(uc);
