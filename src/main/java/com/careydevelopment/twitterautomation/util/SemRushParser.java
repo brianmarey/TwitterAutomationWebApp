@@ -1,5 +1,6 @@
 package com.careydevelopment.twitterautomation.util;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class SemRushParser {
 					keyword.setCompetition(new Float(list.get(9)));
 					keyword.setCpc(new Float(list.get(5)));
 					keyword.setKeyword(list.get(0));
-					keyword.setNumberOfResults(new Integer(list.get(10)));
+					keyword.setNumberOfResults(new BigInteger(list.get(10)));
 					keyword.setPosition(new Integer(list.get(1)));
 					keyword.setPositionDifference(new Integer(list.get(3)));
 					keyword.setPreviousPosition(new Integer(list.get(2)));

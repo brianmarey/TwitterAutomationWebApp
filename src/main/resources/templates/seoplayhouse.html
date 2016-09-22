@@ -116,6 +116,14 @@
 		                                            </tr>
 		                                        </thead>
 		                                        <tbody>
+		                                        	<th:block th:if="${numberOfProjects == 0}">
+		                                        	<tr>
+		                                        	<td colspan="3">
+		                                        	You have no projects yet. <a href="./createProject">Click here</a> to create a project.
+		                                        	</td>
+		                                        	</tr>
+		                                        	</th:block>
+		                                        	<th:block th:unless="${numberOfProjects == 0}">
 		                                        	<tr th:each="project,iterationStatus  : ${projects}">
 		                                        		<td th:text="${project.name}" style="vertical-align:middle"></td>
 		                                        		<td th:text="${project.numberOfUrls}" style="vertical-align:middle"></td>
@@ -123,7 +131,8 @@
                                                                 <i class="fa fa-share"></i> View </a> 
                                                              <a th:href="@{/editProject(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-edit"></i> Edit </a> </td>
-													</tr>		                                        
+													</tr>		        
+													</th:block>                                
 		                                        </tbody>
 		                                    </table>
 		                                </div>

@@ -71,6 +71,12 @@ public class SeoPlayhouseController {
     	List<Project> projects = projectRepository.findByOwner(user);
     	model.addAttribute("projects",projects);
     	
+    	if (projects != null) {
+    		model.addAttribute("numberOfProjects",projects.size());
+    	} else {
+    		model.addAttribute("numberOfProjects",0);
+    	}
+    	
         return "seoplayhouse";
     }
       

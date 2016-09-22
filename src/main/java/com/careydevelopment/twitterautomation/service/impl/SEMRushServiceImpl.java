@@ -53,7 +53,7 @@ public class SEMRushServiceImpl implements SEMRushService {
 			//String response = "Domain;Rank;Organic Keywords;Organic Traffic;Organic Cost;Adwords Keywords;Adwords Traffic;Adwords Cost\nseobook.com;24041;5249;37332;143496;0;0;0";			
 			domainRank = SemRushParser.getDomainRank(response);
 		} catch (Exception e) {
-			LOGGER.error("Problem getting domain rank!");
+			LOGGER.error("Problem getting domain rank!",e);
 		}
 		
 		return domainRank;
@@ -78,7 +78,7 @@ public class SEMRushServiceImpl implements SEMRushService {
 			*/
 			list = SemRushParser.getCompetitors(response,type);
 		} catch (Exception e) {
-			LOGGER.error("Problem getting competitors!");
+			LOGGER.error("Problem getting competitors!",e);
 		}
 		
 		return list;
@@ -103,7 +103,7 @@ public class SEMRushServiceImpl implements SEMRushService {
 			*/
 			list = SemRushParser.getDomainSearchKeywords(response, type);
 		} catch (Exception e) {
-			LOGGER.error("Problem getting domain searches!");
+			LOGGER.error("Problem getting domain searches!",e);
 		}
 		
 		return list;

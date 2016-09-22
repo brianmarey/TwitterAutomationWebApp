@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,7 +56,7 @@ public class DomainSearchKeyword {
 	private Float competition;
 	
 	@Column(name="number_of_results")
-	private Integer numberOfResults;
+	private BigInteger numberOfResults;
 	
 	@Column(name="type")
 	private String type; //paid or organic
@@ -123,10 +125,10 @@ public class DomainSearchKeyword {
 	public void setCompetition(Float competition) {
 		this.competition = competition;
 	}
-	public Integer getNumberOfResults() {
+	public BigInteger getNumberOfResults() {
 		return numberOfResults;
 	}
-	public void setNumberOfResults(Integer numberOfResults) {
+	public void setNumberOfResults(BigInteger numberOfResults) {
 		this.numberOfResults = numberOfResults;
 	}
 	public Long getId() {
