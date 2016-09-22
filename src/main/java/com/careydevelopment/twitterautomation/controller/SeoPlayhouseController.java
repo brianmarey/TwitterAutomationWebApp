@@ -45,7 +45,7 @@ public class SeoPlayhouseController {
         	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) {    	
     	
     	User user = (User)request.getSession().getAttribute(Constants.TWITTER_USER);
-
+    	
     	if (user == null) {
     		if (!accessToken.equals("") && !accessTokenSecret.equals("")) {
         		//this user has cookies and might be able to login
@@ -61,6 +61,7 @@ public class SeoPlayhouseController {
     	}
 
     	TwitterUser twitterUser = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
+    	model.addAttribute("twitterUser",twitterUser);
     	
     	if (!RoleHelper.isAuthorized(twitterUser, "Basic")) {
     		return "redirect:notAuthorized";

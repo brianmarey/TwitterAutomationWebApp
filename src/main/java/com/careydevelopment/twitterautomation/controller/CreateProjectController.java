@@ -63,6 +63,10 @@ public class CreateProjectController {
     		return "redirect:badLogin";
     	}
     	    	
+    	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
+    		return "redirect:seoplayhouse";
+    	}
+    	
     	Project project = new Project();
     	model.addAttribute("project",project);
     	

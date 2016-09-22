@@ -36,11 +36,12 @@ public class RefreshUtil {
 			uc.setRefreshDate(now);	
 			userConfigRepository.save(uc);
 		} else {
+			LOGGER.info("User " + uc.getUser().getScreenName() + " current refreshes: " + uc.getCurrentRefreshes() + " Max refreshes " + uc.getMaxRefreshes());
 			if (uc.getCurrentRefreshes() >= uc.getMaxRefreshes()) {
 				LOGGER.info("User " + uc.getUser().getScreenName() + " has maxed out refreshes at " + uc.getMaxRefreshes());
 				maxedOut = true;
 			} else {
-				LOGGER.info("User " + uc.getUser().getScreenName() + " increases refreshes to " + uc.getCurrentRefreshes() + 1);
+				LOGGER.info("User " + uc.getUser().getScreenName() + " increases refreshes to " + (uc.getCurrentRefreshes() + 1));
 				uc.setCurrentRefreshes(uc.getCurrentRefreshes() + 1);
 				userConfigRepository.save(uc);
 			}

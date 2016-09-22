@@ -57,6 +57,16 @@
                     <h1 class="page-title">Dashboard</h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
+                    
+                    <th:block th:if="${twitterUser != null and twitterUser.userConfig != null and twitterUser.userConfig.tosAgreement != 'true'}">
+	                    <div class="note note-info">
+	                    	<h4 class="block">Agree To The Terms of Service</h4>
+	                        <p> You must agree to the <a href="./termsOfService">terms of service</a> before using this system. </p>
+	                        <p>&nbsp;</p>
+	                        <p><a class="btn blue" href="javascript:document.location='./agreeTos'"> Agree to Terms of Service </a></p>
+	                    </div>
+                    </th:block>
+                    
                     <th:block th:if="${twitterUser != null and twitterUser.newUser}">
                     	<div class="portlet-body">
                             <div class="note note-success">
@@ -64,8 +74,6 @@
                                 <p>It looks like this is your first time here. Welcome aboard.</p>
                                 <p>&nbsp;</p>
                                 <p>You can start by creating a new project. Then, add URLs, domains, and subdomains to your project so that you can monitor them.</p>
-                                <p>&nbsp;</p>
-                                <p>Alternatively, you can get quick stats on a domain that you're thinking about purchasing.</p>
                             </div>
                         </div>
                         <div class="mt-cookie-consent-bar">

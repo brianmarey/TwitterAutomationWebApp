@@ -67,7 +67,12 @@
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking organic keywords." style="position:relative;top:-2px"></i>Top Organic Keywords </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking organic keywords." style="position:relative;top:-2px"></i>
+	                                   <th:block th:switch="${param.type[0]}">
+	                                   <span th:case="'organic'">Top Organic Keywords</span>
+	                                   <span th:case="'paid'">Top Paid Keywords</span>
+	                                   </th:block> 
+	                                   </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -76,6 +81,7 @@
 	                                            <tr>
 	                                                <th> Keyword </th>
 	                                                <th> Position </th>
+	                                                <th> URL </th>
 	                                                <th> Volume </th>
 	                                                <th> CPC </th>
 	                                                <th> Traffic % </th>
@@ -85,6 +91,7 @@
 	                                        	<tr th:each="keyword,iterationStatus : ${keywords}">
 	                                        		<td th:text="${keyword.keyword}"></td>
 	                                        		<td th:text="${keyword.position}"></td>
+	                                        		<td><a target="_blank" th:href="${keyword.url}" th:text="${keyword.displayUrl}"></a></td>
 	                                        		<td th:text="${keyword.searchVolume}"></td>
 	                                        		<td th:text="${keyword.cpc}"></td>
 	                                        		<td th:text="${keyword.trafficPercent}"></td>

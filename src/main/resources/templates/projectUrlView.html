@@ -250,7 +250,7 @@
                     
                     <th:block th:if="${projectUrl.domainRank != null}">
                     <div class="row" style="margin-top:20px">
-						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -278,7 +278,7 @@
 	                        	</div>	                    	
 	                    	</div>
                     	</div>
-                    	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
+                    	<!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -305,7 +305,7 @@
 	                                </div>
 	                        	</div>	                    	
 	                    	</div>
-                    	</div>                    	
+                    	</div> -->                    	
                     </div>
 					</th:block>
                     
@@ -330,7 +330,7 @@
                     
                     <div class="row" style="margin-top:20px">
                     <th:block th:if="${organicKeywords != null}">
-						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:20px">                        
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:20px">                        
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -342,7 +342,8 @@
 	                                        <thead>
 	                                            <tr>
 	                                                <th> Keyword </th>
-	                                                <th> Position </th>
+	                                                <th> Rank </th>
+	                                                <th> URL </th>
 	                                                <th> Volume </th>
 	                                                <th> CPC </th>
 	                                                <th> Traffic % </th>
@@ -352,6 +353,7 @@
 	                                        	<tr th:each="keyword,iterationStatus : ${organicKeywords}">
 	                                        		<td th:text="${keyword.keywordDisplay}"></td>
 	                                        		<td th:text="${keyword.position}"></td>
+	                                        		<td><a target="_blank" th:href="${keyword.url}" th:text="${keyword.displayUrl}"></a></td>
 	                                        		<td th:text="${keyword.searchVolume}"></td>
 	                                        		<td th:text="${keyword.cpc}"></td>
 	                                        		<td th:text="${keyword.trafficPercent}"></td>
@@ -366,7 +368,7 @@
                             </div>
                     	</div>                    
                     </th:block>
-                    <th:block th:if="${paidKeywords != null}">
+                    <!-- <th:block th:if="${paidKeywords != null}">
 						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:20px">                        
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
@@ -379,7 +381,7 @@
 	                                        <thead>
 	                                            <tr>
 	                                                <th> Keyword </th>
-	                                                <th> Position </th>
+	                                                <th> Rank </th>
 	                                                <th> Volume </th>
 	                                                <th> CPC </th>
 	                                                <th> Traffic % </th>
@@ -402,13 +404,13 @@
 	                    		<a th:href="@{/keywords(projectUrlId=${projectUrl.id},type=paid)}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">View More Paid Keywords</button></a>	                    		
                             </div>
                     	</div>                    
-                    </th:block>
+                    </th:block> -->
                     </div>
 
 
                     <div class="row" style="margin-top:20px">
                     <th:block th:if="${organicCompetitors != null}">
-						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -439,7 +441,7 @@
 	                    	</div>
                     	</div>                    
                     </th:block>
-                    <th:block th:if="${paidCompetitors != null}">
+                    <!--  <th:block th:if="${paidCompetitors != null}">
 						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
@@ -470,7 +472,7 @@
 	                        	</div>	                    	
 	                    	</div>
                     	</div>                    
-                    </th:block>
+                    </th:block>-->
                     </div>
                     
                     

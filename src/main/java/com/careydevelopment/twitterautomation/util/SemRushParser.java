@@ -80,7 +80,7 @@ public class SemRushParser {
 					keyword.setSearchVolume(new Integer(list.get(4)));
 					keyword.setTrafficCostPercent(new Float(list.get(8)));
 					keyword.setTrafficPercent(new Float(list.get(7)));
-					//keyword.setUrl(list.get(6));
+					keyword.setUrl(list.get(6));
 					
 					keywords.add(keyword);
 				}				

@@ -59,6 +59,10 @@ public class DomainSearchKeyword {
 	@Column(name="type")
 	private String type; //paid or organic
 	
+	@Column(name="url")
+	private String url;
+	
+	
 	public String getType() {
 		return type;
 	}
@@ -137,7 +141,13 @@ public class DomainSearchKeyword {
 	public void setProjectUrl(ProjectUrl projectUrl) {
 		this.projectUrl = projectUrl;
 	}	
-	
+
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public String getKeywordDisplay() {
 		String keywordDisplay = keyword;
 		
@@ -148,6 +158,22 @@ public class DomainSearchKeyword {
 		}
 		
 		return keywordDisplay;
+	}
+	
+	
+	public String getDisplayUrl() {
+		StringBuilder sb = new StringBuilder();
+		
+		if (url != null) {
+			if (url.length() < 40) {
+				sb.append(url);
+			} else {
+				sb.append(url.substring(0, 38));
+				sb.append("...");
+			}
+		}
+		
+		return sb.toString();
 	}
 }
 
