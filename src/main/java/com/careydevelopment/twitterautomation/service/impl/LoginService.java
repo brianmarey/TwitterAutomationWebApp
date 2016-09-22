@@ -112,15 +112,16 @@ public class LoginService {
         String screenName = twitter.getScreenName();
         
         TwitterUser u = twitterUserRepository.findByScreenName(screenName);
-
+        
         if (u == null) {
         	u = handleNewUser(model,screenName,request);
         } else {
         	handleUpdateUser(model,u,request);
         }
-        
-        if (u.getUserConfig() == null) {
-        	createUserConfig(u);
+                
+        UserConfig uc = u.getUserConfig();
+        if (uc == null) {
+        	uc = createUserConfig(u);
         }
         
     	//set the IP Address in the session
@@ -129,6 +130,8 @@ public class LoginService {
     	twitterUserRepository.save(u);
     	
     	checkForBadLogin(u);
+    	
+    	u.setUserConfig(uc);
     	
         LOGGER.info(screenName + " has logged on from ip " + u.getIpAddress());
     }
@@ -144,7 +147,7 @@ public class LoginService {
     				cal.add(Calendar.DAY_OF_MONTH, -1);
     				if (lastLogin.after(cal.getTime())) {
     					u.setBadLogin(true);
-    					u.setBadLoginMessage("Another has already logged in with this IP address within the last day.");
+    					u.setBadLoginMessage("Another user has already logged in with this IP address within the last day.");
     				}
     			}
     		}
@@ -152,7 +155,7 @@ public class LoginService {
     }
     
     
-    private void createUserConfig(TwitterUser u) {
+    private UserConfig createUserConfig(TwitterUser u) {
     	UserConfig uc = new UserConfig();
     	uc.setMaxProjects(Constants.DEFAULT_MAX_PROJECTS);
     	uc.setMaxUrlsPerProject(Constants.DEFAULT_MAX_URLS_PER_PROJECT);
@@ -162,6 +165,8 @@ public class LoginService {
     	uc.setUser(u);
     	
     	userConfigRepository.save(uc);
+    	
+    	return uc;
     }
  
     

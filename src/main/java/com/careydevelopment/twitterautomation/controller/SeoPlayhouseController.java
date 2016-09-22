@@ -1,7 +1,5 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Properties;
 
@@ -17,17 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.careydevelopment.propertiessupport.PropertiesFactory;
 import com.careydevelopment.propertiessupport.PropertiesFile;
-import com.careydevelopment.twitterautomation.domain.Tip;
 import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
-import com.careydevelopment.twitterautomation.util.TipsHelper;
-
-import twitter4j.Twitter;
-import twitter4j.User;
 
 @Controller
 public class SeoPlayhouseController {
@@ -44,14 +37,14 @@ public class SeoPlayhouseController {
     		@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
         	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) {    	
     	
-    	User user = (User)request.getSession().getAttribute(Constants.TWITTER_USER);
+    	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);    	
     	
     	if (user == null) {
     		if (!accessToken.equals("") && !accessTokenSecret.equals("")) {
         		//this user has cookies and might be able to login
         		try {
-        			Twitter twitter = loginService.login(model, request, accessToken, accessTokenSecret);
-        			user = twitter.showUser(twitter.getId());
+        			loginService.login(model, request, accessToken, accessTokenSecret);
+        			user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
         		} catch (Exception e) {
         			return "redirect:notLoggedIn";
         		}
@@ -60,14 +53,13 @@ public class SeoPlayhouseController {
         	}
     	}
 
-    	TwitterUser twitterUser = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
-    	model.addAttribute("twitterUser",twitterUser);
+    	model.addAttribute("twitterUser",user);
     	
-    	if (!RoleHelper.isAuthorized(twitterUser, "Basic")) {
+    	if (!RoleHelper.isAuthorized(user, "Basic")) {
     		return "redirect:notAuthorized";
     	}
     	
-    	if (twitterUser.isBadLogin()) {
+    	if (user.isBadLogin()) {
     		return "redirect:badLogin";
     	}
     	
@@ -75,30 +67,13 @@ public class SeoPlayhouseController {
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("dashboardActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
-    
-    	setDisplayAttributes(model,user);
     	
-    	List<Project> projects = projectRepository.findByOwner(twitterUser);
+    	List<Project> projects = projectRepository.findByOwner(user);
     	model.addAttribute("projects",projects);
     	
         return "seoplayhouse";
     }
-    
-    
-    private void setDisplayAttributes(Model model, User user) {
-    	DecimalFormat df = new DecimalFormat("###.##");
-    	df.setRoundingMode(RoundingMode.FLOOR);
-
-    	double ratio = ((double)user.getFollowersCount())/((double)user.getFriendsCount());
-    	
-    	String ratioS = df.format(ratio);
-    	model.addAttribute("ratio",ratioS);
-    	
-    	TipsHelper helper = new TipsHelper(user);
-    	List<Tip> tips = helper.getTips();
-    	model.addAttribute("tips",tips);
-    }
-    
+      
     
     /**
      * Necessary to prevent cross-domain problems with AJAX
