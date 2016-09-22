@@ -59,6 +59,10 @@ public class ProjectViewController {
     		return "redirect:badLogin";
     	}
     	
+    	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
+    		return "redirect:seoplayhouse";
+    	}
+    	
     	Project project = projectRepository.findOne(projectId);
     	
     	if (!project.getOwner().getId().equals(user.getId())) {

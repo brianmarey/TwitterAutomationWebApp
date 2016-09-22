@@ -71,6 +71,10 @@ public class SeoStrategyViewController {
     	if (user.isBadLogin()) {
     		return "redirect:badLogin";
     	}
+    	
+    	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
+    		return "redirect:seoplayhouse";
+    	}
   
     	SeoStrategy seoStrategy = seoStrategyRepository.findOne(strategyId);
     	if (seoStrategy == null) {
