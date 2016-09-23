@@ -248,7 +248,7 @@
                     </div>
                     </th:block>                    
                     
-                    <th:block th:if="${projectUrl.domainRank != null}">
+                    <!--  <th:block th:if="${projectUrl.domainRank != null}">
                     <div class="row" style="margin-top:20px">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
@@ -278,7 +278,8 @@
 	                        	</div>	                    	
 	                    	</div>
                     	</div>
-                    	<!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
+                    	
+                    	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -305,9 +306,9 @@
 	                                </div>
 	                        	</div>	                    	
 	                    	</div>
-                    	</div> -->                    	
+                    	</div>                     	
                     </div>
-					</th:block>
+					</th:block>-->
                     
     
                     <th:block th:if="${organicKeywords != null}">
@@ -330,7 +331,7 @@
                     
                     <div class="row" style="margin-top:20px">
                     <th:block th:if="${organicKeywords != null}">
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:20px">                        
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:20px">                        
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -343,7 +344,6 @@
 	                                            <tr>
 	                                                <th> Keyword </th>
 	                                                <th> Rank </th>
-	                                                <th> URL </th>
 	                                                <th> Volume </th>
 	                                                <th> CPC </th>
 	                                                <th> Traffic % </th>
@@ -353,7 +353,6 @@
 	                                        	<tr th:each="keyword,iterationStatus : ${organicKeywords}">
 	                                        		<td th:text="${keyword.keywordDisplay}"></td>
 	                                        		<td th:text="${keyword.position}"></td>
-	                                        		<td><a target="_blank" th:href="${keyword.url}" th:text="${keyword.displayUrl}"></a></td>
 	                                        		<td th:text="${keyword.searchVolume}"></td>
 	                                        		<td th:text="${keyword.cpc}"></td>
 	                                        		<td th:text="${keyword.trafficPercent}"></td>
@@ -368,12 +367,12 @@
                             </div>
                     	</div>                    
                     </th:block>
-                    <!-- <th:block th:if="${paidKeywords != null}">
+                    <th:block th:if="${mobileOrganicKeywords != null}">
 						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:20px">                        
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking paid keywords." style="position:relative;top:-2px"></i>Top Paid Keywords </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking mobile organic keywords." style="position:relative;top:-2px"></i>Top Mobile Organic Keywords </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -388,7 +387,7 @@
 	                                            </tr>
 	                                        </thead>	
 	                                        <tbody>
-	                                        	<tr th:each="keyword,iterationStatus : ${paidKeywords}">
+	                                        	<tr th:each="keyword,iterationStatus : ${mobileOrganicKeywords}">
 	                                        		<td th:text="${keyword.keywordDisplay}"></td>
 	                                        		<td th:text="${keyword.position}"></td>
 	                                        		<td th:text="${keyword.searchVolume}"></td>
@@ -401,10 +400,10 @@
 	                        	</div>	                    	
 	                    	</div>
 	                   		<div>
-	                    		<a th:href="@{/keywords(projectUrlId=${projectUrl.id},type=paid)}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">View More Paid Keywords</button></a>	                    		
+	                    		<a th:href="@{/keywords(projectUrlId=${projectUrl.id},type=organic-mobile)}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">View More Mobile Organic Keywords</button></a>	                    		
                             </div>
                     	</div>                    
-                    </th:block> -->
+                    </th:block> 
                     </div>
 
 

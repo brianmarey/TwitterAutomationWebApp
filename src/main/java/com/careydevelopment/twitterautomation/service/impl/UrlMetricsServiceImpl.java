@@ -92,6 +92,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 		
 		saveDomainRankInfo(url);
 		saveDomainSearchKeywords(url,SEMRushService.ORGANIC);
+		saveDomainSearchKeywords(url,SEMRushService.ORGANIC_MOBILE);
 		//saveDomainSearchKeywords(url,SEMRushService.PAID);
 		
 		if (url.isDomain()) {

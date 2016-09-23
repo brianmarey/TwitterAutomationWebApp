@@ -119,9 +119,9 @@ public class ProjectUrlViewController {
     	    	    	    	    	
     	Pageable topTen = new PageRequest(0, 10);
     	List<DomainSearchKeyword> organicKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
-    	List<DomainSearchKeyword> paidKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.PAID,topTen);
+    	List<DomainSearchKeyword> mobileOrganicKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC_MOBILE,topTen);
     	
-    	model.addAttribute("paidKeywords",paidKeywords);
+    	model.addAttribute("mobileOrganicKeywords",mobileOrganicKeywords);
 
     	if (organicKeywords != null) {
     		List<DomainSearchKeyword> topOrganicKeywords = (organicKeywords.size() > 9) ? organicKeywords.subList(0, 9) : organicKeywords;

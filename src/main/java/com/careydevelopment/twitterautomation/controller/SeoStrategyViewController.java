@@ -116,6 +116,20 @@ public class SeoStrategyViewController {
     	}
     	
     	model.addAttribute("keywords",keywords);
+    	
+    	
+    	List<DomainSearchKeyword> domainMobileSearchKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC_MOBILE);
+    	
+    	List<StrategyKeyword> mobileKeywords = seoStrategy.getStrategyKeywords();
+    	if (mobileKeywords != null) {
+    		for (StrategyKeyword keyword : mobileKeywords) {
+    			String key = keyword.getKeyword();
+    			Integer currentRank = getCurrentRank(key, domainMobileSearchKeywords);
+    			keyword.setCurrentRank(currentRank);
+    		}
+    	}
+    	
+    	model.addAttribute("mobileKeywords",mobileKeywords);
     }
     
     

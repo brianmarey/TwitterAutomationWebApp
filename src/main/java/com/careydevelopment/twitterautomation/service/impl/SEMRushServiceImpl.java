@@ -29,6 +29,8 @@ public class SEMRushServiceImpl implements SEMRushService {
 	private static final int SEARCH_TYPE_DOMAIN_RANK = 3;
 	private static final int SEARCH_TYPE_COMPETITORS = 4;
 	private static final int SEARCH_TYPE_PAID_COMPETITORS = 5;
+	private static final int SEARCH_TYPE_MOBILE_KEYWORDS = 6;
+	
 	
 	private String apiKey = "";
 	
@@ -91,7 +93,7 @@ public class SEMRushServiceImpl implements SEMRushService {
 		List<DomainSearchKeyword> list = new ArrayList<DomainSearchKeyword>();
 		
 		try {
-			int searchType = "organic".equalsIgnoreCase(type) ? SEARCH_TYPE_KEYWORDS : SEARCH_TYPE_PAID_KEYWORDS;
+			int searchType = "organic".equalsIgnoreCase(type) ? SEARCH_TYPE_KEYWORDS : SEARCH_TYPE_MOBILE_KEYWORDS;
 			
 			String response = getResponse(projectUrl, searchType);
 			/*
@@ -144,6 +146,16 @@ public class SEMRushServiceImpl implements SEMRushService {
 				builder.append("&export_columns=Ph,Po,Pp,Pd,Nq,Cp,Ur,Tr,Tc,Co,Nr,Td&domain=");
 				builder.append(projectUrl.getUrl());
 				builder.append("&display_sort=po_asc&database=us&display_limit=100");
+
+				break;
+
+			case SEARCH_TYPE_MOBILE_KEYWORDS:
+				builder.append("domain_organic");
+				builder.append("&key=");
+				builder.append(apiKey);
+				builder.append("&export_columns=Ph,Po,Pp,Pd,Nq,Cp,Ur,Tr,Tc,Co,Nr,Td&domain=");
+				builder.append(projectUrl.getUrl());
+				builder.append("&display_sort=po_asc&database=mobile-us&display_limit=100");
 
 				break;
 				

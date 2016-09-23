@@ -17,8 +17,8 @@ public class DomainSearchKeyword {
 	
 	public static final String ORGANIC = "organic";
 	public static final String PAID = "paid";
+	public static final String ORGANIC_MOBILE = "organic-mobile";
 
-	
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.AUTO)

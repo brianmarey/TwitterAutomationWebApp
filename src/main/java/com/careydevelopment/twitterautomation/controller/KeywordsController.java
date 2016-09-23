@@ -91,10 +91,8 @@ public class KeywordsController {
     	}
     	
     	model.addAttribute("projectUrl",projectUrl);
-    	
     	    	    	    	    	
     	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, type);
-    	
     	model.addAttribute("keywords", keywords);
 
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
