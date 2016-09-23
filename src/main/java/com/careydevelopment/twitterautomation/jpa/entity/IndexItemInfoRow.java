@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,40 +37,40 @@ public class IndexItemInfoRow {
 	private String status;
 	
 	@Column(name="ext_backlinks")
-	private Integer extBacklinks;
+	private BigInteger extBacklinks;
 	
 	@Column(name="ref_domains")
-	private Integer refDomains;
+	private BigInteger refDomains;
 	
 	@Column(name="ref_ips")
-	private Integer refIps;
+	private BigInteger refIps;
 	
 	@Column(name="item_type")
 	private Integer itemType; //1 = root domain, 2=subdomain, 3=url
 	
 	@Column(name="ref_domains_edu")
-	private Integer refDomainsEdu;
+	private BigInteger refDomainsEdu;
 	
 	@Column(name="ext_backlinks_edu")
-	private Integer extBacklinksEdu;
+	private BigInteger extBacklinksEdu;
 	
 	@Column(name="ref_domains_gov")
-	private Integer refDomainsGov;
+	private BigInteger refDomainsGov;
 	
 	@Column(name="ext_backlinks_gov")
-	private Integer extBacklinksGov;
+	private BigInteger extBacklinksGov;
 
 	@Column(name="ref_domains_edu_exact")
-	private Integer refDomainsEduExact;
+	private BigInteger refDomainsEduExact;
 	
 	@Column(name="ext_backlinks_edu_exact")
-	private Integer extBacklinksEduExact;
+	private BigInteger extBacklinksEduExact;
 	
 	@Column(name="ref_domains_gov_exact")
-	private Integer refDomainsGovExact;
+	private BigInteger refDomainsGovExact;
 	
 	@Column(name="ext_backlinks_gov_exact")
-	private Integer extBacklinksGovExact;
+	private BigInteger extBacklinksGovExact;
 	
 	@Column(name="title")
 	private String title;
@@ -127,27 +129,27 @@ public class IndexItemInfoRow {
 		this.status = status;
 	}
 
-	public Integer getExtBacklinks() {
+	public BigInteger getExtBacklinks() {
 		return extBacklinks;
 	}
 
-	public void setExtBacklinks(Integer extBacklinks) {
+	public void setExtBacklinks(BigInteger extBacklinks) {
 		this.extBacklinks = extBacklinks;
 	}
 
-	public Integer getRefDomains() {
+	public BigInteger getRefDomains() {
 		return refDomains;
 	}
 
-	public void setRefDomains(Integer refDomains) {
+	public void setRefDomains(BigInteger refDomains) {
 		this.refDomains = refDomains;
 	}
 
-	public Integer getRefIps() {
+	public BigInteger getRefIps() {
 		return refIps;
 	}
 
-	public void setRefIps(Integer refIps) {
+	public void setRefIps(BigInteger refIps) {
 		this.refIps = refIps;
 	}
 
@@ -159,67 +161,67 @@ public class IndexItemInfoRow {
 		this.itemType = itemType;
 	}
 
-	public Integer getRefDomainsEdu() {
+	public BigInteger getRefDomainsEdu() {
 		return refDomainsEdu;
 	}
 
-	public void setRefDomainsEdu(Integer refDomainsEdu) {
+	public void setRefDomainsEdu(BigInteger refDomainsEdu) {
 		this.refDomainsEdu = refDomainsEdu;
 	}
 
-	public Integer getExtBacklinksEdu() {
+	public BigInteger getExtBacklinksEdu() {
 		return extBacklinksEdu;
 	}
 
-	public void setExtBacklinksEdu(Integer extBacklinksEdu) {
+	public void setExtBacklinksEdu(BigInteger extBacklinksEdu) {
 		this.extBacklinksEdu = extBacklinksEdu;
 	}
 
-	public Integer getRefDomainsGov() {
+	public BigInteger getRefDomainsGov() {
 		return refDomainsGov;
 	}
 
-	public void setRefDomainsGov(Integer refDomainsGov) {
+	public void setRefDomainsGov(BigInteger refDomainsGov) {
 		this.refDomainsGov = refDomainsGov;
 	}
 
-	public Integer getExtBacklinksGov() {
+	public BigInteger getExtBacklinksGov() {
 		return extBacklinksGov;
 	}
 
-	public void setExtBacklinksGov(Integer extBacklinksGov) {
+	public void setExtBacklinksGov(BigInteger extBacklinksGov) {
 		this.extBacklinksGov = extBacklinksGov;
 	}
 
-	public Integer getRefDomainsEduExact() {
+	public BigInteger getRefDomainsEduExact() {
 		return refDomainsEduExact;
 	}
 
-	public void setRefDomainsEduExact(Integer refDomainsEduExact) {
+	public void setRefDomainsEduExact(BigInteger refDomainsEduExact) {
 		this.refDomainsEduExact = refDomainsEduExact;
 	}
 
-	public Integer getExtBacklinksEduExact() {
+	public BigInteger getExtBacklinksEduExact() {
 		return extBacklinksEduExact;
 	}
 
-	public void setExtBacklinksEduExact(Integer extBacklinksEduExact) {
+	public void setExtBacklinksEduExact(BigInteger extBacklinksEduExact) {
 		this.extBacklinksEduExact = extBacklinksEduExact;
 	}
 
-	public Integer getRefDomainsGovExact() {
+	public BigInteger getRefDomainsGovExact() {
 		return refDomainsGovExact;
 	}
 
-	public void setRefDomainsGovExact(Integer refDomainsGovExact) {
+	public void setRefDomainsGovExact(BigInteger refDomainsGovExact) {
 		this.refDomainsGovExact = refDomainsGovExact;
 	}
 
-	public Integer getExtBacklinksGovExact() {
+	public BigInteger getExtBacklinksGovExact() {
 		return extBacklinksGovExact;
 	}
 
-	public void setExtBacklinksGovExact(Integer extBacklinksGovExact) {
+	public void setExtBacklinksGovExact(BigInteger extBacklinksGovExact) {
 		this.extBacklinksGovExact = extBacklinksGovExact;
 	}
 

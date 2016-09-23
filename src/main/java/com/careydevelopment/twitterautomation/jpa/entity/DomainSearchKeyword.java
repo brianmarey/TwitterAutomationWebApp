@@ -41,7 +41,7 @@ public class DomainSearchKeyword {
 	private Integer positionDifference;
 	
 	@Column(name="search_volume")
-	private Integer searchVolume;
+	private BigInteger searchVolume;
 	
 	@Column(name="cpc")
 	private Float cpc;
@@ -95,10 +95,10 @@ public class DomainSearchKeyword {
 	public void setPositionDifference(Integer positionDifference) {
 		this.positionDifference = positionDifference;
 	}
-	public Integer getSearchVolume() {
+	public BigInteger getSearchVolume() {
 		return searchVolume;
 	}
-	public void setSearchVolume(Integer searchVolume) {
+	public void setSearchVolume(BigInteger searchVolume) {
 		this.searchVolume = searchVolume;
 	}
 	public Float getCpc() {

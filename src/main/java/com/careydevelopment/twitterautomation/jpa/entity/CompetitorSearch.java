@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +34,7 @@ public class CompetitorSearch {
 	private Float competitorRelevance;
 	
 	@Column(name="common_keywords")
-	private Integer commonKeywords;
+	private BigInteger commonKeywords;
 	
 	@Column(name="type_keywords")
 	private Integer typeKeywords;
@@ -53,10 +55,10 @@ public class CompetitorSearch {
 	public void setCompetitorRelevance(Float competitorRelevance) {
 		this.competitorRelevance = competitorRelevance;
 	}
-	public Integer getCommonKeywords() {
+	public BigInteger getCommonKeywords() {
 		return commonKeywords;
 	}
-	public void setCommonKeywords(Integer commonKeywords) {
+	public void setCommonKeywords(BigInteger commonKeywords) {
 		this.commonKeywords = commonKeywords;
 	}
 	public Integer getTypeKeywords() {

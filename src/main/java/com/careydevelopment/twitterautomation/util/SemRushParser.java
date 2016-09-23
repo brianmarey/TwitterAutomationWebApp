@@ -46,13 +46,13 @@ public class SemRushParser {
 			List<String> list = vals.get(0);
 			
 			if (list.size() > 7) {
-				rank.setAdwordsCost(new Integer(list.get(7)));
-				rank.setAdwordsKeywords(new Integer(list.get(5)));
-				rank.setAdwordsTraffic(new Integer(list.get(6)));
+				rank.setAdwordsCost(new BigInteger(list.get(7)));
+				rank.setAdwordsKeywords(new BigInteger(list.get(5)));
+				rank.setAdwordsTraffic(new BigInteger(list.get(6)));
 				rank.setDomain(list.get(0));
-				rank.setOrganicCost(new Integer(list.get(4)));
-				rank.setOrganicKeywords(new Integer(list.get(2)));
-				rank.setOrganicTraffic(new Integer(list.get(3)));
+				rank.setOrganicCost(new BigInteger(list.get(4)));
+				rank.setOrganicKeywords(new BigInteger(list.get(2)));
+				rank.setOrganicTraffic(new BigInteger(list.get(3)));
 				rank.setRank(new Integer(list.get(1)));
 			}
 		}
@@ -78,7 +78,7 @@ public class SemRushParser {
 					keyword.setPosition(new Integer(list.get(1)));
 					keyword.setPositionDifference(new Integer(list.get(3)));
 					keyword.setPreviousPosition(new Integer(list.get(2)));
-					keyword.setSearchVolume(new Integer(list.get(4)));
+					keyword.setSearchVolume(new BigInteger(list.get(4)));
 					keyword.setTrafficCostPercent(new Float(list.get(8)));
 					keyword.setTrafficPercent(new Float(list.get(7)));
 					keyword.setUrl(list.get(6));
@@ -102,7 +102,7 @@ public class SemRushParser {
 				if (list.size() > 5) {
 					CompetitorSearch comp = new CompetitorSearch();
 					comp.setType(type);
-					comp.setCommonKeywords(new Integer(list.get(2)));
+					comp.setCommonKeywords(new BigInteger(list.get(2)));
 					comp.setCompetitorRelevance(new Float(list.get(1)));
 					comp.setDomain(list.get(0));
 					comp.setTypeCost(new Float(list.get(5)));
