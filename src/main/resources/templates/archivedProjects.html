@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>SEO Playhouse | Dashboard</title>
+        <title>SEO Playhouse | Archived Projects</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="" name="description"></meta>
@@ -75,44 +75,11 @@
                     </div>-->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">Dashboard</h1>
+                    <h1 class="page-title">Archived Projects</h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     
-                    <th:block th:if="${twitterUser != null and twitterUser.userConfig != null and twitterUser.userConfig.tosAgreement != 'true'}">
-	                    <div class="note note-info">
-	                    	<h4 class="block">Agree To The Terms of Service</h4>
-	                        <p> You must agree to the <a href="./termsOfService">terms of service</a> before using this system. </p>
-	                        <p>&nbsp;</p>
-	                        <p><a class="btn blue" href="javascript:document.location='./agreeTos'"> Agree to Terms of Service </a></p>
-	                    </div>
-                    </th:block>
                     
-                    <th:block th:if="${twitterUser != null and twitterUser.userConfig != null and twitterUser.userConfig.tosAgreement == 'true'}">
-                    <th:block th:if="${twitterUser != null and twitterUser.newUser}">
-                    	<div class="portlet-body">
-                            <div class="note note-success">
-                                <h4 class="block">Welcome!</h4>
-                                <p>It looks like this is your first time here. Welcome aboard.</p>
-                                <p>&nbsp;</p>
-                                <p>You can start by creating a new project. Then, add URLs, domains, and subdomains to your project so that you can monitor them.</p>
-                            </div>
-                        </div>
-                        <div class="mt-cookie-consent-bar">
-                            <div class="container">
-                                <div class="mt-cookie-consent-bar-holder">
-                                    <div class="mt-cookie-consent-bar-content"> This website uses cookies to ensure you get the best experience.
-                                        <a href="http://www.allaboutcookies.org/cookies/" target="_blank">What is a cookie?</a>
-                                        <a href="./cookiePolicy">Our Cookie Policy</a>
-                                    </div>
-                                    <div class="mt-cookie-consent-bar-action">
-                                        <a href="javascript:;" class="mt-cookie-consent-btn btn btn-circle green">Understand</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </th:block>
-                   	<th:block th:if="${twitterUser == null or !twitterUser.newUser}">                        
                         <div class="row">
 	                       	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
 		                        <div class="portlet box blue">
@@ -140,7 +107,7 @@
 		                                        	<th:block th:if="${numberOfProjects == 0}">
 		                                        	<tr>
 		                                        	<td colspan="3">
-		                                        	You have no projects yet. <a href="./createProject">Click here</a> to create a project.
+		                                        	You have no archived projects.
 		                                        	</td>
 		                                        	</tr>
 		                                        	</th:block>
@@ -150,10 +117,6 @@
 		                                        		<td th:text="${project.numberOfUrls}" style="vertical-align:middle"></td>
 		                                        		<td> <a th:href="@{/projectView(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-share"></i> View </a> 
-                                                             <a th:href="@{/editProject(projectId=${project.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
-                                                                <i class="fa fa-edit"></i> Edit </a>
-                                                             <a th:attr="href='javascript:archiveProject(' + ${project.id} + ',\'' + ${project.name} + '\');'" class="btn dark btn-sm btn-outline sbold uppercase">
-                                                                <i class="fa fa-file-archive-o"></i> Archive </a>
                                                              <a th:attr="href='javascript:deleteProject(' + ${project.id} + ',\'' + ${project.name} + '\');'" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-close"></i> Delete </a>
                                                         </td>
@@ -166,7 +129,6 @@
 		                        </div>
 	                        </div>
                         </div>
-                     </th:block>
                         <div class="row">
 					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					    	<div class="portlet light tasks-widget bordered">
@@ -183,7 +145,6 @@
 							</div>
                         </div>
 					</div>
-					</th:block>
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
@@ -201,22 +162,6 @@
         
         <!-- END FOOTER -->
         
-        <script>
-        <th:block th:if="${twitterUser != null and twitterUser.userConfig != null and twitterUser.userConfig.tosAgreement != 'true'}">        
-	        /*$.bootstrapGrowl("Please accept the terms of service to use the system.", {
-	            ele: 'body', // which element to append to
-	            type:'danger', // (null, 'info', 'danger', 'success', 'warning')
-	            offset: {
-	                from: 'top',
-	                amount: 100
-	            }, // 'top', or 'bottom'
-	            align: 'center', // ('left', 'right', or 'center')
-	            width: 'auto', // (integer, or 'auto')
-	            delay: 20000, // Time while the message will be displayed. It's not equivalent to the *demo* timeOut!
-	            allow_dismiss: true, // If true then will display a cross to close the popup.
-	            stackup_spacing: 10 // spacing between consecutively stacked growls.
-	    	});*/
-	    </th:block>
-    	</script>
+
     </body>    
 </html>

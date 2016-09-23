@@ -552,6 +552,12 @@
 	                                            </tr>
 	                                        </thead>	
 	                                        <tbody>
+	                                        	<th:block th:if="${numberOfStrategies == 0}">
+	                                        	<tr>
+	                                        	<td colspan="4">You have no SEO strategies for this URL. <a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}">Create a strategy.</a></td>
+	                                        	</tr>
+	                                        	</th:block>
+	                                        	<th:block th:unless="${numberOfStrategies == 0}">
 	                                        	<tr th:each="strategy,iterationStatus : ${seoStrategies}">
 	                                        		<td th:text="${strategy.name}"></td>
 	                                        		<td th:text="${strategy.strategyType}"></td>
@@ -561,6 +567,7 @@
                                                              <a th:href="@{/editSeoStrategy(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-edit"></i> Edit </a></td>
 	                                        	</tr>
+	                                        	</th:block>
 	                                        </tbody>
 	                                    </table>
 	                                </div>									

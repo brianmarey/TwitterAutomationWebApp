@@ -124,7 +124,7 @@ public class ProjectUrlViewController {
     	model.addAttribute("mobileOrganicKeywords",mobileOrganicKeywords);
 
     	if (organicKeywords != null) {
-    		List<DomainSearchKeyword> topOrganicKeywords = (organicKeywords.size() > 9) ? organicKeywords.subList(0, 9) : organicKeywords;
+    		List<DomainSearchKeyword> topOrganicKeywords = (organicKeywords.size() > 9) ? organicKeywords.subList(0, 10) : organicKeywords;
     		model.addAttribute("organicKeywords",topOrganicKeywords);
     		setOrganicKeywordStats(model,organicKeywords);
     	}
@@ -143,6 +143,12 @@ public class ProjectUrlViewController {
     	List<SeoStrategy> seoStrategies = seoStrategyRepository.findOpenByProjectUrl(projectUrl);
     	model.addAttribute("seoStrategies",seoStrategies);
 
+    	if (seoStrategies != null) {
+    		model.addAttribute("numberOfStrategies",seoStrategies.size());
+    	} else {
+    		model.addAttribute("numberOfStrategies", 0);
+    	}
+    	
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	

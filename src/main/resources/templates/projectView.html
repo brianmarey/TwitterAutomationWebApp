@@ -28,6 +28,17 @@
         <!-- for captcha -->
         <script src='https://www.google.com/recaptcha/api.js'></script>
         
+        <script>
+        function deleteUrl(id,name) {
+        	var message = "Are you sure you want to delete " + name + "?";
+            bootbox.confirm(message, function(result) {
+            	if (result) {
+            		document.location = "./deleteProjectUrl?projectUrlId=" + id;	
+            	}
+            });
+        }
+        </script>
+        
     </head>
     <!-- END HEAD -->
 
@@ -123,7 +134,11 @@
 	                                        		<td th:text="${url.indexItemInfo.citationFlow}" style="vertical-align:middle"></td>
 	                                        		<td th:text="${url.indexItemInfo.extBacklinks}" style="vertical-align:middle"></td>
 	                                        		<td> <a th:href="@{/projectUrlView(projectUrlId=${url.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
-                                                               <i class="fa fa-share"></i> View </a> </td>												</tr>		                                        
+                                                               <i class="fa fa-share"></i> View </a>
+                                                         <a th:attr="href='javascript:deleteUrl(' + ${url.id} + ',\'' + ${url.url} + '\');'" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                                <i class="fa fa-close"></i> Delete </a>
+                                                    </td>												
+                                                </tr>		                                        
 	                                        </tbody>
 	                                    </table>
 	                                </div>
@@ -157,6 +172,8 @@
         <!-- END CONTAINER -->
         <!-- BEGIN FOOTER -->
         <div th:include="fragments/footer :: footer"></div>
+        <script th:src="@{/assets/global/plugins/bootbox/bootbox.min.js}" type="text/javascript"></script>
+        <script th:src="@{/assets/pages/scripts/ui-bootbox.min.js}" type="text/javascript"></script>
         <!-- END FOOTER -->
     </body>
 </html>

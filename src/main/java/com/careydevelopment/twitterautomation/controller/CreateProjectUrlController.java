@@ -89,6 +89,10 @@ public class CreateProjectUrlController {
     		return "redirect:notAuthorized";
     	}
     	
+    	if (!Constants.PROJECT_ACTIVE.equals(project.getStatus())) {
+    		return "redirect:projectView?projectId=" + project.getId();
+    	}
+    	
     	model.addAttribute("project",project);
     	
     	ProjectUrl projectUrl = new ProjectUrl();
@@ -125,6 +129,10 @@ public class CreateProjectUrlController {
     	
     	if (refreshUtil.isMaxedOut(user.getUserConfig())) {
     		return "redirect:maxedOutRefreshes";
+    	}
+    	
+    	if (!Constants.PROJECT_ACTIVE.equals(project.getStatus())) {
+    		return "redirect:projectView?projectId=" + project.getId();
     	}
     	
         List<ProjectUrl> urls = projectUrlRepository.findByProject(project);

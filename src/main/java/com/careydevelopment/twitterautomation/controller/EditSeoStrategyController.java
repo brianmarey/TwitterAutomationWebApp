@@ -102,6 +102,10 @@ public class EditSeoStrategyController {
     		return "redirect:notAuthorized";
     	}
     	
+    	if (!Constants.PROJECT_ACTIVE.equals(project.getStatus())) {
+    		return "redirect:seoStrategyView?strategyId=" + seoStrategy.getId();
+    	}
+    	
     	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
     	model.addAttribute("keywords", keywords);
     	

@@ -1,8 +1,5 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -15,36 +12,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
-import com.careydevelopment.twitterautomation.service.UrlMetricsService;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
-import com.careydevelopment.twitterautomation.util.RefreshUtil;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
-public class RefreshController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(RefreshController.class);
+public class DeleteProjectUrlController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteProjectUrlController.class);
 	
 	@Autowired
 	LoginService loginService;
 	
 	@Autowired
 	ProjectUrlRepository projectUrlRepository;
-	
-	@Autowired
-	UrlMetricsService urlMetricsService;
-	
-	@Autowired
-	RefreshUtil refreshUtil;
-	
-    @RequestMapping(value="/refreshReport", method=RequestMethod.GET)
-    public String projectView(HttpServletRequest request, Model model,
+		
+    @RequestMapping(value="/deleteProjectUrl", method=RequestMethod.GET)
+    public String createProjectUrl(HttpServletRequest request, Model model,
+    	@RequestParam(value="projectUrlId", required=true) Long projectUrlId,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
-    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret,
-    	@RequestParam(value="projectUrlId", required=true) Long projectUrlId) { 
+    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
     	
     	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
     	
@@ -80,40 +70,14 @@ public class RefreshController {
     		return "redirect:notAuthorized";
     	}
     	
-    	if (!projectUrl.getProject().getOwner().getId().equals(user.getId())) {
+    	Project project = projectUrl.getProject();
+    	
+    	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
     	}
-    	
-    	if (!Constants.PROJECT_ACTIVE.equals(projectUrl.getProject().getStatus())) {
-    		return "redirect:projectUrlView?projectUrlId=" + projectUrl.getId();
-    	}
-    	
-    	model.addAttribute("projectUrl",projectUrl);
-    	
-    	if (refreshUtil.isMaxedOut(user.getUserConfig())) {
-    		return "redirect:maxedOutRefreshes";
-    	}
-    	
-    	if (isEligibleForRefresh(projectUrl)) {
-    		projectUrl.setReportDate(new Date());
-    		projectUrlRepository.save(projectUrl);
-    		urlMetricsService.saveUrlMetrics(projectUrl);
-    	}
-    	
-        return "redirect: projectUrlView?projectUrlId=" + projectUrl.getId();
-    }
 
-    
-    private boolean isEligibleForRefresh(ProjectUrl projectUrl) {    	
-    	Date reportDate = projectUrl.getReportDate();
-    	Calendar cal = Calendar.getInstance();
-    	cal.setTime(reportDate);
-    	cal.add(Calendar.DAY_OF_MONTH, 1);
+    	projectUrlRepository.delete(projectUrl);
     	
-    	Date now = new Date();
-    	
-    	LOGGER.info("Comparing " + now + " to " + cal.getTime());
-    	
-    	return (now.after(cal.getTime())); 
+        return "redirect:projectView?projectId=" + project.getId();
     }
 }
