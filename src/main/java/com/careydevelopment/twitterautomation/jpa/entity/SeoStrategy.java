@@ -70,7 +70,7 @@ public class SeoStrategy {
 	private String strategyStatus;
 	
 	@Column(name = "strategy_success")
-	private String strategySuccess;
+	private String strategySuccess = "";
 
 	public Long getId() {
 		return id;

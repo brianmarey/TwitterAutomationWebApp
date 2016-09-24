@@ -106,6 +106,10 @@ public class EditSeoStrategyController {
     		return "redirect:seoStrategyView?strategyId=" + seoStrategy.getId();
     	}
     	
+    	if (!SeoStrategy.STATUS_OPEN.equals(seoStrategy.getStrategyStatus())) {
+    		return "redirect:seoStrategyView?strategyId=" + seoStrategy.getId();
+    	}
+    	
     	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
     	model.addAttribute("keywords", keywords);
     	
