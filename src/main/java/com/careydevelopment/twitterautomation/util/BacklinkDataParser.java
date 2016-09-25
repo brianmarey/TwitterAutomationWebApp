@@ -8,7 +8,7 @@ import com.careydevelopment.twitterautomation.jpa.entity.BacklinkData;
 
 public class BacklinkDataParser {
 
-	private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
+	private static final DateFormat DF = new SimpleDateFormat("yyyyMMdd");
 	
 	public static BacklinkData getBacklinkData(String row) {
 		BacklinkData data = new BacklinkData();

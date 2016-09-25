@@ -47,7 +47,7 @@ public class UrlHelper {
 		try {
 			URL wrapper = new URL(url);
 			StringBuffer imageBuffer = new StringBuffer();
-			in = new BufferedReader(new InputStreamReader(wrapper.openStream()));
+			in = new BufferedReader(new InputStreamReader(wrapper.openStream(),"UTF-8"));
 	
 	        String inputLine;
 	        while ((inputLine = in.readLine()) != null) {
