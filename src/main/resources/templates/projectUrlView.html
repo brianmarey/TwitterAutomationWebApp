@@ -34,6 +34,24 @@
         		$('#pleaseWaitDiv').show();
         		document.location="./refreshReport?projectUrlId=<th:block th:text='${projectUrl.id}'></th:block>";
         	}
+        	
+            function deleteStrategy(id,name) {
+            	var message = "Are you sure you want to delete " + name + "?";
+                bootbox.confirm(message, function(result) {
+                	if (result) {
+                		$.ajax({
+                			  method: "GET",
+                			  url: "./deleteSeoStrategy?strategyId=" + id
+                		})
+                		.success(function( msg ) {
+                			location.reload();
+                		});	
+                		.error(function( msg ) {
+                			bootbox.alert("There was a problem with deleting the strategy. Please contact support.");
+                		});
+                	}
+                 });
+            }
         </script>
     </head>
     <!-- END HEAD -->
@@ -68,6 +86,7 @@
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     
+                    <th:block th:if="${projectUrl.project.status == 'Active'}">
                     <div class="row" th:if="${refreshEligible}" id="refreshDiv">
                     	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	                    	<div class="note note-success">
@@ -76,6 +95,7 @@
 	                        </div>
                         </div>
                     </div>
+                    </th:block>
                     
                     <div class="row" style="display:none" id="pleaseWaitDiv">
                     	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -562,10 +582,15 @@
 	                                        		<td th:text="${strategy.name}"></td>
 	                                        		<td th:text="${strategy.strategyType}"></td>
 	                                        		<td th:text="${strategy.numberOfKeywords}"></td>
-	                                        		<td><a th:href="@{/seoStrategyView(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
+	                                        		<td>	 <a th:href="@{/seoStrategyView(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-share"></i> View </a> 
+                                                             <th:block th:if="${strategy.strategyStatus == 'Open' and strategy.projectUrl.project.status == 'Active'}">
                                                              <a th:href="@{/editSeoStrategy(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
-                                                                <i class="fa fa-edit"></i> Edit </a></td>
+                                                                <i class="fa fa-edit"></i> Edit </a>
+                                                             </th:block>
+                                                             <a th:attr="href='javascript:deleteStrategy(' + ${strategy.id} + ',\'' + ${strategy.name} + '\');'" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                                <i class="fa fa-close"></i> Delete </a>
+                                                    </td>
 	                                        	</tr>
 	                                        	</th:block>
 	                                        </tbody>

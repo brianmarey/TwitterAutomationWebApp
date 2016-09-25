@@ -28,6 +28,26 @@
         <!-- for captcha -->
         <script src='https://www.google.com/recaptcha/api.js'></script>
         
+        <script>
+        function deleteStrategy(id,name) {
+        	var message = "Are you sure you want to delete " + name + "?";
+            bootbox.confirm(message, function(result) {
+            	if (result) {
+            		$.ajax({
+            			  method: "GET",
+            			  url: "./deleteSeoStrategy?strategyId=" + id
+            		})
+            		.success(function( msg ) {
+            			location.reload();
+            		});	
+            		.error(function( msg ) {
+            			bootbox.alert("There was a problem with deleting the strategy. Please contact support.");
+            		});
+            	}
+             });
+        }
+        </script>
+        
     </head>
     <!-- END HEAD -->
 
@@ -95,10 +115,12 @@
 	                                        		<td th:text="${strategy.strategySuccess}"></td>
 	                                        		<td><a th:href="@{/seoStrategyView(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-share"></i> View </a>
-                                                             <th:block th:if="${strategyStatus == 'Open'}"> 
+                                                             <th:block th:if="${strategy.strategyStatus == 'Open' and strategy.projectUrl.project.status == 'Active'}"> 
                                                              <a th:href="@{/editSeoStrategy(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-edit"></i> Edit </a>
                                                              </th:block>
+                                                        <a th:attr="href='javascript:deleteStrategy(' + ${strategy.id} + ',\'' + ${strategy.name} + '\');'" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                                <i class="fa fa-close"></i> Delete </a>
                                                     </td>      
 	                                        	</tr>
 	                                        	</th:block>
