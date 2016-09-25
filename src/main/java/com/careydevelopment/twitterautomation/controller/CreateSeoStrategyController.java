@@ -86,12 +86,20 @@ public class CreateSeoStrategyController {
     		return "redirect:badLogin";
     	}
     	
+    	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
+    		return "redirect:seoplayhouse";
+    	}
+    	
     	ProjectUrl projectUrl = projectUrlRepository.findOne(projectUrlId);
     	
     	Project project = projectUrl.getProject();
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
+    	}
+    	
+    	if (!Constants.PROJECT_ACTIVE.equals(project.getStatus())) {
+    		return "redirect:projectUrlView?projectUrlId=" + projectUrl.getId();
     	}
     	
     	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);

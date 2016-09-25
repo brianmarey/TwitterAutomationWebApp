@@ -169,6 +169,60 @@
                     </div>
 
 
+                    <div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
+	                        <div class="portlet box blue-hoki">
+	                            <div class="portlet-title">
+	                                <div class="caption">
+	                                    <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="The keywords you're trying to rank in mobile results with this URL." style="position:relative;top:-2px"></i>Mobile Keywords </div>
+	                        	</div>
+	                        	<div class="portlet-body">
+	                        		<div class="table-responsive">
+	                                    <table class="table table-bordered">
+	                                        <thead>
+	                                            <tr>
+	                                                <th> Keyword </th>
+	                                                <th style="width:150px;text-align:center"> Original Rank </th>
+	                                                <th style="width:150px;text-align:center"> Current Rank </th>
+	                                                <th style="width:150px;text-align:center"> Change </th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+	                                        	<tr th:each="keyword,iterationStatus : ${mobileKeywords}">
+	                                        		<td th:text="${keyword.keyword}"></td>
+	                                        		<td th:text="${keyword.originalRankDisplay}" style="text-align:center"></td>
+	                                        		<td style="text-align:center">
+	                                        		<th:block th:if="${keyword.improvement}">
+	                                        		<span th:text="${keyword.currentRankDisplay}" style="color:#26c281"></span>
+	                                        		</th:block>
+	                                        		<th:block th:if="${keyword.same}">
+	                                        		<span th:text="${keyword.currentRankDisplay}"></span>
+	                                        		</th:block>
+	                                        		<th:block th:if="${!keyword.improvement and !keyword.same}">
+	                                        		<span th:text="${keyword.currentRankDisplay}" style="color:#d91e18"></span>
+	                                        		</th:block>
+	                                        		</td>
+	                                        		<td style="text-align:center">
+	                                        		<th:block th:if="${keyword.improvement}">
+	                                        		<span th:text="${keyword.difference}" style="color:#26c281"></span>
+	                                        		</th:block>
+	                                        		<th:block th:if="${keyword.same}">
+	                                        		<span th:text="${keyword.difference}"></span>
+	                                        		</th:block>
+	                                        		<th:block th:if="${!keyword.improvement and !keyword.same}">
+	                                        		<span th:text="${keyword.difference}" style="color:#d91e18"></span>
+	                                        		</th:block>
+	                                        		</td>
+	                                        	</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+	                        	</div>	                    	
+	                    	</div>
+                    	</div>                    	
+                    </div>
+
+
                    	<div class="row" style="margin-top:20px">
 					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					    	<div class="portlet light tasks-widget bordered">

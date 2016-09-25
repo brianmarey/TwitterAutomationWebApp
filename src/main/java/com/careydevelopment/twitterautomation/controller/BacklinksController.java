@@ -76,6 +76,10 @@ public class BacklinksController {
     		return "redirect:badLogin";
     	}
     	
+    	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
+    		return "redirect:seoplayhouse";
+    	}
+    	
     	ProjectUrl projectUrl = projectUrlRepository.findOne(projectUrlId);
     	
     	if (projectUrl == null) {

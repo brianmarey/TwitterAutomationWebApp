@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,22 +28,22 @@ public class DomainRank {
 	private String domain;
 	
 	@Column(name="organic_keywords")
-	private Integer organicKeywords;
+	private BigInteger organicKeywords;
 	
 	@Column(name="organic_traffic")
-	private Integer organicTraffic;
+	private BigInteger organicTraffic;
 	
 	@Column(name="organic_cost")
-	private Integer organicCost;
+	private BigInteger organicCost;
 	
 	@Column(name="adwords_keywords")
-	private Integer adwordsKeywords;
+	private BigInteger adwordsKeywords;
 	
 	@Column(name="adwords_traffic")
-	private Integer adwordsTraffic;
+	private BigInteger adwordsTraffic;
 	
 	@Column(name="adwords_cost")
-	private Integer adwordsCost;
+	private BigInteger adwordsCost;
 	
 	@Column(name="rank")
 	private Integer rank;
@@ -59,40 +61,40 @@ public class DomainRank {
 	public void setDomain(String domain) {
 		this.domain = domain;
 	}
-	public Integer getOrganicKeywords() {
+	public BigInteger getOrganicKeywords() {
 		return organicKeywords;
 	}
-	public void setOrganicKeywords(Integer organicKeywords) {
+	public void setOrganicKeywords(BigInteger organicKeywords) {
 		this.organicKeywords = organicKeywords;
 	}
-	public Integer getOrganicTraffic() {
+	public BigInteger getOrganicTraffic() {
 		return organicTraffic;
 	}
-	public void setOrganicTraffic(Integer organicTraffic) {
+	public void setOrganicTraffic(BigInteger organicTraffic) {
 		this.organicTraffic = organicTraffic;
 	}
-	public Integer getOrganicCost() {
+	public BigInteger getOrganicCost() {
 		return organicCost;
 	}
-	public void setOrganicCost(Integer organicCost) {
+	public void setOrganicCost(BigInteger organicCost) {
 		this.organicCost = organicCost;
 	}
-	public Integer getAdwordsKeywords() {
+	public BigInteger getAdwordsKeywords() {
 		return adwordsKeywords;
 	}
-	public void setAdwordsKeywords(Integer adwordsKeywords) {
+	public void setAdwordsKeywords(BigInteger adwordsKeywords) {
 		this.adwordsKeywords = adwordsKeywords;
 	}
-	public Integer getAdwordsTraffic() {
+	public BigInteger getAdwordsTraffic() {
 		return adwordsTraffic;
 	}
-	public void setAdwordsTraffic(Integer adwordsTraffic) {
+	public void setAdwordsTraffic(BigInteger adwordsTraffic) {
 		this.adwordsTraffic = adwordsTraffic;
 	}
-	public Integer getAdwordsCost() {
+	public BigInteger getAdwordsCost() {
 		return adwordsCost;
 	}
-	public void setAdwordsCost(Integer adwordsCost) {
+	public void setAdwordsCost(BigInteger adwordsCost) {
 		this.adwordsCost = adwordsCost;
 	}
 	public Long getId() {

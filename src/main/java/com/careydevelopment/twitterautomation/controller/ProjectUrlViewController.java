@@ -91,6 +91,10 @@ public class ProjectUrlViewController {
     		return "redirect:badLogin";
     	}
     	
+    	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
+    		return "redirect:seoplayhouse";
+    	}
+    	
     	ProjectUrl projectUrl = projectUrlRepository.findOne(projectUrlId);
     	
     	if (projectUrl == null) {
@@ -115,12 +119,12 @@ public class ProjectUrlViewController {
     	    	    	    	    	
     	Pageable topTen = new PageRequest(0, 10);
     	List<DomainSearchKeyword> organicKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
-    	List<DomainSearchKeyword> paidKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.PAID,topTen);
+    	List<DomainSearchKeyword> mobileOrganicKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC_MOBILE,topTen);
     	
-    	model.addAttribute("paidKeywords",paidKeywords);
+    	model.addAttribute("mobileOrganicKeywords",mobileOrganicKeywords);
 
     	if (organicKeywords != null) {
-    		List<DomainSearchKeyword> topOrganicKeywords = (organicKeywords.size() > 9) ? organicKeywords.subList(0, 9) : organicKeywords;
+    		List<DomainSearchKeyword> topOrganicKeywords = (organicKeywords.size() > 9) ? organicKeywords.subList(0, 10) : organicKeywords;
     		model.addAttribute("organicKeywords",topOrganicKeywords);
     		setOrganicKeywordStats(model,organicKeywords);
     	}
@@ -139,6 +143,12 @@ public class ProjectUrlViewController {
     	List<SeoStrategy> seoStrategies = seoStrategyRepository.findOpenByProjectUrl(projectUrl);
     	model.addAttribute("seoStrategies",seoStrategies);
 
+    	if (seoStrategies != null) {
+    		model.addAttribute("numberOfStrategies",seoStrategies.size());
+    	} else {
+    		model.addAttribute("numberOfStrategies", 0);
+    	}
+    	
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	

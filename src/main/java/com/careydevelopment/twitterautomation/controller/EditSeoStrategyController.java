@@ -86,6 +86,10 @@ public class EditSeoStrategyController {
     		return "redirect:badLogin";
     	}
     	
+    	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
+    		return "redirect:seoplayhouse";
+    	}
+    	
     	SeoStrategy seoStrategy = seoStrategyRepository.findOne(strategyId);
     	if (seoStrategy == null) {
     		return "redirect:notAuthorized";
@@ -96,6 +100,14 @@ public class EditSeoStrategyController {
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
+    	}
+    	
+    	if (!Constants.PROJECT_ACTIVE.equals(project.getStatus())) {
+    		return "redirect:seoStrategyView?strategyId=" + seoStrategy.getId();
+    	}
+    	
+    	if (!SeoStrategy.STATUS_OPEN.equals(seoStrategy.getStrategyStatus())) {
+    		return "redirect:seoStrategyView?strategyId=" + seoStrategy.getId();
     	}
     	
     	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);

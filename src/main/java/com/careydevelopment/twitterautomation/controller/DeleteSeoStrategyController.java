@@ -1,45 +1,40 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.careydevelopment.twitterautomation.jpa.entity.Project;
+import com.careydevelopment.twitterautomation.jpa.entity.SeoStrategy;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
-import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
+import com.careydevelopment.twitterautomation.jpa.repository.SeoStrategyRepository;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
-import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
-public class EditProjectController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(EditProjectController.class);
+public class DeleteSeoStrategyController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteSeoStrategyController.class);
 	
 	@Autowired
 	LoginService loginService;
 	
 	@Autowired
-	ProjectRepository projectRepository;
-	
-	
-    @RequestMapping(value="/editProject", method=RequestMethod.GET)
-    public String createProject(HttpServletRequest request, Model model,
+	SeoStrategyRepository seoStrategyRepository;
+		
+    @RequestMapping(value="/deleteSeoStrategy", method=RequestMethod.GET)
+    public String createProjectUrl(HttpServletRequest request, Model model,
+    	@RequestParam(value="strategyId", required=true) Long strategyId,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
-    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret,
-    	@RequestParam(value="projectId", required=true) Long projectId) { 
+    	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) { 
     	
     	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
     	
@@ -69,50 +64,16 @@ public class EditProjectController {
     		return "redirect:seoplayhouse";
     	}
     	
-    	Project project = projectRepository.findOne(projectId);
-
-    	if (project == null) {
-    		return "redirect:notAuthorized";
-    	}
+    	SeoStrategy seoStrategy = seoStrategyRepository.findOne(strategyId);
+    	
+    	Project project = seoStrategy.getProjectUrl().getProject();
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
     	}
-    	    	
-    	if (!Constants.PROJECT_ACTIVE.equals(project.getStatus())) {
-    		return "redirect:projectView?projectId=" + project.getId();
-    	}
     	
-    	model.addAttribute("project",project);
+    	seoStrategyRepository.delete(seoStrategy);
     	
-        return "editProject";
-    }
-    
-    
-    @RequestMapping(value="/editProject", method=RequestMethod.POST)
-    public String createProjectSubmit(@Valid Project project, BindingResult bindingResult,
-    	HttpServletRequest request, Model model) { 
-    	
-    	TwitterUser user = (TwitterUser)request.getSession().getAttribute(Constants.TWITTER_ENTITY);
-    	
-    	if (user == null) {
-    		return "redirect:notLoggedIn";		
-    	}
-
-    	if (!RoleHelper.isAuthorized(user, Constants.AUTHORIZATION_BASIC)) {
-    		return "redirect:notAuthorized";
-    	}
-    	
-    	boolean passedCaptcha = RecaptchaHelper.passedRecaptcha(request);
-    	if (!passedCaptcha) model.addAttribute("captchaFail", true);
-    	
-        if (bindingResult.hasErrors() || !passedCaptcha) {
-            return "editProject";
-        }
-            	
-        project.setOwner(user);
-        projectRepository.save(project);
-        
-        return "redirect:/seoplayhouse";
+        return "redirect:seoStrategies";
     }
 }

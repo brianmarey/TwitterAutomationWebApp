@@ -1,5 +1,6 @@
 package com.careydevelopment.twitterautomation.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -91,11 +92,12 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 		
 		saveDomainRankInfo(url);
 		saveDomainSearchKeywords(url,SEMRushService.ORGANIC);
-		saveDomainSearchKeywords(url,SEMRushService.PAID);
+		saveDomainSearchKeywords(url,SEMRushService.ORGANIC_MOBILE);
+		//saveDomainSearchKeywords(url,SEMRushService.PAID);
 		
 		if (url.isDomain()) {
 			saveCompetitorSearch(url,SEMRushService.ORGANIC);
-			saveCompetitorSearch(url,SEMRushService.PAID);
+			//saveCompetitorSearch(url,SEMRushService.PAID);
 		} else {
 			LOGGER.info("Skipping competitor analysis because " + url.getUrl() + " is not a domain");
 		}
@@ -143,6 +145,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 		
 		try {
 			List<DomainSearchKeyword> list = semRushService.getDomainSearchKeywords(url, type);
+			List<String> theseKeys = new ArrayList<String>();
 			
 			if (list != null) {
 				for (DomainSearchKeyword key : list) {
@@ -152,20 +155,28 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 						DomainSearchKeyword existingKeyword = domainSearchKeywordRepository.findSpecific(url, key.getKeyword(), type);
 	
 						if (existingKeyword == null) {
-							LOGGER.info("adding new keyword");
+							LOGGER.info("adding new keyword " + key.getKeyword());
 							domainSearchKeywordRepository.save(key);	
+							theseKeys.add(key.getKeyword());
 						} else {
-							LOGGER.info("updating keyword");
-							existingKeyword.setCompetition(key.getCompetition());
-							existingKeyword.setCpc(key.getCpc());
-							existingKeyword.setNumberOfResults(key.getNumberOfResults());
-							existingKeyword.setPosition(key.getPosition());
-							existingKeyword.setPositionDifference(key.getPositionDifference());
-							existingKeyword.setPreviousPosition(key.getPreviousPosition());
-							existingKeyword.setSearchVolume(key.getSearchVolume());
-							existingKeyword.setTrafficCostPercent(key.getTrafficCostPercent());
-							existingKeyword.setTrafficPercent(key.getTrafficPercent());
-							domainSearchKeywordRepository.save(existingKeyword);
+							if (!theseKeys.contains(key.getKeyword())) {
+								LOGGER.info("updating keyword " + key.getKeyword());
+								
+								existingKeyword.setCompetition(key.getCompetition());
+								existingKeyword.setCpc(key.getCpc());
+								existingKeyword.setNumberOfResults(key.getNumberOfResults());
+								existingKeyword.setPosition(key.getPosition());
+								existingKeyword.setPositionDifference(key.getPositionDifference());
+								existingKeyword.setPreviousPosition(key.getPreviousPosition());
+								existingKeyword.setSearchVolume(key.getSearchVolume());
+								existingKeyword.setTrafficCostPercent(key.getTrafficCostPercent());
+								existingKeyword.setTrafficPercent(key.getTrafficPercent());
+								
+								domainSearchKeywordRepository.save(existingKeyword);
+								theseKeys.add(key.getKeyword());
+							} else {
+								LOGGER.info("Skipping " + key.getKeyword() + " because we've already added it");
+							}
 						}	
 					} catch (Exception e) {
 						LOGGER.error("Problem saving keyword " + key.getKeyword() + " " + key.getId(),e);

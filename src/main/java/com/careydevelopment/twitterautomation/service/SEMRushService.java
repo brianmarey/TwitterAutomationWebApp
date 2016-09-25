@@ -12,6 +12,7 @@ public interface SEMRushService {
 	
 	public static final String PAID = "paid";
 	public static final String ORGANIC = "organic";
+	public static final String ORGANIC_MOBILE = "organic-mobile";
 
 	public DomainRank getDomainRank(ProjectUrl projectUrl);
 	public List<CompetitorSearch> getCompetitorSearch(ProjectUrl projectUrl, String type);

@@ -50,8 +50,11 @@ public class UrlHelper {
 			in = new BufferedReader(new InputStreamReader(wrapper.openStream()));
 	
 	        String inputLine;
-	        while ((inputLine = in.readLine()) != null)
+	        while ((inputLine = in.readLine()) != null) {
 	            imageBuffer.append(inputLine);
+	            imageBuffer.append("\n");
+	        }
+	        
 	        
 	        urlContents = imageBuffer.toString();
 		} catch (Exception e) {
@@ -246,9 +249,13 @@ public class UrlHelper {
 					isValid = false;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
-				isValid = false;
-				LOGGER.warn("Bad URL: " + urlString,e);
+				if (e.getMessage().toLowerCase().indexOf("connection refused") > -1) {
+					LOGGER.info("Connection refused - we'll accept it as valid");
+				} else {
+					e.printStackTrace();
+					isValid = false;
+					LOGGER.warn("Bad URL: " + urlString,e);					
+				}
 			}
 		}
 		

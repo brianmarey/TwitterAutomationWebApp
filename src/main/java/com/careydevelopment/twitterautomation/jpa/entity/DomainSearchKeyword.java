@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +17,8 @@ public class DomainSearchKeyword {
 	
 	public static final String ORGANIC = "organic";
 	public static final String PAID = "paid";
+	public static final String ORGANIC_MOBILE = "organic-mobile";
 
-	
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -39,7 +41,7 @@ public class DomainSearchKeyword {
 	private Integer positionDifference;
 	
 	@Column(name="search_volume")
-	private Integer searchVolume;
+	private BigInteger searchVolume;
 	
 	@Column(name="cpc")
 	private Float cpc;
@@ -54,10 +56,14 @@ public class DomainSearchKeyword {
 	private Float competition;
 	
 	@Column(name="number_of_results")
-	private Integer numberOfResults;
+	private BigInteger numberOfResults;
 	
 	@Column(name="type")
 	private String type; //paid or organic
+	
+	@Column(name="url")
+	private String url;
+	
 	
 	public String getType() {
 		return type;
@@ -89,10 +95,10 @@ public class DomainSearchKeyword {
 	public void setPositionDifference(Integer positionDifference) {
 		this.positionDifference = positionDifference;
 	}
-	public Integer getSearchVolume() {
+	public BigInteger getSearchVolume() {
 		return searchVolume;
 	}
-	public void setSearchVolume(Integer searchVolume) {
+	public void setSearchVolume(BigInteger searchVolume) {
 		this.searchVolume = searchVolume;
 	}
 	public Float getCpc() {
@@ -119,10 +125,10 @@ public class DomainSearchKeyword {
 	public void setCompetition(Float competition) {
 		this.competition = competition;
 	}
-	public Integer getNumberOfResults() {
+	public BigInteger getNumberOfResults() {
 		return numberOfResults;
 	}
-	public void setNumberOfResults(Integer numberOfResults) {
+	public void setNumberOfResults(BigInteger numberOfResults) {
 		this.numberOfResults = numberOfResults;
 	}
 	public Long getId() {
@@ -137,7 +143,13 @@ public class DomainSearchKeyword {
 	public void setProjectUrl(ProjectUrl projectUrl) {
 		this.projectUrl = projectUrl;
 	}	
-	
+
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public String getKeywordDisplay() {
 		String keywordDisplay = keyword;
 		
@@ -148,6 +160,22 @@ public class DomainSearchKeyword {
 		}
 		
 		return keywordDisplay;
+	}
+	
+	
+	public String getDisplayUrl() {
+		StringBuilder sb = new StringBuilder();
+		
+		if (url != null) {
+			if (url.length() < 40) {
+				sb.append(url);
+			} else {
+				sb.append(url.substring(0, 38));
+				sb.append("...");
+			}
+		}
+		
+		return sb.toString();
 	}
 }
 

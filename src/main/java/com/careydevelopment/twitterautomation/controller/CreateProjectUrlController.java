@@ -79,10 +79,18 @@ public class CreateProjectUrlController {
     		return "redirect:badLogin";
     	}
     	
+    	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
+    		return "redirect:seoplayhouse";
+    	}
+    	
     	Project project = projectRepository.findOne(projectId);
     	
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
+    	}
+    	
+    	if (!Constants.PROJECT_ACTIVE.equals(project.getStatus())) {
+    		return "redirect:projectView?projectId=" + project.getId();
     	}
     	
     	model.addAttribute("project",project);
@@ -121,6 +129,10 @@ public class CreateProjectUrlController {
     	
     	if (refreshUtil.isMaxedOut(user.getUserConfig())) {
     		return "redirect:maxedOutRefreshes";
+    	}
+    	
+    	if (!Constants.PROJECT_ACTIVE.equals(project.getStatus())) {
+    		return "redirect:projectView?projectId=" + project.getId();
     	}
     	
         List<ProjectUrl> urls = projectUrlRepository.findByProject(project);

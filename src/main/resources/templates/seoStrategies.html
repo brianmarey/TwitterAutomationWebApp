@@ -9,7 +9,7 @@
     
     <head>
         <meta charset="utf-8"></meta>
-        <title>SEO Playhouse | Keywords</title>
+        <title>SEO Playhouse | SEO Strategies</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
         <meta content="" name="description"></meta>
@@ -27,6 +27,26 @@
         
         <!-- for captcha -->
         <script src='https://www.google.com/recaptcha/api.js'></script>
+        
+        <script>
+        function deleteStrategy(id,name) {
+        	var message = "Are you sure you want to delete " + name + "?";
+            bootbox.confirm(message, function(result) {
+            	if (result) {
+            		$.ajax({
+            			  method: "GET",
+            			  url: "./deleteSeoStrategy?strategyId=" + id
+            		})
+            		.success(function( msg ) {
+            			location.reload();
+            		});	
+            		.error(function( msg ) {
+            			bootbox.alert("There was a problem with deleting the strategy. Please contact support.");
+            		});
+            	}
+             });
+        }
+        </script>
         
     </head>
     <!-- END HEAD -->
@@ -56,55 +76,62 @@
                     </div>-->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h1 class="page-title">Keywords<br/>
-                    <small th:text="${projectUrl.url}"></small></h1>
+                    <h1 class="page-title">SEO Strategies</h1>
                     <!-- END PAGE TITLE-->
-                    <!-- END PAGE HEADER-->
-                    
+                    <!-- END PAGE HEADER-->                    
+
                     <div class="row" style="margin-top:20px">
-                    <th:block th:if="${keywords != null}">
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:20px">                        
-	                        <div class="portlet box blue">
+                    	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    		<div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking organic keywords." style="position:relative;top:-2px"></i>
-	                                   <th:block th:switch="${param.type[0]}">
-	                                   <span th:case="'organic'">Top Organic Keywords</span>
-	                                   <span th:case="'organic-mobile'">Top Mobile Organic Keywords</span>
-	                                   </th:block> 
-	                                   </div>
-	                        	</div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="These are the strategies you've created." style="position:relative;top:-2px"></i>SEO Strategies </div>
+	                   	     	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
 	                                    <table class="table table-bordered">
 	                                        <thead>
 	                                            <tr>
-	                                                <th> Keyword </th>
-	                                                <th> Position </th>
+	                                                <th> Name </th>
+	                                                <th> Strategy </th>
 	                                                <th> URL </th>
-	                                                <th> Volume </th>
-	                                                <th> CPC </th>
-	                                                <th> Traffic % </th>
+	                                                <th> Status </th>
+	                                                <th> Success? </th>
+	                                                <th> Action </th>
 	                                            </tr>
 	                                        </thead>	
 	                                        <tbody>
-	                                        	<tr th:each="keyword,iterationStatus : ${keywords}">
-	                                        		<td th:text="${keyword.keyword}"></td>
-	                                        		<td th:text="${keyword.position}"></td>
-	                                        		<td><a target="_blank" th:href="${keyword.url}" th:text="${keyword.displayUrl}"></a></td>
-	                                        		<td th:text="${keyword.searchVolume}"></td>
-	                                        		<td th:text="${keyword.cpc}"></td>
-	                                        		<td th:text="${keyword.trafficPercent}"></td>
+	                                        	<th:block th:if="${numberOfStrategies == 0}">
+	                                        	<tr>
+	                                        	<td colspan="6">You have no SEO strategies at this time.</td>
 	                                        	</tr>
+	                                        	</th:block>
+	                                        	<th:block th:unless="${numberOfStrategies == 0}">
+	                                        	<tr th:each="strategy,iterationStatus : ${strategies}">
+	                                        		<td th:text="${strategy.name}"></td>
+	                                        		<td th:text="${strategy.strategyType}"></td>
+	                                        		<td th:text="${strategy.projectUrl.displayUrl}"></td>
+	                                        		<td th:text="${strategy.strategyStatus}"></td>
+	                                        		<td th:text="${strategy.strategySuccess}"></td>
+	                                        		<td><a th:href="@{/seoStrategyView(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                                <i class="fa fa-share"></i> View </a>
+                                                             <th:block th:if="${strategy.strategyStatus == 'Open' and strategy.projectUrl.project.status == 'Active'}"> 
+                                                             <a th:href="@{/editSeoStrategy(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                                <i class="fa fa-edit"></i> Edit </a>
+                                                             </th:block>
+                                                        <a th:attr="href='javascript:deleteStrategy(' + ${strategy.id} + ',\'' + ${strategy.name} + '\');'" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                                <i class="fa fa-close"></i> Delete </a>
+                                                    </td>      
+	                                        	</tr>
+	                                        	</th:block>
 	                                        </tbody>
 	                                    </table>
-	                                </div>
+	                                </div>									
 	                        	</div>	                    	
 	                    	</div>
-                    	</div>                    
-                    </th:block>
-                    </div>
-                             
+                    	</div>
+                  	</div>
+
                    	<div class="row" style="margin-top:20px">
 					    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					    	<div class="portlet light tasks-widget bordered">
@@ -115,9 +142,8 @@
                                 </div>
                                 <div class="portlet-body util-btn-margin-bottom-5">
                                 	<div class="row">
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/projectUrlView(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">View URL Metrics</button></a></div>
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New Project</button></a></div>
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
+                                		<div class="col-md-6" style="text-align:center"><a th:href="@{/createProject}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a Project</button></a></div>
+                                		<div class="col-md-6" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
                                 	</div>
 								</div>
 							</div>
@@ -131,6 +157,7 @@
         <!-- END CONTAINER -->
         <!-- BEGIN FOOTER -->
         <div th:include="fragments/footer :: footer"></div>
-        <!-- END FOOTER -->
+        <!-- END FOOTER -->        
+        
     </body>
 </html>

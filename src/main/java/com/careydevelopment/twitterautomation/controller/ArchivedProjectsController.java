@@ -23,8 +23,8 @@ import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
-public class SeoPlayhouseController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(SeoPlayhouseController.class);
+public class ArchivedProjectsController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ArchivedProjectsController.class);
 	
 	@Autowired
 	private LoginService loginService;
@@ -32,7 +32,7 @@ public class SeoPlayhouseController {
 	@Autowired
 	private ProjectRepository projectRepository;
 		
-    @RequestMapping("/seoplayhouse")
+    @RequestMapping("/archivedProjects")
     public String blastfollow(HttpServletRequest request, Model model, 
     		@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
         	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret) {    	
@@ -65,10 +65,10 @@ public class SeoPlayhouseController {
     	
     	model.addAttribute("localhost",getLocalHostPrefix());
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("dashboardActive", Constants.MENU_CATEGORY_OPEN);
+    	model.addAttribute("archivedProjectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
-    	List<Project> projects = projectRepository.findByOwner(user);
+    	List<Project> projects = projectRepository.findArchivedByOwner(user);
     	model.addAttribute("projects",projects);
     	
     	if (projects != null) {
@@ -77,7 +77,7 @@ public class SeoPlayhouseController {
     		model.addAttribute("numberOfProjects",0);
     	}
     	
-        return "seoplayhouse";
+        return "archivedProjects";
     }
       
     

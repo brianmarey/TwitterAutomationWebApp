@@ -34,6 +34,24 @@
         		$('#pleaseWaitDiv').show();
         		document.location="./refreshReport?projectUrlId=<th:block th:text='${projectUrl.id}'></th:block>";
         	}
+        	
+            function deleteStrategy(id,name) {
+            	var message = "Are you sure you want to delete " + name + "?";
+                bootbox.confirm(message, function(result) {
+                	if (result) {
+                		$.ajax({
+                			  method: "GET",
+                			  url: "./deleteSeoStrategy?strategyId=" + id
+                		})
+                		.success(function( msg ) {
+                			location.reload();
+                		});	
+                		.error(function( msg ) {
+                			bootbox.alert("There was a problem with deleting the strategy. Please contact support.");
+                		});
+                	}
+                 });
+            }
         </script>
     </head>
     <!-- END HEAD -->
@@ -68,6 +86,7 @@
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     
+                    <th:block th:if="${projectUrl.project.status == 'Active'}">
                     <div class="row" th:if="${refreshEligible}" id="refreshDiv">
                     	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	                    	<div class="note note-success">
@@ -76,6 +95,7 @@
 	                        </div>
                         </div>
                     </div>
+                    </th:block>
                     
                     <div class="row" style="display:none" id="pleaseWaitDiv">
                     	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -248,9 +268,9 @@
                     </div>
                     </th:block>                    
                     
-                    <th:block th:if="${projectUrl.domainRank != null}">
+                    <!--  <th:block th:if="${projectUrl.domainRank != null}">
                     <div class="row" style="margin-top:20px">
-						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -278,6 +298,7 @@
 	                        	</div>	                    	
 	                    	</div>
                     	</div>
+                    	
                     	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
@@ -305,9 +326,9 @@
 	                                </div>
 	                        	</div>	                    	
 	                    	</div>
-                    	</div>                    	
+                    	</div>                     	
                     </div>
-					</th:block>
+					</th:block>-->
                     
     
                     <th:block th:if="${organicKeywords != null}">
@@ -342,7 +363,7 @@
 	                                        <thead>
 	                                            <tr>
 	                                                <th> Keyword </th>
-	                                                <th> Position </th>
+	                                                <th> Rank </th>
 	                                                <th> Volume </th>
 	                                                <th> CPC </th>
 	                                                <th> Traffic % </th>
@@ -366,12 +387,12 @@
                             </div>
                     	</div>                    
                     </th:block>
-                    <th:block th:if="${paidKeywords != null}">
+                    <th:block th:if="${mobileOrganicKeywords != null}">
 						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:20px">                        
 	                        <div class="portlet box blue">
 	                            <div class="portlet-title">
 	                                <div class="caption">
-	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking paid keywords." style="position:relative;top:-2px"></i>Top Paid Keywords </div>
+	                                   <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="Shows metrics about top-ranking mobile organic keywords." style="position:relative;top:-2px"></i>Top Mobile Organic Keywords </div>
 	                        	</div>
 	                        	<div class="portlet-body">
 	                        		<div class="table-responsive">
@@ -379,14 +400,14 @@
 	                                        <thead>
 	                                            <tr>
 	                                                <th> Keyword </th>
-	                                                <th> Position </th>
+	                                                <th> Rank </th>
 	                                                <th> Volume </th>
 	                                                <th> CPC </th>
 	                                                <th> Traffic % </th>
 	                                            </tr>
 	                                        </thead>	
 	                                        <tbody>
-	                                        	<tr th:each="keyword,iterationStatus : ${paidKeywords}">
+	                                        	<tr th:each="keyword,iterationStatus : ${mobileOrganicKeywords}">
 	                                        		<td th:text="${keyword.keywordDisplay}"></td>
 	                                        		<td th:text="${keyword.position}"></td>
 	                                        		<td th:text="${keyword.searchVolume}"></td>
@@ -399,16 +420,16 @@
 	                        	</div>	                    	
 	                    	</div>
 	                   		<div>
-	                    		<a th:href="@{/keywords(projectUrlId=${projectUrl.id},type=paid)}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">View More Paid Keywords</button></a>	                    		
+	                    		<a th:href="@{/keywords(projectUrlId=${projectUrl.id},type=organic-mobile)}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">View More Mobile Organic Keywords</button></a>	                    		
                             </div>
                     	</div>                    
-                    </th:block>
+                    </th:block> 
                     </div>
 
 
                     <div class="row" style="margin-top:20px">
                     <th:block th:if="${organicCompetitors != null}">
-						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
 	                                <div class="caption">
@@ -439,7 +460,7 @@
 	                    	</div>
                     	</div>                    
                     </th:block>
-                    <th:block th:if="${paidCompetitors != null}">
+                    <!--  <th:block th:if="${paidCompetitors != null}">
 						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
@@ -470,7 +491,7 @@
 	                        	</div>	                    	
 	                    	</div>
                     	</div>                    
-                    </th:block>
+                    </th:block>-->
                     </div>
                     
                     
@@ -551,15 +572,27 @@
 	                                            </tr>
 	                                        </thead>	
 	                                        <tbody>
+	                                        	<th:block th:if="${numberOfStrategies == 0}">
+	                                        	<tr>
+	                                        	<td colspan="4">You have no SEO strategies for this URL. <a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}">Create a strategy.</a></td>
+	                                        	</tr>
+	                                        	</th:block>
+	                                        	<th:block th:unless="${numberOfStrategies == 0}">
 	                                        	<tr th:each="strategy,iterationStatus : ${seoStrategies}">
 	                                        		<td th:text="${strategy.name}"></td>
 	                                        		<td th:text="${strategy.strategyType}"></td>
 	                                        		<td th:text="${strategy.numberOfKeywords}"></td>
-	                                        		<td><a th:href="@{/seoStrategyView(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
+	                                        		<td>	 <a th:href="@{/seoStrategyView(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-share"></i> View </a> 
+                                                             <th:block th:if="${strategy.strategyStatus == 'Open' and strategy.projectUrl.project.status == 'Active'}">
                                                              <a th:href="@{/editSeoStrategy(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
-                                                                <i class="fa fa-edit"></i> Edit </a></td>
+                                                                <i class="fa fa-edit"></i> Edit </a>
+                                                             </th:block>
+                                                             <a th:attr="href='javascript:deleteStrategy(' + ${strategy.id} + ',\'' + ${strategy.name} + '\');'" class="btn dark btn-sm btn-outline sbold uppercase">
+                                                                <i class="fa fa-close"></i> Delete </a>
+                                                    </td>
 	                                        	</tr>
+	                                        	</th:block>
 	                                        </tbody>
 	                                    </table>
 	                                </div>									

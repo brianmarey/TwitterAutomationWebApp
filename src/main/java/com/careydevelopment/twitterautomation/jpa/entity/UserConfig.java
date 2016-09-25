@@ -35,6 +35,9 @@ public class UserConfig {
 	@Column(name="max_refreshes")
 	private Integer maxRefreshes;
 	
+	@Column(name="tos_agreement")
+	private String tosAgreement;
+	
 	//a config belongs to one and only one user
 	//and a user has only one config
 	@OneToOne
@@ -98,6 +101,14 @@ public class UserConfig {
 
 	public void setMaxRefreshes(Integer maxRefreshes) {
 		this.maxRefreshes = maxRefreshes;
+	}
+
+	public String getTosAgreement() {
+		return tosAgreement;
+	}
+
+	public void setTosAgreement(String tosAgreement) {
+		this.tosAgreement = tosAgreement;
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,13 +28,13 @@ public class AnchorTextData {
 	private Integer referringDomains;
 	
 	@Column(name="total_links")
-	private Integer totalLinks;
+	private BigInteger totalLinks;
 	
 	@Column(name="deleted_links")
-	private Integer deletedLinks;
+	private BigInteger deletedLinks;
 	
 	@Column(name="nofollow_links")
-	private Integer nofollowLinks;
+	private BigInteger nofollowLinks;
 	
 	@Column(name="citation_flow")
 	private Integer citationFlow;
@@ -67,27 +69,27 @@ public class AnchorTextData {
 		this.referringDomains = referringDomains;
 	}
 
-	public Integer getTotalLinks() {
+	public BigInteger getTotalLinks() {
 		return totalLinks;
 	}
 
-	public void setTotalLinks(Integer totalLinks) {
+	public void setTotalLinks(BigInteger totalLinks) {
 		this.totalLinks = totalLinks;
 	}
 
-	public Integer getDeletedLinks() {
+	public BigInteger getDeletedLinks() {
 		return deletedLinks;
 	}
 
-	public void setDeletedLinks(Integer deletedLinks) {
+	public void setDeletedLinks(BigInteger deletedLinks) {
 		this.deletedLinks = deletedLinks;
 	}
 
-	public Integer getNofollowLinks() {
+	public BigInteger getNofollowLinks() {
 		return nofollowLinks;
 	}
 
-	public void setNofollowLinks(Integer nofollowLinks) {
+	public void setNofollowLinks(BigInteger nofollowLinks) {
 		this.nofollowLinks = nofollowLinks;
 	}
 

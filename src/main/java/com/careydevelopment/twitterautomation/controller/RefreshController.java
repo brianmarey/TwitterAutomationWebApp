@@ -70,6 +70,10 @@ public class RefreshController {
     		return "redirect:badLogin";
     	}
     	
+    	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
+    		return "redirect:seoplayhouse";
+    	}
+    	
     	ProjectUrl projectUrl = projectUrlRepository.findOne(projectUrlId);
     	
     	if (projectUrl == null) {
@@ -78,6 +82,10 @@ public class RefreshController {
     	
     	if (!projectUrl.getProject().getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
+    	}
+    	
+    	if (!Constants.PROJECT_ACTIVE.equals(projectUrl.getProject().getStatus())) {
+    		return "redirect:projectUrlView?projectUrlId=" + projectUrl.getId();
     	}
     	
     	model.addAttribute("projectUrl",projectUrl);
