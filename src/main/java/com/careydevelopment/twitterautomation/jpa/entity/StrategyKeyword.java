@@ -25,13 +25,13 @@ public class StrategyKeyword {
 	private SeoStrategy seoStrategy;
 	
 	@Column(name = "keyword")
-	private String keyword;
+	private String keyword = "";
 	
 	@Column(name="original_rank")
-	private Integer originalRank;
+	private Integer originalRank = 0;
 	
 	@Transient
-	private Integer currentRank;
+	private Integer currentRank = 0;
 
 	public Long getId() {
 		return id;
@@ -50,7 +50,7 @@ public class StrategyKeyword {
 	}
 
 	public String getKeyword() {
-		return keyword;
+		return (keyword == null) ? "" : keyword;
 	}
 
 	public void setKeyword(String keyword) {
@@ -58,7 +58,7 @@ public class StrategyKeyword {
 	}
 
 	public Integer getOriginalRank() {
-		return originalRank;
+		return (originalRank == null) ? 0 : originalRank;
 	}
 
 	public void setOriginalRank(Integer originalRank) {

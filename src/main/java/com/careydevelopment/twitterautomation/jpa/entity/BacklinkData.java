@@ -25,52 +25,52 @@ public class BacklinkData {
 	private ProjectUrl projectUrl;
 	
 	@Column(name="source_url")
-	private String sourceUrl;
+	private String sourceUrl = "";
 	
 	@Column(name="anchor_text")
-	private String anchorText;
+	private String anchorText = "";
 	
 	@Column(name="flag_no_follow")
-	private Boolean flagNoFollow;
+	private Boolean flagNoFollow = false;
 	
 	@Column(name="flag_alt_text")
-	private Boolean flagAltText;
+	private Boolean flagAltText = false;
 	
 	@Column(name="target_url")
-	private String targetUrl;
+	private String targetUrl = "";
 	
 	@Column(name="first_indexed_date")
-	private Date firstIndexedDate;
+	private Date firstIndexedDate = new Date();
 	
 	@Column(name="last_seen_date")
-	private Date lastSeenDate;
+	private Date lastSeenDate = new Date();
 	
 	@Column(name="flag_deleted")
-	private Boolean flagDeleted;
+	private Boolean flagDeleted = false;
 	
 	@Column(name="date_lost")
-	private Date dateLost;
+	private Date dateLost = new Date();
 	
 	@Column(name="reason_lost")
-	private String reasonLost;
+	private String reasonLost = "";
 	
 	@Column(name="link_type")
-	private String linkType;
+	private String linkType = "";
 	
 	@Column(name="link_subtype")
-	private String linkSubtype;
+	private String linkSubtype = "";
 	
 	@Column(name="target_citation_flow")
-	private Integer targetCitationFlow;
+	private Integer targetCitationFlow = 0;
 	
 	@Column(name="target_trust_flow")
-	private Integer targetTrustFlow;
+	private Integer targetTrustFlow = 0;
 	
 	@Column(name="source_citation_flow")
-	private Integer sourceCitationFlow;
+	private Integer sourceCitationFlow = 0;
 	
 	@Column(name="source_trust_flow")
-	private Integer sourceTrustFlow;
+	private Integer sourceTrustFlow = 0;
 
 	public Long getId() {
 		return id;
@@ -93,6 +93,7 @@ public class BacklinkData {
 	}
 
 	public void setSourceUrl(String sourceUrl) {
+		if (sourceUrl == null) sourceUrl = "";
 		this.sourceUrl = sourceUrl;
 	}
 
@@ -101,6 +102,7 @@ public class BacklinkData {
 	}
 
 	public void setAnchorText(String anchorText) {
+		if (anchorText == null) anchorText = "";
 		this.anchorText = anchorText;
 	}
 
@@ -109,6 +111,7 @@ public class BacklinkData {
 	}
 
 	public void setFlagNoFollow(Boolean flagNoFollow) {
+		if (flagNoFollow == null) flagNoFollow = false;
 		this.flagNoFollow = flagNoFollow;
 	}
 
@@ -117,6 +120,7 @@ public class BacklinkData {
 	}
 
 	public void setFlagAltText(Boolean flagAltText) {
+		if (flagAltText == null) flagAltText = false;
 		this.flagAltText = flagAltText;
 	}
 
@@ -125,6 +129,7 @@ public class BacklinkData {
 	}
 
 	public void setTargetUrl(String targetUrl) {
+		if (targetUrl == null) targetUrl = "";
 		this.targetUrl = targetUrl;
 	}
 
@@ -133,6 +138,7 @@ public class BacklinkData {
 	}
 
 	public void setFirstIndexedDate(Date firstIndexedDate) {
+		if (firstIndexedDate == null) firstIndexedDate = new Date();
 		this.firstIndexedDate = firstIndexedDate;
 	}
 
@@ -141,6 +147,7 @@ public class BacklinkData {
 	}
 
 	public void setLastSeenDate(Date lastSeenDate) {
+		if (lastSeenDate == null) lastSeenDate = new Date();
 		this.lastSeenDate = lastSeenDate;
 	}
 
@@ -149,6 +156,7 @@ public class BacklinkData {
 	}
 
 	public void setFlagDeleted(Boolean flagDeleted) {
+		if (flagDeleted == null) flagDeleted = false;
 		this.flagDeleted = flagDeleted;
 	}
 
@@ -157,6 +165,7 @@ public class BacklinkData {
 	}
 
 	public void setDateLost(Date dateLost) {
+		if (dateLost == null) dateLost = new Date();
 		this.dateLost = dateLost;
 	}
 
@@ -165,6 +174,7 @@ public class BacklinkData {
 	}
 
 	public void setReasonLost(String reasonLost) {
+		if (reasonLost == null) reasonLost = "";
 		this.reasonLost = reasonLost;
 	}
 
@@ -173,6 +183,7 @@ public class BacklinkData {
 	}
 
 	public void setLinkType(String linkType) {
+		if (linkType == null) linkType = "";
 		this.linkType = linkType;
 	}
 
@@ -181,6 +192,7 @@ public class BacklinkData {
 	}
 
 	public void setLinkSubtype(String linkSubtype) {
+		if (linkSubtype == null) linkSubtype = "";
 		this.linkSubtype = linkSubtype;
 	}
 
@@ -189,6 +201,7 @@ public class BacklinkData {
 	}
 
 	public void setTargetCitationFlow(Integer targetCitationFlow) {
+		if (targetCitationFlow == null) targetCitationFlow = 0;
 		this.targetCitationFlow = targetCitationFlow;
 	}
 
@@ -201,6 +214,7 @@ public class BacklinkData {
 	}
 
 	public Integer getSourceCitationFlow() {
+		if (sourceCitationFlow == null) sourceCitationFlow = 0;
 		return sourceCitationFlow;
 	}
 
@@ -213,6 +227,7 @@ public class BacklinkData {
 	}
 
 	public void setSourceTrustFlow(Integer sourceTrustFlow) {
+		if (sourceTrustFlow == null) sourceTrustFlow = 0;
 		this.sourceTrustFlow = sourceTrustFlow;
 	}	
 

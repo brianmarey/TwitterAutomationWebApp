@@ -29,10 +29,10 @@ public class ProjectUrl {
 
 	@Size(min = 5, max = 1024, message = "URL must be between 5 and 1024 characters")
 	@Column(name = "url")
-	private String url;
+	private String url = "";
 
 	@Column(name = "report_date")
-	private Date reportDate;
+	private Date reportDate = new Date();
 
 	@ManyToOne
 	@JoinColumn(name = "project_id")
@@ -56,7 +56,7 @@ public class ProjectUrl {
 	}
 
 	public String getUrl() {
-		return url;
+		return (url == null) ? "" : url;
 	}
 
 	public void setUrl(String url) {
@@ -72,7 +72,7 @@ public class ProjectUrl {
 	}
 
 	public Date getReportDate() {
-		return reportDate;
+		return (reportDate == null) ? new Date() : reportDate;
 	}
 
 	public void setReportDate(Date reportDate) {

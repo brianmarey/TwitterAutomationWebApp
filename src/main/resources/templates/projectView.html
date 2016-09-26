@@ -109,6 +109,7 @@
 	                                        </thead>
 	                                        <tbody>
 	                                        	<tr th:each="url,iterationStatus : ${urls}">
+	                                    			<th:block th:if="${url.pageSpeedInsights != null and url.indexItemInfo != null}">
 	                                        		<td style="vertical-align:middle"><a th:href="${url.url}" target="_blank" th:text="${url.displayUrl}"></a></td>
 	                                        		<td style="vertical-align:middle;text-align:center">
 	                                        		<th:block th:if="${url.pageSpeedInsights.mobileSpeed != null}">
@@ -138,6 +139,7 @@
                                                          <a th:attr="href='javascript:deleteUrl(' + ${url.id} + ',\'' + ${url.url} + '\');'" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-close"></i> Delete </a>
                                                     </td>												
+                                                    </th:block>
                                                 </tr>		                                        
 	                                        </tbody>
 	                                    </table>

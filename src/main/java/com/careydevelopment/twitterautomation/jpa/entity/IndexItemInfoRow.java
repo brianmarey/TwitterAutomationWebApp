@@ -25,61 +25,61 @@ public class IndexItemInfoRow {
 	private ProjectUrl projectUrl;
 	
 	@Column(name="item_num")
-	private Integer itemNum;
+	private Integer itemNum = 0;
 	
 	@Column(name="item")
-	private String item;
+	private String item = "";
 	
 	@Column(name="result_code")
-	private String resultCode;
+	private String resultCode = "";
 	
 	@Column(name="status")
-	private String status;
+	private String status = "";
 	
 	@Column(name="ext_backlinks")
-	private BigInteger extBacklinks;
+	private BigInteger extBacklinks = BigInteger.ZERO;
 	
 	@Column(name="ref_domains")
-	private BigInteger refDomains;
+	private BigInteger refDomains = BigInteger.ZERO;
 	
 	@Column(name="ref_ips")
-	private BigInteger refIps;
+	private BigInteger refIps= BigInteger.ZERO;
 	
 	@Column(name="item_type")
-	private Integer itemType; //1 = root domain, 2=subdomain, 3=url
+	private Integer itemType = 1; //1 = root domain, 2=subdomain, 3=url
 	
 	@Column(name="ref_domains_edu")
-	private BigInteger refDomainsEdu;
+	private BigInteger refDomainsEdu = BigInteger.ZERO;
 	
 	@Column(name="ext_backlinks_edu")
-	private BigInteger extBacklinksEdu;
+	private BigInteger extBacklinksEdu= BigInteger.ZERO;
 	
 	@Column(name="ref_domains_gov")
-	private BigInteger refDomainsGov;
+	private BigInteger refDomainsGov = BigInteger.ZERO;
 	
 	@Column(name="ext_backlinks_gov")
-	private BigInteger extBacklinksGov;
+	private BigInteger extBacklinksGov = BigInteger.ZERO;
 
 	@Column(name="ref_domains_edu_exact")
-	private BigInteger refDomainsEduExact;
+	private BigInteger refDomainsEduExact = BigInteger.ZERO;
 	
 	@Column(name="ext_backlinks_edu_exact")
-	private BigInteger extBacklinksEduExact;
+	private BigInteger extBacklinksEduExact = BigInteger.ZERO;
 	
 	@Column(name="ref_domains_gov_exact")
-	private BigInteger refDomainsGovExact;
+	private BigInteger refDomainsGovExact = BigInteger.ZERO;
 	
 	@Column(name="ext_backlinks_gov_exact")
-	private BigInteger extBacklinksGovExact;
+	private BigInteger extBacklinksGovExact = BigInteger.ZERO;
 	
 	@Column(name="title")
-	private String title;
+	private String title = "";
 	
 	@Column(name="citation_flow")
-	private Integer citationFlow;
+	private Integer citationFlow = 0;
 	
 	@Column(name="trust_flow")
-	private Integer trustFlow;
+	private Integer trustFlow = 0;
 
 	public Long getId() {
 		return id;
@@ -98,7 +98,7 @@ public class IndexItemInfoRow {
 	}
 
 	public Integer getItemNum() {
-		return itemNum;
+		return (itemNum == null) ? 0 : itemNum;
 	}
 
 	public void setItemNum(Integer itemNum) {
@@ -106,7 +106,7 @@ public class IndexItemInfoRow {
 	}
 
 	public String getItem() {
-		return item;
+		return (item == null) ? "" : item;
 	}
 
 	public void setItem(String item) {
@@ -114,7 +114,7 @@ public class IndexItemInfoRow {
 	}
 
 	public String getResultCode() {
-		return resultCode;
+		return (resultCode == null) ? "" : resultCode;
 	}
 
 	public void setResultCode(String resultCode) {
@@ -122,7 +122,7 @@ public class IndexItemInfoRow {
 	}
 
 	public String getStatus() {
-		return status;
+		return (status == null) ? "" : status;
 	}
 
 	public void setStatus(String status) {
@@ -130,7 +130,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getExtBacklinks() {
-		return extBacklinks;
+		return (extBacklinks == null) ? BigInteger.ZERO : extBacklinks;
 	}
 
 	public void setExtBacklinks(BigInteger extBacklinks) {
@@ -138,7 +138,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getRefDomains() {
-		return refDomains;
+		return (refDomains == null) ? BigInteger.ZERO : refDomains;
 	}
 
 	public void setRefDomains(BigInteger refDomains) {
@@ -146,7 +146,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getRefIps() {
-		return refIps;
+		return (refIps == null) ? BigInteger.ZERO : refIps;
 	}
 
 	public void setRefIps(BigInteger refIps) {
@@ -154,7 +154,7 @@ public class IndexItemInfoRow {
 	}
 
 	public Integer getItemType() {
-		return itemType;
+		return (itemType == null) ? 0 : itemType;
 	}
 
 	public void setItemType(Integer itemType) {
@@ -162,7 +162,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getRefDomainsEdu() {
-		return refDomainsEdu;
+		return (refDomainsEdu == null) ? BigInteger.ZERO : refDomainsEdu;
 	}
 
 	public void setRefDomainsEdu(BigInteger refDomainsEdu) {
@@ -170,7 +170,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getExtBacklinksEdu() {
-		return extBacklinksEdu;
+		return (extBacklinksEdu == null) ? BigInteger.ZERO : extBacklinksEdu;
 	}
 
 	public void setExtBacklinksEdu(BigInteger extBacklinksEdu) {
@@ -178,7 +178,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getRefDomainsGov() {
-		return refDomainsGov;
+		return (refDomainsGov == null) ? BigInteger.ZERO : refDomainsGov;
 	}
 
 	public void setRefDomainsGov(BigInteger refDomainsGov) {
@@ -186,7 +186,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getExtBacklinksGov() {
-		return extBacklinksGov;
+		return (extBacklinksGov == null) ? BigInteger.ZERO : extBacklinksGov;
 	}
 
 	public void setExtBacklinksGov(BigInteger extBacklinksGov) {
@@ -194,7 +194,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getRefDomainsEduExact() {
-		return refDomainsEduExact;
+		return (refDomainsEduExact == null) ? BigInteger.ZERO : refDomainsEduExact;
 	}
 
 	public void setRefDomainsEduExact(BigInteger refDomainsEduExact) {
@@ -202,7 +202,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getExtBacklinksEduExact() {
-		return extBacklinksEduExact;
+		return (extBacklinksEduExact == null) ? BigInteger.ZERO : extBacklinksEduExact;
 	}
 
 	public void setExtBacklinksEduExact(BigInteger extBacklinksEduExact) {
@@ -210,7 +210,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getRefDomainsGovExact() {
-		return refDomainsGovExact;
+		return (refDomainsGovExact == null) ? BigInteger.ZERO : refDomainsGovExact;
 	}
 
 	public void setRefDomainsGovExact(BigInteger refDomainsGovExact) {
@@ -218,7 +218,7 @@ public class IndexItemInfoRow {
 	}
 
 	public BigInteger getExtBacklinksGovExact() {
-		return extBacklinksGovExact;
+		return (extBacklinksGovExact == null) ? BigInteger.ZERO : extBacklinksGovExact;
 	}
 
 	public void setExtBacklinksGovExact(BigInteger extBacklinksGovExact) {
@@ -226,7 +226,7 @@ public class IndexItemInfoRow {
 	}
 
 	public String getTitle() {
-		return title;
+		return (title == null) ? "" : title;
 	}
 
 	public void setTitle(String title) {
@@ -234,7 +234,7 @@ public class IndexItemInfoRow {
 	}
 
 	public Integer getCitationFlow() {
-		return citationFlow;
+		return (citationFlow == null) ? 0 : citationFlow;
 	}
 
 	public void setCitationFlow(Integer citationFlow) {
@@ -242,12 +242,10 @@ public class IndexItemInfoRow {
 	}
 
 	public Integer getTrustFlow() {
-		return trustFlow;
+		return (trustFlow == null) ? 0 : trustFlow;
 	}
 
 	public void setTrustFlow(Integer trustFlow) {
 		this.trustFlow = trustFlow;
 	}
-	
-	
 }

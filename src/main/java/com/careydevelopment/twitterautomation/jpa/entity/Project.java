@@ -28,10 +28,10 @@ public class Project {
 
 	@Size(min=3, max=32, message="Project name must be between 3 and 32 characters")
 	@Column(name="project_name")
-	private String name;
+	private String name = "";
 	
 	@Column(name="project_status")
-	private String status;
+	private String status = "";
 	
 	@ManyToOne
 	@JoinColumn(name="owner_id")
@@ -49,7 +49,7 @@ public class Project {
 	}
 
 	public String getName() {
-		return name;
+		return (name == null) ? "" : name;
 	}
 
 	public void setName(String name) {
@@ -57,7 +57,7 @@ public class Project {
 	}
 
 	public String getStatus() {
-		return status;
+		return (status == null) ? "" : status;
 	}
 
 	public void setStatus(String status) {

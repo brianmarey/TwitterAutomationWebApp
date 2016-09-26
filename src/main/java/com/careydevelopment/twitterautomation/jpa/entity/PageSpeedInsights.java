@@ -1,5 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,13 +21,13 @@ public class PageSpeedInsights {
 	private Long id;
 	
 	@Column(name="mobile_speed")
-	private Integer mobileSpeed;
+	private Integer mobileSpeed = 0;
 	
 	@Column(name="mobile_usability")
-	private Integer mobileUsability;
+	private Integer mobileUsability = 0;
 	
 	@Column(name="desktop_speed")
-	private Integer desktopSpeed;
+	private Integer desktopSpeed = 0;
 	
 	//a url belongs to one and only one psi
 	//and a psi has only one url
@@ -35,19 +37,19 @@ public class PageSpeedInsights {
 	
 	
 	public Integer getMobileSpeed() {
-		return mobileSpeed;
+		return (mobileSpeed == null) ? 0 : mobileSpeed;
 	}
 	public void setMobileSpeed(Integer mobileSpeed) {
 		this.mobileSpeed = mobileSpeed;
 	}
 	public Integer getMobileUsability() {
-		return mobileUsability;
+		return (mobileUsability == null) ? 0 : mobileUsability;
 	}
 	public void setMobileUsability(Integer mobileUsability) {
 		this.mobileUsability = mobileUsability;
 	}
 	public Integer getDesktopSpeed() {
-		return desktopSpeed;
+		return (desktopSpeed == null) ? 0 : desktopSpeed;
 	}
 	public void setDesktopSpeed(Integer desktopSpeed) {
 		this.desktopSpeed = desktopSpeed;

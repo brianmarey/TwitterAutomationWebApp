@@ -232,7 +232,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 					if (table.getRows() != null && table.getRows().size() > 0) {
 						String row = table.getRows().get(0);
 						LOGGER.info("Parsing " + row);
-						IndexItemInfoRow res = IndexItemInfoRowParser.getIndexItemInfoRow(row);
+						IndexItemInfoRow res = IndexItemInfoRowParser.getIndexItemInfoRow(row,table.getHeaders());
 						res.setProjectUrl(url);
 						
 						IndexItemInfoRow oldRes = indexItemInfoRepository.findByUrl(url);
@@ -284,7 +284,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 						for (String row : table.getRows()) {
 							try {
 								LOGGER.info("Parsing " + row);
-								BacklinkData bd = BacklinkDataParser.getBacklinkData(row);
+								BacklinkData bd = BacklinkDataParser.getBacklinkData(row,table.getHeaders());
 								bd.setProjectUrl(url);
 								
 								BacklinkData oldBd = backlinkDataRepository.findSpecific(url, bd.getSourceUrl());
@@ -341,7 +341,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 						for (String row : table.getRows()) {
 							try {
 								LOGGER.info("Parsing " + row);
-								AnchorTextData at = AnchorTextDataParser.getAnchorTextData(row);
+								AnchorTextData at = AnchorTextDataParser.getAnchorTextData(row,table.getHeaders());
 								if (at.getAnchorText() != null && at.getAnchorText().trim().length()> 0) {
 									at.setProjectUrl(url);
 									

@@ -10,28 +10,44 @@ public class BacklinkDataParser {
 
 	private static final DateFormat DF = new SimpleDateFormat("yyyyMMdd");
 	
-	public static BacklinkData getBacklinkData(String row) {
+	private static int getIndex(String name, String[] heads) {
+		int val = 0;
+		
+		for (int i=0;i<heads.length;i++) {
+			if (name.equalsIgnoreCase(heads[i])) {
+				val = i;
+				break;
+			}
+		}
+		
+		return val;
+	}
+
+	
+	public static BacklinkData getBacklinkData(String row, String headers) {
 		BacklinkData data = new BacklinkData();
+		
+		String[] heads = headers.split("\\|");
 		
 		if (row != null) {
 			String[] parts = row.split("\\|");
 			if (parts != null && parts.length > 20) {
-				data.setSourceUrl(parts[0]);
-				data.setAnchorText(parts[2]);
-				data.setFlagNoFollow(getBoolean(parts[6]));
-				data.setFlagDeleted(getBoolean(parts[8]));
-				data.setFlagAltText(getBoolean(parts[9]));
-				data.setTargetUrl(parts[11]);
-				data.setFirstIndexedDate(getDate(parts[13]));
-				data.setLastSeenDate(getDate(parts[14]));
-				data.setDateLost(getDate(parts[15]));
-				data.setReasonLost(parts[16]);
-				data.setLinkType(parts[17]);
-				data.setLinkSubtype(parts[18]);
-				data.setTargetCitationFlow(new Integer(parts[19]));
-				data.setTargetTrustFlow(new Integer(parts[20]));
-				data.setSourceCitationFlow(new Integer(parts[23]));
-				data.setSourceTrustFlow(new Integer(parts[24]));
+				data.setSourceUrl(parts[getIndex("SourceURL",heads)]);
+				data.setAnchorText(parts[getIndex("AnchorText",heads)]);
+				data.setFlagNoFollow(getBoolean(parts[getIndex("FlagNoFollow",heads)]));
+				data.setFlagDeleted(getBoolean(parts[getIndex("FlagDeleted",heads)]));
+				data.setFlagAltText(getBoolean(parts[getIndex("FlagAltText",heads)]));
+				data.setTargetUrl(parts[getIndex("TargetURL",heads)]);
+				data.setFirstIndexedDate(getDate(parts[getIndex("FirstIndexedDate",heads)]));
+				data.setLastSeenDate(getDate(parts[getIndex("LastSeenDate",heads)]));
+				data.setDateLost(getDate(parts[getIndex("DateLost",heads)]));
+				data.setReasonLost(parts[getIndex("ReasonLost",heads)]);
+				data.setLinkType(parts[getIndex("LinkType",heads)]);
+				data.setLinkSubtype(parts[getIndex("LinkSubType",heads)]);
+				data.setTargetCitationFlow(new Integer(parts[getIndex("TargetCitationFlow",heads)]));
+				data.setTargetTrustFlow(new Integer(parts[getIndex("TargetTrustFlow",heads)]));
+				data.setSourceCitationFlow(new Integer(parts[getIndex("SourceCitationFlow",heads)]));
+				data.setSourceTrustFlow(new Integer(parts[getIndex("SourceTrustFlow",heads)]));
 			} else {
 				throw new RuntimeException("Couldn't parse the data row for backlink!");
 			}

@@ -17,6 +17,7 @@ import com.careydevelopment.propertiessupport.PropertiesFactoryException;
 import com.careydevelopment.propertiessupport.PropertiesFile;
 import com.careydevelopment.twitterautomation.domain.MajesticResults;
 import com.careydevelopment.twitterautomation.service.MajesticService;
+import com.careydevelopment.twitterautomation.util.AnchorTextDataParser;
 import com.careydevelopment.twitterautomation.util.BacklinkDataParser;
 import com.careydevelopment.twitterautomation.util.IndexItemInfoRowParser;
 import com.careydevelopment.twitterautomation.util.UrlHelper;
@@ -163,8 +164,7 @@ public class MajesticServiceImpl implements MajesticService {
 		
 		response = UrlHelper.getUrlContents(sb.toString());
 		response = response.trim().replaceFirst("^([\\W]+)<","<");
-
-		response = response.replaceAll( "([\\ud800-\\udbff\\udc00-\\udfff])", "");
+		//response = response.replaceAll( "([\\ud800-\\udbff\\udc00-\\udfff])", "");
 		
 		System.err.println("Response is " + response);
 		
@@ -174,11 +174,12 @@ public class MajesticServiceImpl implements MajesticService {
 	
 	public static void main(String[] args) {
 		MajesticServiceImpl ii = new MajesticServiceImpl();
-		MajesticResults iir = ii.getBacklinkData("amztracker.com"); //ii.getAnchorTextData("amztracker.com");  //ii.getIndexItemInfo("amztracker.com"); //
+		MajesticResults iir = ii.getIndexItemInfo("huffingtonpost.com"); //ii.getAnchorTextData("amztracker.com"); //ii.getBacklinkData("amztracker.com");   //
 		System.err.println(iir.getTables().getDataTable().getRows().get(0));
+		System.err.println(iir.getTables().getDataTable().getHeaders());
 		
-		BacklinkDataParser.getBacklinkData(iir.getTables().getDataTable().getRows().get(0));
-		//IndexItemInfoRowParser.getIndexItemInfoRow(iir.getTables().getDataTable().getRows().get(0));
-		
+		//BacklinkDataParser.getBacklinkData(iir.getTables().getDataTable().getRows().get(0),iir.getTables().getDataTable().getHeaders());
+		IndexItemInfoRowParser.getIndexItemInfoRow(iir.getTables().getDataTable().getRows().get(0),iir.getTables().getDataTable().getHeaders());
+		//AnchorTextDataParser.getAnchorTextData(iir.getTables().getDataTable().getRows().get(0), iir.getTables().getDataTable().getHeaders());
 	}
 }

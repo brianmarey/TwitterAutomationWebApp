@@ -135,9 +135,14 @@ public class ProjectUrlViewController {
     	model.addAttribute("organicCompetitors",organicCompetitors);
     	model.addAttribute("paidCompetitors",paidCompetitors);
     	
-    	List<AnchorTextData> anchorTextData = anchorTextDataRepository.findTop20ByProjectUrlOrderByIdAsc(projectUrl);
+    	List<AnchorTextData> anchorTextData = anchorTextDataRepository.findByUrl(projectUrl);
     	model.addAttribute("anchorTextData", anchorTextData);
 
+    	if (anchorTextData != null) {
+    		List<AnchorTextData> topAnchorTexts = (anchorTextData.size() > 9) ? anchorTextData.subList(0, 10) : anchorTextData;
+    		model.addAttribute("topAnchorTexts",topAnchorTexts);
+    	}
+    	
     	model.addAttribute("pageSpeedInsights", projectUrl.getPageSpeedInsights());
     	
     	List<SeoStrategy> seoStrategies = seoStrategyRepository.findOpenByProjectUrl(projectUrl);

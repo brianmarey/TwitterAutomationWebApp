@@ -28,59 +28,59 @@ public class CompetitorSearch {
 	private ProjectUrl projectUrl;
 	
 	@Column(name="domain")
-	private String domain;
+	private String domain = "";
 	
 	@Column(name="competitor_relevance")
-	private Float competitorRelevance;
+	private Float competitorRelevance = 0f;
 	
 	@Column(name="common_keywords")
-	private BigInteger commonKeywords;
+	private BigInteger commonKeywords = BigInteger.ZERO;
 	
 	@Column(name="type_keywords")
-	private Integer typeKeywords;
+	private Integer typeKeywords = 0;
 	
 	@Column(name="type_traffic")
-	private Integer typeTraffic;
+	private Integer typeTraffic = 0;
 	
 	@Column(name="type_cost")
-	private Float typeCost;
+	private Float typeCost = 0f;
 	
 	@Column(name="type")
-	private String type; //paid or organic
+	private String type = "organic"; //paid or organic
 	
 	
 	public Float getCompetitorRelevance() {
-		return competitorRelevance;
+		return (competitorRelevance == null) ? 0f : competitorRelevance;
 	}
 	public void setCompetitorRelevance(Float competitorRelevance) {
 		this.competitorRelevance = competitorRelevance;
 	}
 	public BigInteger getCommonKeywords() {
-		return commonKeywords;
+		return (commonKeywords == null) ? BigInteger.ZERO : commonKeywords;
 	}
 	public void setCommonKeywords(BigInteger commonKeywords) {
 		this.commonKeywords = commonKeywords;
 	}
 	public Integer getTypeKeywords() {
-		return typeKeywords;
+		return (typeKeywords == null) ? 0 : typeKeywords;
 	}
 	public void setTypeKeywords(Integer typeKeywords) {
 		this.typeKeywords = typeKeywords;
 	}
 	public Integer getTypeTraffic() {
-		return typeTraffic;
+		return (typeTraffic == null) ? 0 : typeTraffic;
 	}
 	public void setTypeTraffic(Integer typeTraffic) {
 		this.typeTraffic = typeTraffic;
 	}
 	public Float getTypeCost() {
-		return typeCost;
+		return (typeCost == null) ? 0 : typeCost;
 	}
 	public void setTypeCost(Float typeCost) {
 		this.typeCost = typeCost;
 	}
 	public String getType() {
-		return type;
+		return (type == null) ? "organic" : type;
 	}
 	public void setType(String type) {
 		this.type = type;
@@ -98,10 +98,9 @@ public class CompetitorSearch {
 		this.projectUrl = projectUrl;
 	}
 	public String getDomain() {
-		return domain;
+		return (domain == null) ? "" : domain;
 	}
 	public void setDomain(String domain) {
 		this.domain = domain;
 	}	
-	
 }
