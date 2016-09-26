@@ -190,27 +190,27 @@
 	                                        <tbody>
 	                                        	<tr th:each="keyword,iterationStatus : ${mobileKeywords}">
 	                                        		<td th:text="${keyword.keyword}"></td>
-	                                        		<td th:text="${keyword.originalRankDisplay}" style="text-align:center"></td>
+	                                        		<td th:text="${keyword.originalMobileRankDisplay}" style="text-align:center"></td>
 	                                        		<td style="text-align:center">
-	                                        		<th:block th:if="${keyword.improvement}">
-	                                        		<span th:text="${keyword.currentRankDisplay}" style="color:#26c281"></span>
+	                                        		<th:block th:if="${keyword.mobileImprovement}">
+	                                        		<span th:text="${keyword.currentMobileRankDisplay}" style="color:#26c281"></span>
 	                                        		</th:block>
-	                                        		<th:block th:if="${keyword.same}">
-	                                        		<span th:text="${keyword.currentRankDisplay}"></span>
+	                                        		<th:block th:if="${keyword.mobileSame}">
+	                                        		<span th:text="${keyword.currentMobileRankDisplay}"></span>
 	                                        		</th:block>
-	                                        		<th:block th:if="${!keyword.improvement and !keyword.same}">
-	                                        		<span th:text="${keyword.currentRankDisplay}" style="color:#d91e18"></span>
+	                                        		<th:block th:if="${!keyword.mobileImprovement and !keyword.mobileSame}">
+	                                        		<span th:text="${keyword.currentMobileRankDisplay}" style="color:#d91e18"></span>
 	                                        		</th:block>
 	                                        		</td>
 	                                        		<td style="text-align:center">
-	                                        		<th:block th:if="${keyword.improvement}">
-	                                        		<span th:text="${keyword.difference}" style="color:#26c281"></span>
+	                                        		<th:block th:if="${keyword.mobileImprovement}">
+	                                        		<span th:text="${keyword.mobileDifference}" style="color:#26c281"></span>
 	                                        		</th:block>
-	                                        		<th:block th:if="${keyword.same}">
-	                                        		<span th:text="${keyword.difference}"></span>
+	                                        		<th:block th:if="${keyword.mobileSame}">
+	                                        		<span th:text="${keyword.mobileDifference}"></span>
 	                                        		</th:block>
-	                                        		<th:block th:if="${!keyword.improvement and !keyword.same}">
-	                                        		<span th:text="${keyword.difference}" style="color:#d91e18"></span>
+	                                        		<th:block th:if="${!keyword.mobileImprovement and !keyword.mobileSame}">
+	                                        		<span th:text="${keyword.mobileDifference}" style="color:#d91e18"></span>
 	                                        		</th:block>
 	                                        		</td>
 	                                        	</tr>
@@ -233,9 +233,9 @@
                                 </div>
                                 <div class="portlet-body util-btn-margin-bottom-5">
                                 	<div class="row">
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/projectUrlView(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">View URL Metrics</button></a></div>
                                 		<div class="col-md-4" style="text-align:center"><a th:href="@{/editSeoStrategy(strategyId=${seoStrategy.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Edit This Strategy</button></a></div>
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New SEO Strategy</button></a></div>
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New SEO Strategy</button></a></div>                   		
                                 	</div>
 								</div>
 							</div>

@@ -81,6 +81,7 @@
         		$('#selectedKeywordsVal').val(selectedVal);
         		
         		$('#submitButton').prop('disabled', true);
+        		$('#loadingDiv').show();
  				$("#strategyForm").submit()
         	}        	
         </script>
@@ -215,7 +216,7 @@
                                     <label class="control-label col-md-3" th:if="${hasKeywords}">Additional Keywords</label>
                                     <label class="control-label col-md-3" th:unless="${hasKeywords}">Additional Keywords</label>
                                    	<div class="col-md-4">
-										<input type="text" th:value="${addedKeywords}" id="addedKeywords" name="addedKeywords" style="width:95% !important" data-role="tagsinput"/> 
+										<input type="text" class="form-control input-large" th:value="${addedKeywords}" id="addedKeywords" name="addedKeywords" data-role="tagsinput"/> 
 										<span class="help-block" th:if="${hasKeywords}"> Enter additional keywords for this strategy. Type keywords and hit Enter between each one.</span>
 										<span class="help-block" th:unless="${hasKeywords}"> Enter keywords for this strategy. Type keywords and hit Enter between each one.</span>
                                     </div>
@@ -239,6 +240,9 @@
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
+            <div id="loadingDiv" style="position:fixed;top:50%;left:50%;margin-top:-75px;margin-left:-75px;display:none">
+				<img th:src="@{/images/gears.gif}"/>
+			</div>
             <!-- END CONTENT -->
         </div>
         <!-- END CONTAINER -->

@@ -33,14 +33,17 @@
         	var message = "Are you sure you want to delete " + name + "?";
             bootbox.confirm(message, function(result) {
             	if (result) {
+            		$("#loadingDiv").show();
+            		
             		$.ajax({
             			  method: "GET",
             			  url: "./deleteSeoStrategy?strategyId=" + id
             		})
             		.success(function( msg ) {
             			location.reload();
-            		});	
+            		})
             		.error(function( msg ) {
+            			$("#loadingDiv").hide();
             			bootbox.alert("There was a problem with deleting the strategy. Please contact support.");
             		});
             	}
@@ -52,6 +55,7 @@
     <!-- END HEAD -->
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    
     
     <div id="fb-root"></div>
     
@@ -152,11 +156,16 @@
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
+           <div id="loadingDiv" style="position:fixed;top:50%;left:50%;margin-top:-75px;margin-left:-75px;display:none">
+				<img th:src="@{/images/gears.gif}"/>
+			</div>
             <!-- END CONTENT -->
         </div>
         <!-- END CONTAINER -->
         <!-- BEGIN FOOTER -->
         <div th:include="fragments/footer :: footer"></div>
+        <script th:src="@{/assets/global/plugins/bootbox/bootbox.min.js}" type="text/javascript"></script>
+        <script th:src="@{/assets/pages/scripts/ui-bootbox.min.js}" type="text/javascript"></script>
         <!-- END FOOTER -->        
         
     </body>

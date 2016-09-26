@@ -130,10 +130,17 @@ public class ProjectUrlViewController {
     	}
     	
     	List<CompetitorSearch> organicCompetitors = competitorSearchRepository.findLatestByType(projectUrl, CompetitorSearch.ORGANIC, topTen);
-    	List<CompetitorSearch> paidCompetitors = competitorSearchRepository.findLatestByType(projectUrl, CompetitorSearch.PAID, topTen);
+    	//List<CompetitorSearch> paidCompetitors = competitorSearchRepository.findLatestByType(projectUrl, CompetitorSearch.PAID, topTen);
     	
     	model.addAttribute("organicCompetitors",organicCompetitors);
-    	model.addAttribute("paidCompetitors",paidCompetitors);
+    	
+    	if (organicCompetitors != null) {
+    		model.addAttribute("numberOfOrganicCompetitors",organicCompetitors.size());
+    	} else {
+    		model.addAttribute("numberOfOrganicCompetitors",0);
+    	}
+    	
+    	//model.addAttribute("paidCompetitors",paidCompetitors);
     	
     	List<AnchorTextData> anchorTextData = anchorTextDataRepository.findByUrl(projectUrl);
     	model.addAttribute("anchorTextData", anchorTextData);

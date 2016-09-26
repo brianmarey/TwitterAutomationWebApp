@@ -166,6 +166,8 @@ public class CreateSeoStrategyController {
         }
 
     	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
+    	List<DomainSearchKeyword> mobileKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC_MOBILE);
+
     	model.addAttribute("keywords", keywords);
     	
     	if (keywords != null && keywords.size() > 0) {
@@ -179,13 +181,13 @@ public class CreateSeoStrategyController {
             return "createSeoStrategy";
         }
         
-        persist(seoStrategy,projectUrl,keywords,selectedOnes,addedKeywords);
+        persist(seoStrategy,projectUrl,keywords,mobileKeywords,selectedOnes,addedKeywords);
         
         return "redirect:/seoStrategyView?strategyId=" + seoStrategy.getId();
     }
     
     
-    private void persist(SeoStrategy seoStrategy, ProjectUrl projectUrl, List<DomainSearchKeyword> keywords, List<String> selectedOnes, String addedKeywords) {
+    private void persist(SeoStrategy seoStrategy, ProjectUrl projectUrl, List<DomainSearchKeyword> keywords, List<DomainSearchKeyword> mobileKeywords, List<String> selectedOnes, String addedKeywords) {
         seoStrategy.setProjectUrl(projectUrl);
         seoStrategy.setStartDate(new Date());
         seoStrategy.setStrategyStatus(SeoStrategy.STATUS_OPEN);
@@ -196,6 +198,7 @@ public class CreateSeoStrategyController {
         	StrategyKeyword sk = new StrategyKeyword();
         	sk.setKeyword(key);
         	sk.setOriginalRank(getOriginalRank(key,keywords));
+        	sk.setOriginalMobileRank(getOriginalRank(key,mobileKeywords));
         	sk.setSeoStrategy(seoStrategy);
         	
         	strategyKeywordRepository.save(sk);
@@ -208,6 +211,7 @@ public class CreateSeoStrategyController {
                 	StrategyKeyword sk = new StrategyKeyword();
                 	sk.setKeyword(key);
                 	sk.setOriginalRank(getOriginalRank(key,keywords));
+                	sk.setOriginalMobileRank(getOriginalRank(key,mobileKeywords));
                 	sk.setSeoStrategy(seoStrategy);
                 	
                 	strategyKeywordRepository.save(sk);
