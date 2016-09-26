@@ -29,7 +29,7 @@ public class PageSpeedInsightsServiceImpl implements PageSpeedInsightsService {
 			setInsights(url.getUrl(),PageSpeedInsightsService.MOBILE_STRATEGY,insights);
 			setInsights(url.getUrl(),PageSpeedInsightsService.DESKTOP_STRATEGY,insights);			
 		} catch (Exception e) {
-			LOGGER.error("Problem retrieving page speed insights for " + url,e);
+			LOGGER.error("Problem retrieving page speed insights for " + url.getUrl(),e);
 		}
 		
 		return insights;
@@ -37,23 +37,36 @@ public class PageSpeedInsightsServiceImpl implements PageSpeedInsightsService {
 	
 	
 	private void setInsights(String url, String strategy, PageSpeedInsights insights) throws Exception {
+		LOGGER.info("Retrieving insights for " + url);
+		
 		String insightsUrl = getInsightsUrl(url, strategy);			
 		JsonParser reader = new JsonParser(insightsUrl);
 			
 		JSONObject json = reader.getJson();
-		JSONObject ruleGroups =(JSONObject)json.get("ruleGroups");
 		
-		JSONObject speed = (JSONObject)ruleGroups.get("SPEED");
-		JSONInteger speedScore = (JSONInteger)speed.get("score");
-		
-		if (PageSpeedInsightsService.MOBILE_STRATEGY.equals(strategy)) {
-			JSONObject usability = (JSONObject)ruleGroups.get("USABILITY");
-			JSONInteger usabilityScore = (JSONInteger)usability.get("score");
+		if (json != null) {
+			JSONObject ruleGroups =(JSONObject)json.get("ruleGroups");
 			
-			insights.setMobileSpeed(speedScore.getValue().intValue());
-			insights.setMobileUsability(usabilityScore.getValue().intValue());			
-		} else {
-			insights.setDesktopSpeed(speedScore.getValue().intValue());
+			if (ruleGroups != null) {
+				JSONObject speed = (JSONObject)ruleGroups.get("SPEED");
+				
+				if (speed != null) {
+					JSONInteger speedScore = (JSONInteger)speed.get("score");
+					
+					if (PageSpeedInsightsService.MOBILE_STRATEGY.equals(strategy)) {
+						JSONObject usability = (JSONObject)ruleGroups.get("USABILITY");
+						
+						if (usability != null) {
+							JSONInteger usabilityScore = (JSONInteger)usability.get("score");
+							
+							if (speedScore != null) insights.setMobileSpeed(speedScore.getValue().intValue());
+							if (usabilityScore != null) insights.setMobileUsability(usabilityScore.getValue().intValue());
+						}
+					} else {
+						if (speedScore != null) insights.setDesktopSpeed(speedScore.getValue().intValue());
+					}
+				}
+			}
 		}
 	}
 	

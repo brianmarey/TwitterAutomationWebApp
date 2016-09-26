@@ -216,7 +216,7 @@
                                     <label class="control-label col-md-3" th:if="${hasKeywords}">Additional Keywords</label>
                                     <label class="control-label col-md-3" th:unless="${hasKeywords}">Additional Keywords</label>
                                    	<div class="col-md-4">
-										<input type="text" class="form-control input-large" th:value="${addedKeywords}" id="addedKeywords" name="addedKeywords" data-role="tagsinput"/> 
+										 <input type="text" class="form-control input-large" th:value="${addedKeywords}" id="addedKeywords" name="addedKeywords" placeholder="Add More Keywords" data-role="tagsinput"/> 
 										<span class="help-block" th:if="${hasKeywords}"> Enter additional keywords for this strategy. Type keywords and hit Enter between each one.</span>
 										<span class="help-block" th:unless="${hasKeywords}"> Enter keywords for this strategy. Type keywords and hit Enter between each one.</span>
                                     </div>
@@ -252,7 +252,6 @@
 		<script th:src="@{/assets/pages/scripts/components-bootstrap-maxlength.min.js}" type="text/javascript"></script>
 		
 		<script th:src="@{/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js}" type="text/javascript"></script>
-        <script th:src="@{/assets/pages/scripts/components-bootstrap-tagsinput.min.js}" type="text/javascript"></script>
         <script th:src="@{/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js}" type="text/javascript"></script>
         <script th:src="@{/assets/pages/scripts/components-bootstrap-select.min.js}" type="text/javascript"></script>
         <script th:src="@{/assets/global/plugins/bootstrap-growl/jquery.bootstrap-growl.min.js}" type="text/javascript"></script>

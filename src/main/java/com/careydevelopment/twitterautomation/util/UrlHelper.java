@@ -240,25 +240,64 @@ public class UrlHelper {
 			try {
 				URL url = new URL(urlString);
 				HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-				connection.setRequestMethod("GET");
-				connection.connect();
-		
-				int code = connection.getResponseCode();
+				connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+				//connection.setRequestMethod("GET");
 				
-				if (code == 404) {
+				connection.setInstanceFollowRedirects( false );
+				connection.connect();
+				int responseCode = connection.getResponseCode();
+
+				System.err.println("Response code for " + url + " is " + responseCode);
+				
+				if (responseCode != 200) {
 					isValid = false;
 				}
 			} catch (Exception e) {
-				if (e.getMessage().toLowerCase().indexOf("connection refused") > -1) {
-					LOGGER.info("Connection refused - we'll accept it as valid");
-				} else {
-					e.printStackTrace();
-					isValid = false;
-					LOGGER.warn("Bad URL: " + urlString,e);					
-				}
+				e.printStackTrace();
+				isValid = false;
+				LOGGER.warn("Bad URL: " + urlString,e);					
 			}
 		}
 		
 		return isValid;
+	}
+	
+	
+	public static String redirectUrl(String urlString) {
+		String redirectUrl = null;
+		
+		if (urlString != null) {
+			urlString = getFormattedUrl(urlString);
+			
+			try {
+				URL url = new URL(urlString);
+				HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+				connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+				//connection.setRequestMethod("GET");
+				
+				connection.setInstanceFollowRedirects( false );
+				connection.connect();
+				int responseCode = connection.getResponseCode();
+				
+				if (responseCode == 301 || responseCode == 302) {
+					String location = connection.getHeaderField( "Location" ).trim();
+					if (location.length() > 3) redirectUrl = location.trim();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOGGER.warn("Bad URL: " + urlString,e);					
+			}			
+		}
+		
+		return redirectUrl;
+	}
+	
+	
+	public static void main(String[] args) {
+		boolean b = isValidUrl("ignitevisibility.com");
+		System.err.println(b);
+		
+		//String redir = redirectUrl(".com");
+		//System.err.println(redir);
 	}
 }

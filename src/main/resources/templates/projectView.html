@@ -33,6 +33,7 @@
         	var message = "Are you sure you want to delete " + name + "?";
             bootbox.confirm(message, function(result) {
             	if (result) {
+            		$("#loadingDiv").show();
             		document.location = "./deleteProjectUrl?projectUrlId=" + id;	
             	}
             });
@@ -169,6 +170,9 @@
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
+            <div id="loadingDiv" style="position:fixed;top:50%;left:50%;margin-top:-75px;margin-left:-75px;display:none">
+				<img th:src="@{/images/gears.gif}"/>
+			</div>
             <!-- END CONTENT -->
         </div>
         <!-- END CONTAINER -->

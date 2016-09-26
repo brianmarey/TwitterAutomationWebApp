@@ -159,9 +159,21 @@ public class CreateProjectUrlController {
         }
 
         if (!UrlHelper.isValidUrl(projectUrl.getUrl())) {
-        	model.addAttribute("invalidUrl",true);
-        	return "createProjectUrl";
+        	LOGGER.info("URL " + projectUrl.getUrl() + " isn't valid - checking for redirect");
+        	
+        	String redirectUrl = UrlHelper.redirectUrl(projectUrl.getUrl());
+        	
+        	LOGGER.info("redirect url is " + redirectUrl);
+        	
+        	if (redirectUrl == null) {
+            	model.addAttribute("invalidUrl",true);
+            	return "createProjectUrl";        		
+        	} else {
+        		projectUrl.setUrl(redirectUrl);
+        	}
         }                
+        
+        System.err.println("Now project url is "+ projectUrl.getUrl());
         
         projectUrl.setProject(project);
         projectUrl.setReportDate(new Date());

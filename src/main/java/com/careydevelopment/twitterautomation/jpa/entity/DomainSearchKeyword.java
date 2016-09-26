@@ -181,6 +181,20 @@ public class DomainSearchKeyword {
 		
 		return sb.toString();
 	}
+	
+	
+	public boolean equals(Object other) {
+		boolean equals = false;
+		
+		if (other instanceof DomainSearchKeyword) {
+			DomainSearchKeyword key = (DomainSearchKeyword)other;
+			if (key.getKeyword() != null && keyword != null && key.getKeyword().equals(keyword)) {
+				equals = true;
+			}
+		}
+		
+		return equals;
+	}
 }
 
 

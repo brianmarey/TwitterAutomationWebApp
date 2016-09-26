@@ -84,6 +84,27 @@
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->                    
 
+					<div class="row">
+						<div class="col-md-3" style="margin-top:20px">
+                       	<span style="font-weight:bold">Status: </span>
+                           	<select class="form-control" id="statusSelect">
+                           	    <option value="">All</option>
+                               	<option value="Open">Open</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3"  style="margin-top:20px">
+                        <span style="font-weight:bold">Success: </span>
+                           	<select class="form-control" id="successSelect">
+                           	    <option value="">All</option>
+                               	<option value="Successful">Successful</option>
+                                <option value="Unsuccessful">Unsuccessful</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3" style="margin-top:38px">
+                        	<a href="javascript:filter()"><button type="button" class="btn btn-primary">Filter</button></a>
+                        </div>
+					</div>
                     <div class="row" style="margin-top:20px">
                     	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     		<div class="portlet box blue">
@@ -107,7 +128,7 @@
 	                                        <tbody>
 	                                        	<th:block th:if="${numberOfStrategies == 0}">
 	                                        	<tr>
-	                                        	<td colspan="6">You have no SEO strategies at this time.</td>
+	                                        	<td colspan="6">Nothing to display.</td>
 	                                        	</tr>
 	                                        	</th:block>
 	                                        	<th:block th:unless="${numberOfStrategies == 0}">
@@ -166,7 +187,20 @@
         <div th:include="fragments/footer :: footer"></div>
         <script th:src="@{/assets/global/plugins/bootbox/bootbox.min.js}" type="text/javascript"></script>
         <script th:src="@{/assets/pages/scripts/ui-bootbox.min.js}" type="text/javascript"></script>
+        <script th:src="@{/js/filter.js}" type="text/javascript"></script>
         <!-- END FOOTER -->        
         
+        <script>
+        var success = "<th:block th:text='${success}'></th:block>";
+        var status = "<th:block th:text='${status}'></th:block>";
+        
+        if (success != "") {
+        	$("#successSelect").val(success);
+        }
+        
+        if (status != "") {
+        	$("#statusSelect").val(status);
+        }
+        </script>
     </body>
 </html>

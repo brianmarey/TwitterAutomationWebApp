@@ -109,7 +109,7 @@ public class ProjectUrl {
 		
 		String formattedUrl = UrlHelper.getUnformattedUrl(url);
 		
-		if (formattedUrl.indexOf("/") > -1) {
+		if (formattedUrl.indexOf("/") > -1 && formattedUrl.indexOf("/") != formattedUrl.length() - 1) {
 			isDomain = false;
 		} else {
 			String[] parts = formattedUrl.split(".");

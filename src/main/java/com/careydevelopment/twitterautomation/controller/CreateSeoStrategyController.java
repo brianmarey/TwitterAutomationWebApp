@@ -103,6 +103,12 @@ public class CreateSeoStrategyController {
     	}
     	
     	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
+    	List<DomainSearchKeyword> mobileKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC_MOBILE);
+    	for (DomainSearchKeyword key : mobileKeywords) {
+    		if (!keywords.contains(key)) {
+    			keywords.add(key);
+    		}
+    	}
     	model.addAttribute("keywords", keywords);
     	
     	if (keywords != null && keywords.size() > 0) {
