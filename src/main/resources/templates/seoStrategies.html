@@ -97,8 +97,8 @@
                         <span style="font-weight:bold">Success: </span>
                            	<select class="form-control" id="successSelect">
                            	    <option value="">All</option>
-                               	<option value="Successful">Successful</option>
-                                <option value="Unsuccessful">Unsuccessful</option>
+                               	<option value="Success">Success</option>
+                                <option value="Failure">Failure</option>
                             </select>
                         </div>
                         <div class="col-md-3" style="margin-top:38px">
@@ -137,7 +137,14 @@
 	                                        		<td th:text="${strategy.strategyType}"></td>
 	                                        		<td th:text="${strategy.projectUrl.displayUrl}"></td>
 	                                        		<td th:text="${strategy.strategyStatus}"></td>
-	                                        		<td th:text="${strategy.strategySuccess}"></td>
+	                                        		<td>
+				                                           <th:block th:if='${strategy.strategySuccess == "Failure"}'>
+				                                           <span style="font-weight:bold;color:#d91e18" th:text="${strategy.strategySuccess}"></span>
+				                                           </th:block>
+				                                           <th:block th:unless='${strategy.strategySuccess == "Failure"}'>
+				                                           <span style="font-weight:bold;color:#26c281" th:text="${strategy.strategySuccess}"></span>
+				                                           </th:block>
+	                                        		</td>
 	                                        		<td><a th:href="@{/seoStrategyView(strategyId=${strategy.id})}" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-share"></i> View </a>
                                                              <th:block th:if="${strategy.strategyStatus == 'Open' and strategy.projectUrl.project.status == 'Active'}"> 

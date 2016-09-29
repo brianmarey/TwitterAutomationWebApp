@@ -1,7 +1,5 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +32,7 @@ import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepositor
 import com.careydevelopment.twitterautomation.jpa.repository.SeoStrategyRepository;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
+import com.careydevelopment.twitterautomation.util.RefreshUtil;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
@@ -60,6 +59,9 @@ public class ProjectUrlViewController {
 	
 	@Autowired
 	SeoStrategyRepository seoStrategyRepository;
+	
+	@Autowired
+	RefreshUtil refreshUtil;
 	
     @RequestMapping(value="/projectUrlView", method=RequestMethod.GET)
     public String projectView(HttpServletRequest request, Model model,
@@ -105,7 +107,7 @@ public class ProjectUrlViewController {
     		return "redirect:notAuthorized";
     	}
     	
-    	setEligibleForRefresh(model,projectUrl);
+    	refreshUtil.setEligibleForRefresh(model,projectUrl);
     	
     	model.addAttribute("projectUrl",projectUrl);
     	
@@ -165,22 +167,6 @@ public class ProjectUrlViewController {
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
     	
         return "projectUrlView";
-    }
-
-    
-    private void setEligibleForRefresh(Model model, ProjectUrl projectUrl) {    	
-    	Date reportDate = projectUrl.getReportDate();
-    	Calendar cal = Calendar.getInstance();
-    	cal.setTime(reportDate);
-    	cal.add(Calendar.DAY_OF_MONTH, 1);
-    	
-    	Date now = new Date();
-    	
-    	LOGGER.info("Comparing " + now + " to " + cal.getTime());
-    	
-    	if (now.after(cal.getTime())) {
-    		model.addAttribute("refreshEligible",true);
-    	}
     }
     
     

@@ -102,6 +102,11 @@ public class CreateSeoStrategyController {
     		return "redirect:projectUrlView?projectUrlId=" + projectUrl.getId();
     	}
     	
+    	List<SeoStrategy> strategies = seoStrategyRepository.findOpenByProjectUrl(projectUrl);
+    	if (strategies != null && strategies.size() > 4) {
+    		return "redirect:projectUrlView?projectUrlId=" + projectUrl.getId();
+    	}
+    	
     	List<DomainSearchKeyword> keywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
     	List<DomainSearchKeyword> mobileKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC_MOBILE);
     	for (DomainSearchKeyword key : mobileKeywords) {
@@ -149,11 +154,16 @@ public class CreateSeoStrategyController {
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
     	}
-
+    	
         String projectUrlIdS = request.getParameter("projectUrlId");
     	ProjectUrl projectUrl = projectUrlRepository.findOne(new Long(projectUrlIdS));
     	model.addAttribute("projectUrl",projectUrl);
 
+    	List<SeoStrategy> strategies = seoStrategyRepository.findOpenByProjectUrl(projectUrl);
+    	if (strategies != null && strategies.size() > 4) {
+    		return "redirect:projectUrlView?projectUrlId=" + projectUrl.getId();
+    	}
+    	
         String addedKeywords = request.getParameter("addedKeywords");
         model.addAttribute("addedKeywords",addedKeywords);
         

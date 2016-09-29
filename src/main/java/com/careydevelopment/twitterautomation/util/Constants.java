@@ -20,5 +20,6 @@ public interface Constants {
 	public static final String PROJECT_DELETED = "Deleted";
 	public static final Integer DEFAULT_MAX_PROJECTS = 5;
 	public static final Integer DEFAULT_MAX_URLS_PER_PROJECT = 5;
-	public static final Integer DEFAULT_MAX_REFRESHES = 10;
+	public static final Integer DEFAULT_MAX_REFRESHES = 5;
+	public static final Integer DEFAULT_MAX_STRATEGIES_PER_URL = 5;
 }

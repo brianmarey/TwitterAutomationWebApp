@@ -21,7 +21,7 @@
                 	<ul class="nav navbar-nav pull-right">
                 		<li class="dropdown dropdown-user" th:if="${session.loginKey != null}">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <img alt="" class="img-circle" th:src="${session.twitterUser.profileImageURL}" />
+                                <img alt="" class="img-circle" th:src="${session.twitterUser.profileImageURLHttps}" />
                                 <span class="username username-hide-on-mobile" th:text="${session.twitter.screenName}"> Nick </span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
