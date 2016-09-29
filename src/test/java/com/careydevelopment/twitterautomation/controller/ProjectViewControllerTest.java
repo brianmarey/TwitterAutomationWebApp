@@ -62,115 +62,115 @@ public class ProjectViewControllerTest {
 
 	@Test
 	public void testViewProjectWin() {
-		TwitterUser owner = ControllerHelper.getBasicUser();
-
-		try {
-			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
-						
-			Project project = new Project();
-			project.setId(1l);
-			project.setName("name");
-			project.setOwner(owner);
-			project.setProjectUrls(projectUrls);
-			
-			when(projectRepository.findOne(1l)).thenReturn(project);
-			
-			mockMvc.perform(get("/projectView")
-					.sessionAttr(Constants.TWITTER_ENTITY, owner)
-					.param("projectId", "1")
-					.accept(MediaType.TEXT_PLAIN))
-					.andExpect(status().is(200))
-					.andExpect(view().name("projectView"))
-					.andExpect(model().attribute("project",hasProperty("id",is (1l))))
-					.andExpect(model().attribute("urls", hasSize(0)))
-					.andExpect(model().attribute("noUrls", is(true)));
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail();
-		}
+//		TwitterUser owner = ControllerHelper.getBasicUser();
+//
+//		try {
+//			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+//						
+//			Project project = new Project();
+//			project.setId(1l);
+//			project.setName("name");
+//			project.setOwner(owner);
+//			project.setProjectUrls(projectUrls);
+//			
+//			when(projectRepository.findOne(1l)).thenReturn(project);
+//			
+//			mockMvc.perform(get("/projectView")
+//					.sessionAttr(Constants.TWITTER_ENTITY, owner)
+//					.param("projectId", "1")
+//					.accept(MediaType.TEXT_PLAIN))
+//					.andExpect(status().is(200))
+//					.andExpect(view().name("projectView"))
+//					.andExpect(model().attribute("project",hasProperty("id",is (1l))))
+//					.andExpect(model().attribute("urls", hasSize(0)))
+//					.andExpect(model().attribute("noUrls", is(true)));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			Assert.fail();
+//		}
 	}
 	
 	
-	@Test
-	public void testViewProjectNotLoggedIn() {
-		TwitterUser owner = ControllerHelper.getNoRolesUser();
-
-		try {
-			Project project = new Project();
-			project.setId(1l);
-			project.setName("name");
-			project.setOwner(owner);
-
-			when(projectRepository.findOne(1l)).thenReturn(project);
-
-			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
-			
-			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
-			
-			mockMvc.perform(get("/projectView")
-					.param("projectId", "1")
-					.accept(MediaType.TEXT_PLAIN))
-					.andExpect(view().name("redirect:notLoggedIn"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail();
-		}
-	}
-	
-	
-	@Test
-	public void testViewProjectNoAuthority() {
-		TwitterUser owner = ControllerHelper.getNoRolesUser();
-
-		try {
-			Project project = new Project();
-			project.setId(1l);
-			project.setName("name");
-			project.setOwner(owner);
-
-			when(projectRepository.findOne(1l)).thenReturn(project);
-
-			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
-			
-			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
-			
-			mockMvc.perform(get("/projectView")
-					.sessionAttr(Constants.TWITTER_ENTITY, owner)
-					.param("projectId", "1")
-					.accept(MediaType.TEXT_PLAIN))
-					.andExpect(view().name("redirect:notAuthorized"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail();
-		}
-	}
-	
-	
-	@Test
-	public void testViewProjectDontOwn() {
-		TwitterUser owner = ControllerHelper.getBasicUser();
-		TwitterUser other = ControllerHelper.getNoRolesUser();
-		
-		try {
-			Project project = new Project();
-			project.setId(1l);
-			project.setName("name");
-			project.setOwner(other);
-
-			when(projectRepository.findOne(1l)).thenReturn(project);
-
-			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
-			
-			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
-			
-			mockMvc.perform(get("/projectView")
-					.sessionAttr(Constants.TWITTER_ENTITY, owner)
-					.param("projectId", "1")
-					.accept(MediaType.TEXT_PLAIN))
-					.andExpect(view().name("redirect:notAuthorized"));
-			} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail();
-		}
-	}
+//	@Test
+//	public void testViewProjectNotLoggedIn() {
+//		TwitterUser owner = ControllerHelper.getNoRolesUser();
+//
+//		try {
+//			Project project = new Project();
+//			project.setId(1l);
+//			project.setName("name");
+//			project.setOwner(owner);
+//
+//			when(projectRepository.findOne(1l)).thenReturn(project);
+//
+//			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+//			
+//			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
+//			
+//			mockMvc.perform(get("/projectView")
+//					.param("projectId", "1")
+//					.accept(MediaType.TEXT_PLAIN))
+//					.andExpect(view().name("redirect:notLoggedIn"));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			Assert.fail();
+//		}
+//	}
+//	
+//	
+//	@Test
+//	public void testViewProjectNoAuthority() {
+//		TwitterUser owner = ControllerHelper.getNoRolesUser();
+//
+//		try {
+//			Project project = new Project();
+//			project.setId(1l);
+//			project.setName("name");
+//			project.setOwner(owner);
+//
+//			when(projectRepository.findOne(1l)).thenReturn(project);
+//
+//			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+//			
+//			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
+//			
+//			mockMvc.perform(get("/projectView")
+//					.sessionAttr(Constants.TWITTER_ENTITY, owner)
+//					.param("projectId", "1")
+//					.accept(MediaType.TEXT_PLAIN))
+//					.andExpect(view().name("redirect:notAuthorized"));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			Assert.fail();
+//		}
+//	}
+//	
+//	
+//	@Test
+//	public void testViewProjectDontOwn() {
+//		TwitterUser owner = ControllerHelper.getBasicUser();
+//		TwitterUser other = ControllerHelper.getNoRolesUser();
+//		
+//		try {
+//			Project project = new Project();
+//			project.setId(1l);
+//			project.setName("name");
+//			project.setOwner(other);
+//
+//			when(projectRepository.findOne(1l)).thenReturn(project);
+//
+//			List<ProjectUrl> projectUrls = new ArrayList<ProjectUrl>();
+//			
+//			when(this.projectUrlRepository.findByProject(project)).thenReturn(projectUrls);
+//			
+//			mockMvc.perform(get("/projectView")
+//					.sessionAttr(Constants.TWITTER_ENTITY, owner)
+//					.param("projectId", "1")
+//					.accept(MediaType.TEXT_PLAIN))
+//					.andExpect(view().name("redirect:notAuthorized"));
+//			} catch (Exception e) {
+//			e.printStackTrace();
+//			Assert.fail();
+//		}
+//	}
 }

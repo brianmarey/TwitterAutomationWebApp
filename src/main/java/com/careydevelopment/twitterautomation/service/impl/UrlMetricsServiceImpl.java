@@ -232,7 +232,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 					if (table.getRows() != null && table.getRows().size() > 0) {
 						String row = table.getRows().get(0);
 						LOGGER.info("Parsing " + row);
-						IndexItemInfoRow res = IndexItemInfoRowParser.getIndexItemInfoRow(row);
+						IndexItemInfoRow res = IndexItemInfoRowParser.getIndexItemInfoRow(row,table.getHeaders());
 						res.setProjectUrl(url);
 						
 						IndexItemInfoRow oldRes = indexItemInfoRepository.findByUrl(url);
@@ -284,7 +284,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 						for (String row : table.getRows()) {
 							try {
 								LOGGER.info("Parsing " + row);
-								BacklinkData bd = BacklinkDataParser.getBacklinkData(row);
+								BacklinkData bd = BacklinkDataParser.getBacklinkData(row,table.getHeaders());
 								bd.setProjectUrl(url);
 								
 								BacklinkData oldBd = backlinkDataRepository.findSpecific(url, bd.getSourceUrl());
@@ -341,25 +341,27 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 						for (String row : table.getRows()) {
 							try {
 								LOGGER.info("Parsing " + row);
-								AnchorTextData at = AnchorTextDataParser.getAnchorTextData(row);
-								at.setProjectUrl(url);
-								
-								LOGGER.debug("Searching for anchor text " + at.getAnchorText());
-								AnchorTextData oldAt = anchorTextDataRepository.findSpecific(url, at.getAnchorText());
-								
-								if (oldAt == null) {
-									LOGGER.info("adding new anchor text");
-									anchorTextDataRepository.save(at);		
-								} else {
-									LOGGER.info("updating anchor text");
-									oldAt.setCitationFlow(at.getCitationFlow());
-									oldAt.setDeletedLinks(at.getDeletedLinks());
-									oldAt.setNofollowLinks(at.getNofollowLinks());
-									oldAt.setReferringDomains(at.getReferringDomains());
-									oldAt.setTotalLinks(at.getTotalLinks());
-									oldAt.setTrustFlow(at.getTrustFlow());
+								AnchorTextData at = AnchorTextDataParser.getAnchorTextData(row,table.getHeaders());
+								if (at.getAnchorText() != null && at.getAnchorText().trim().length()> 0) {
+									at.setProjectUrl(url);
 									
-									anchorTextDataRepository.save(oldAt);
+									LOGGER.debug("Searching for anchor text " + at.getAnchorText());
+									AnchorTextData oldAt = anchorTextDataRepository.findSpecific(url, at.getAnchorText());
+									
+									if (oldAt == null) {
+										LOGGER.info("adding new anchor text");
+										anchorTextDataRepository.save(at);		
+									} else {
+										LOGGER.info("updating anchor text");
+										oldAt.setCitationFlow(at.getCitationFlow());
+										oldAt.setDeletedLinks(at.getDeletedLinks());
+										oldAt.setNofollowLinks(at.getNofollowLinks());
+										oldAt.setReferringDomains(at.getReferringDomains());
+										oldAt.setTotalLinks(at.getTotalLinks());
+										oldAt.setTrustFlow(at.getTrustFlow());
+										
+										anchorTextDataRepository.save(oldAt);
+									}
 								}
 							} catch (Exception e) {
 								LOGGER.error("Problem saving anchor text " + row,e);

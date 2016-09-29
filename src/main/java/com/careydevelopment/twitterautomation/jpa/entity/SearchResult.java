@@ -13,40 +13,39 @@ public class SearchResult {
 	private Long id;
 	
 	@Column(name="keyword")
-	private String keyword;
+	private String keyword = "";
 	
 	@Column(name="type")
-	private String type;
+	private String type = "";
 	
 	@Column(name="domain")
-	private String domain;
+	private String domain = "";
 	
 	@Column(name="url")
-	private String url;
+	private String url = "";
 	
 	public String getKeyword() {
-		return keyword;
+		return (keyword == null) ? "" : keyword;
 	}
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
 	public String getType() {
-		return type;
+		return (type == null) ? "" : type;
 	}
 	public void setType(String type) {
 		this.type = type;
 	}
 	public String getDomain() {
-		return domain;
+		return (domain == null) ? "" : domain;
 	}
 	public void setDomain(String domain) {
 		this.domain = domain;
 	}
 	public String getUrl() {
-		return url;
+		return (url == null) ? "" : url;
 	}
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
 }

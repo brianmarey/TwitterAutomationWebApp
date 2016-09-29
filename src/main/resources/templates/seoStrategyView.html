@@ -28,6 +28,14 @@
         <!-- for captcha -->
         <script src='https://www.google.com/recaptcha/api.js'></script>
         
+        <script>
+    	function refreshData() {
+    		$('#refreshDiv').hide();
+    		$('#pleaseWaitDiv').show();
+    		document.location="./refreshSeoReport?strategyId=<th:block th:text='${seoStrategy.id}'></th:block>";
+    	}
+        </script>
+        
     </head>
     <!-- END HEAD -->
 
@@ -60,6 +68,32 @@
                     <small th:text="${projectUrl.url}"></small></h1>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
+                    
+                    <th:block th:if='${seoStrategy.strategyStatus == "Open"}'>
+                    <th:block th:if="${projectUrl.project.status == 'Active'}">
+                    <div class="row" th:if="${refreshEligible}" id="refreshDiv">
+                    	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                    	<div class="note note-success">
+	                        	<h4 class="block">This URL Is Eligible for a Refresh</h4>
+	                             <p> You can refresh this report to get more recent information. <a href="javascript:refreshData()">Click here</a> to refresh. </p>
+	                        </div>
+                        </div>
+                    </div>
+                    </th:block>         
+                    </th:block>
+                    
+                    <div class="row" style="display:none" id="pleaseWaitDiv">
+                    	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                    	<div class="note note-success">
+	                        	<h4 class="block">Please Wait</h4>
+	                             <p> Please wait while the data is refreshed.</p>
+	                             <p> Don't click the Back button on your browser.</p>
+	                             <p> Don't stop the page load - it will take a while.</p>
+	                             <p> Feel free to work in a different tab or open a new window.</p>
+	                             <p><img th:src="@{/images/hourglass.gif}" alt="hourglass"/></p>
+	                        </div>
+                        </div>                    
+                    </div>    
                     
                     <div class="row">
                     	<div class="col-md-12">
@@ -98,13 +132,21 @@
                                        </div>
                                        <div class="form-group">
                                            <label class="col-md-3 control-label" for="title">Status:</label>
-                                           <th:block th:if='${seoStrategy.strategyStatus == "Closed"}'>
-                                           <label class="col-md-5 control-label" style="text-align:left;font-weight:bold;color:#d91e18" th:text="${seoStrategy.strategyStatus}"></label>
-                                           </th:block>
-                                           <th:block th:unless='${seoStrategy.strategyStatus == "Closed"}'>
-                                           <label class="col-md-5 control-label" style="text-align:left;font-weight:bold;color:#26c281" th:text="${seoStrategy.strategyStatus}"></label>
-                                           </th:block>
+                                           <label class="col-md-5 control-label" style="text-align:left;font-weight:bold" th:text="${seoStrategy.strategyStatus}"></label>
                                        </div>
+                                       
+                                       <th:block th:if='${seoStrategy.strategyStatus == "Closed"}'>
+                                       <div class="form-group">
+                                           <label class="col-md-3 control-label" for="title">Success:</label>
+                                           <th:block th:if='${seoStrategy.strategySuccess == "Failure"}'>
+                                           <label class="col-md-5 control-label" style="text-align:left;font-weight:bold;color:#d91e18" th:text="${seoStrategy.strategySuccess}"></label>
+                                           </th:block>
+                                           <th:block th:unless='${seoStrategy.strategySuccess == "Failure"}'>
+                                           <label class="col-md-5 control-label" style="text-align:left;font-weight:bold;color:#26c281" th:text="${seoStrategy.strategySuccess}"></label>
+                                           </th:block>
+                                       </div>                                       
+                                       </th:block>
+                                       
                                        <div class="form-group">
                                            <label class="col-md-3 control-label" for="title">Start Date:</label>
                                            <label class="col-md-5 control-label" style="text-align:left" th:text="${seoStrategy.startDateDisplay}"></label>
@@ -190,27 +232,27 @@
 	                                        <tbody>
 	                                        	<tr th:each="keyword,iterationStatus : ${mobileKeywords}">
 	                                        		<td th:text="${keyword.keyword}"></td>
-	                                        		<td th:text="${keyword.originalRankDisplay}" style="text-align:center"></td>
+	                                        		<td th:text="${keyword.originalMobileRankDisplay}" style="text-align:center"></td>
 	                                        		<td style="text-align:center">
-	                                        		<th:block th:if="${keyword.improvement}">
-	                                        		<span th:text="${keyword.currentRankDisplay}" style="color:#26c281"></span>
+	                                        		<th:block th:if="${keyword.mobileImprovement}">
+	                                        		<span th:text="${keyword.currentMobileRankDisplay}" style="color:#26c281"></span>
 	                                        		</th:block>
-	                                        		<th:block th:if="${keyword.same}">
-	                                        		<span th:text="${keyword.currentRankDisplay}"></span>
+	                                        		<th:block th:if="${keyword.mobileSame}">
+	                                        		<span th:text="${keyword.currentMobileRankDisplay}"></span>
 	                                        		</th:block>
-	                                        		<th:block th:if="${!keyword.improvement and !keyword.same}">
-	                                        		<span th:text="${keyword.currentRankDisplay}" style="color:#d91e18"></span>
+	                                        		<th:block th:if="${!keyword.mobileImprovement and !keyword.mobileSame}">
+	                                        		<span th:text="${keyword.currentMobileRankDisplay}" style="color:#d91e18"></span>
 	                                        		</th:block>
 	                                        		</td>
 	                                        		<td style="text-align:center">
-	                                        		<th:block th:if="${keyword.improvement}">
-	                                        		<span th:text="${keyword.difference}" style="color:#26c281"></span>
+	                                        		<th:block th:if="${keyword.mobileImprovement}">
+	                                        		<span th:text="${keyword.mobileDifference}" style="color:#26c281"></span>
 	                                        		</th:block>
-	                                        		<th:block th:if="${keyword.same}">
-	                                        		<span th:text="${keyword.difference}"></span>
+	                                        		<th:block th:if="${keyword.mobileSame}">
+	                                        		<span th:text="${keyword.mobileDifference}"></span>
 	                                        		</th:block>
-	                                        		<th:block th:if="${!keyword.improvement and !keyword.same}">
-	                                        		<span th:text="${keyword.difference}" style="color:#d91e18"></span>
+	                                        		<th:block th:if="${!keyword.mobileImprovement and !keyword.mobileSame}">
+	                                        		<span th:text="${keyword.mobileDifference}" style="color:#d91e18"></span>
 	                                        		</th:block>
 	                                        		</td>
 	                                        	</tr>
@@ -233,9 +275,15 @@
                                 </div>
                                 <div class="portlet-body util-btn-margin-bottom-5">
                                 	<div class="row">
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/projectUrlView(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">View URL Metrics</button></a></div>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New SEO Strategy</button></a></div>                   		
+                                		
+                                		<th:block th:if='${seoStrategy.strategyStatus == "Open"}'>
                                 		<div class="col-md-4" style="text-align:center"><a th:href="@{/editSeoStrategy(strategyId=${seoStrategy.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Edit This Strategy</button></a></div>
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New SEO Strategy</button></a></div>
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
+                                		</th:block>
+                                		<th:block th:unless='${seoStrategy.strategyStatus == "Open"}'>
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Dashboard</button></a></div>
+                                		</th:block>
                                 	</div>
 								</div>
 							</div>

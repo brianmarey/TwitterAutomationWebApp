@@ -168,7 +168,7 @@ public class EditSeoStrategyController {
     	if (!passedCaptcha) model.addAttribute("captchaFail", true);
     	
         if (bindingResult.hasErrors() || !passedCaptcha) {
-            return "createSeoStrategy";
+            return "editSeoStrategy";
         }
         
         persist(seoStrategy,projectUrl,savedSeoStrategy);
@@ -185,6 +185,7 @@ public class EditSeoStrategyController {
         savedSeoStrategy.setStrategySource(seoStrategy.getStrategySource());
         savedSeoStrategy.setStrategyStatus(seoStrategy.getStrategyStatus());
         savedSeoStrategy.setStrategyType(seoStrategy.getStrategyType());
+        savedSeoStrategy.setStrategySuccess(seoStrategy.getStrategySuccess());
         
         seoStrategyRepository.save(savedSeoStrategy);
     }

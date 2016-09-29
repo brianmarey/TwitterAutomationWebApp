@@ -1,6 +1,6 @@
 package com.careydevelopment.twitterautomation.controller;
 
-import java.util.List;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,40 +14,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.careydevelopment.twitterautomation.jpa.entity.DomainSearchKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.SeoStrategy;
-import com.careydevelopment.twitterautomation.jpa.entity.StrategyKeyword;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
-import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.SeoStrategyRepository;
+import com.careydevelopment.twitterautomation.service.UrlMetricsService;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RefreshUtil;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
 @Controller
-public class SeoStrategyViewController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(SeoStrategyViewController.class);
+public class RefreshSeoController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(RefreshSeoController.class);
 	
 	@Autowired
 	LoginService loginService;
 	
 	@Autowired
-	ProjectUrlRepository projectUrlRepository;
-
-	@Autowired
-	DomainSearchKeywordRepository domainSearchKeywordRepository;
+	SeoStrategyRepository seoStrategyRepository;
 	
 	@Autowired
-	SeoStrategyRepository seoStrategyRepository;
+	ProjectUrlRepository projectUrlRepository;
+	
+	@Autowired
+	UrlMetricsService urlMetricsService;
 	
 	@Autowired
 	RefreshUtil refreshUtil;
 	
-	
-    @RequestMapping(value="/seoStrategyView", method=RequestMethod.GET)
+    @RequestMapping(value="/refreshSeoReport", method=RequestMethod.GET)
     public String projectView(HttpServletRequest request, Model model,
     	@CookieValue(value="accessToken" , defaultValue ="") String accessToken,
     	@CookieValue(value="accessTokenSecret" , defaultValue ="") String accessTokenSecret,
@@ -80,8 +77,9 @@ public class SeoStrategyViewController {
     	if (user.getUserConfig() != null && !"true".equalsIgnoreCase(user.getUserConfig().getTosAgreement())) {
     		return "redirect:seoplayhouse";
     	}
-  
+    	
     	SeoStrategy seoStrategy = seoStrategyRepository.findOne(strategyId);
+    	
     	if (seoStrategy == null) {
     		return "redirect:notAuthorized";
     	}
@@ -96,59 +94,22 @@ public class SeoStrategyViewController {
     		return "redirect:notAuthorized";
     	}
     	
-    	handleKeywords(seoStrategy,projectUrl,model);
+    	if (!Constants.PROJECT_ACTIVE.equals(projectUrl.getProject().getStatus())) {
+    		return "redirect:seoStrategyView?strategyId=" + strategyId;
+    	}
     	
-    	refreshUtil.setEligibleForRefresh(model,projectUrl);
-    	    	
     	model.addAttribute("projectUrl",projectUrl);
-    	model.addAttribute("seoStrategy", seoStrategy);
     	
-    	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
-    	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);
-    	
-        return "seoStrategyView";
-    }
-
-    
-    private void handleKeywords(SeoStrategy seoStrategy, ProjectUrl projectUrl, Model model) {
-    	List<DomainSearchKeyword> domainSearchKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC);
-    	
-    	List<StrategyKeyword> keywords = seoStrategy.getStrategyKeywords();
-    	if (keywords != null) {
-    		for (StrategyKeyword keyword : keywords) {
-    			String key = keyword.getKeyword();
-    			Integer currentRank = getCurrentRank(key, domainSearchKeywords);
-    			keyword.setCurrentRank(currentRank);
-    		}
+    	if (refreshUtil.isMaxedOut(user.getUserConfig())) {
+    		return "redirect:maxedOutRefreshes";
     	}
     	
-    	model.addAttribute("keywords",keywords);
-    	    	
-    	List<DomainSearchKeyword> domainMobileSearchKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC_MOBILE);
-    	
-    	List<StrategyKeyword> mobileKeywords = seoStrategy.getStrategyKeywords();
-    	if (mobileKeywords != null) {
-    		for (StrategyKeyword keyword : mobileKeywords) {
-    			String key = keyword.getKeyword();
-    			Integer currentRank = getCurrentRank(key, domainMobileSearchKeywords);
-    			keyword.setCurrentMobileRank(currentRank);
-    		}
+    	if (refreshUtil.isEligibleForRefresh(projectUrl)) {
+    		projectUrl.setReportDate(new Date());
+    		projectUrlRepository.save(projectUrl);
+    		urlMetricsService.saveUrlMetrics(projectUrl);
     	}
     	
-    	model.addAttribute("mobileKeywords",mobileKeywords);
-    }
-    
-    
-    private Integer getCurrentRank(String key, List<DomainSearchKeyword> keywords) {
-    	Integer rank = 0;
-    	
-    	for (DomainSearchKeyword keyword : keywords) {
-    		if (keyword.getKeyword().equals(key)) {
-    			rank = keyword.getPosition();
-    			break;
-    		}
-    	}
-    	
-    	return rank;
+        return "redirect: seoStrategyView?strategyId=" + strategyId;
     }
 }

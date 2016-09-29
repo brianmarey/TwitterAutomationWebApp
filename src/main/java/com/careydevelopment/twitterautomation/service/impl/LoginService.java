@@ -72,6 +72,7 @@ public class LoginService {
         request.getSession().setAttribute(Constants.LOGIN_KEY, token.getToken());
         
         User user = twitter.showUser(twitter.getId());
+        //user.getProfileImageURLHttps()
         request.getSession().setAttribute(Constants.TWITTER_USER, user);
         
         if (response != null) {

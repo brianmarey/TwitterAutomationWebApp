@@ -13,10 +13,10 @@ import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 
 public interface AnchorTextDataRepository extends BaseRepository<AnchorTextData,Long>{
 
-	@Query("SELECT b FROM AnchorTextData b where b.projectUrl = :projectUrl")
+	@Query("SELECT b FROM AnchorTextData b where b.projectUrl = :projectUrl order by b.totalLinks desc")
     List<AnchorTextData> findByUrl(@Param("projectUrl") ProjectUrl projectUrl);
 
-	@Query("SELECT b FROM AnchorTextData b where b.projectUrl = :projectUrl and b.anchorText = :anchorText")
+	@Query("SELECT b FROM AnchorTextData b where b.projectUrl = :projectUrl and b.anchorText = :anchorText order by b.totalLinks desc")
     AnchorTextData findSpecific(@Param("projectUrl") ProjectUrl projectUrl, @Param("anchorText") String anchorText);
 	
 	@Query("SELECT b FROM AnchorTextData b order by id asc")

@@ -78,6 +78,9 @@ public class SeoStrategiesController {
     		model.addAttribute("numberOfStrategies", 0);
     	}
     	
+    	model.addAttribute("status",status);
+    	model.addAttribute("success", success);
+    	
     	model.addAttribute("projectsActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("seoStrategiesActive", Constants.MENU_CATEGORY_OPEN);
     	model.addAttribute("projectsArrow", Constants.TWISTIE_OPEN);

@@ -25,25 +25,25 @@ public class AnchorTextData {
 	private ProjectUrl projectUrl;
 	
 	@Column(name="referring_domains")
-	private Integer referringDomains;
+	private Integer referringDomains = 0;
 	
 	@Column(name="total_links")
-	private BigInteger totalLinks;
+	private BigInteger totalLinks = BigInteger.ZERO;
 	
 	@Column(name="deleted_links")
-	private BigInteger deletedLinks;
+	private BigInteger deletedLinks = BigInteger.ZERO;
 	
 	@Column(name="nofollow_links")
-	private BigInteger nofollowLinks;
+	private BigInteger nofollowLinks = BigInteger.ZERO;
 	
 	@Column(name="citation_flow")
-	private Integer citationFlow;
+	private Integer citationFlow = 0;
 	
 	@Column(name="trust_flow")
-	private Integer trustFlow;
+	private Integer trustFlow = 0;
 
 	@Column(name="anchor_text")
-	private String anchorText;
+	private String anchorText = "";
 	
 	public Long getId() {
 		return id;
@@ -62,7 +62,7 @@ public class AnchorTextData {
 	}
 
 	public Integer getReferringDomains() {
-		return referringDomains;
+		return (referringDomains == null) ? 0 : referringDomains;
 	}
 
 	public void setReferringDomains(Integer referringDomains) {
@@ -70,7 +70,7 @@ public class AnchorTextData {
 	}
 
 	public BigInteger getTotalLinks() {
-		return totalLinks;
+		return (totalLinks == null) ? BigInteger.ZERO : totalLinks;
 	}
 
 	public void setTotalLinks(BigInteger totalLinks) {
@@ -78,7 +78,7 @@ public class AnchorTextData {
 	}
 
 	public BigInteger getDeletedLinks() {
-		return deletedLinks;
+		return (deletedLinks == null) ? BigInteger.ZERO : deletedLinks;
 	}
 
 	public void setDeletedLinks(BigInteger deletedLinks) {
@@ -86,7 +86,7 @@ public class AnchorTextData {
 	}
 
 	public BigInteger getNofollowLinks() {
-		return nofollowLinks;
+		return (nofollowLinks == null) ? BigInteger.ZERO : nofollowLinks;
 	}
 
 	public void setNofollowLinks(BigInteger nofollowLinks) {
@@ -94,7 +94,7 @@ public class AnchorTextData {
 	}
 
 	public Integer getCitationFlow() {
-		return citationFlow;
+		return (citationFlow == null) ? 0 : citationFlow;
 	}
 
 	public void setCitationFlow(Integer citationFlow) {
@@ -102,7 +102,7 @@ public class AnchorTextData {
 	}
 
 	public Integer getTrustFlow() {
-		return trustFlow;
+		return (trustFlow == null) ? 0 : trustFlow;
 	}
 
 	public void setTrustFlow(Integer trustFlow) {
@@ -110,7 +110,7 @@ public class AnchorTextData {
 	}
 
 	public String getAnchorText() {
-		return anchorText;
+		return (anchorText == null) ? "" : anchorText;
 	}
 
 	public void setAnchorText(String anchorText) {
@@ -124,9 +124,10 @@ public class AnchorTextData {
 			if (anchorText.length() > 30) {
 				anchorTextDisplay = anchorText.substring(0, 30) + "...";
 			} 
+		} else {
+			anchorTextDisplay = "";
 		}
 		
 		return anchorTextDisplay;
 	}
-	
 }

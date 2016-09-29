@@ -39,15 +39,18 @@
             	var message = "Are you sure you want to delete " + name + "?";
                 bootbox.confirm(message, function(result) {
                 	if (result) {
+                		$("#loadingDiv").show();
+                		
                 		$.ajax({
                 			  method: "GET",
                 			  url: "./deleteSeoStrategy?strategyId=" + id
                 		})
                 		.success(function( msg ) {
                 			location.reload();
-                		});	
+                		})
                 		.error(function( msg ) {
                 			bootbox.alert("There was a problem with deleting the strategy. Please contact support.");
+                			$("#loadingDiv").hide();
                 		});
                 	}
                  });
@@ -188,7 +191,8 @@
                     		<div class="portlet light portlet-fit bordered">
                                     <div class="portlet-title">
                                         <div class="caption">
-                                            <span class="caption-subject font-green sbold uppercase"><i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="The top 10 anchor texts that are used in backlinks pointing to the site."></i> Anchor Text Distribution</span>
+                                            <span class="caption-subject font-green sbold uppercase">
+                                            <i class="icon-question tooltips" data-container="body" data-placement="top" data-original-title="The top 10 anchor texts that are used in backlinks pointing to the site."></i> Top Anchor Texts</span>
                                         </div>                   
                                     </div>
                                     <div class="portlet-body">
@@ -428,7 +432,7 @@
 
 
                     <div class="row" style="margin-top:20px">
-                    <th:block th:if="${organicCompetitors != null}">
+                    <th:block th:if="${organicCompetitors != null and numberOfOrganicCompetitors != 0}">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
 	                        <div class="portlet box blue-hoki">
 	                            <div class="portlet-title">
@@ -616,7 +620,7 @@
                                 	<div class="row">
                                 		<div class="col-md-4" style="text-align:center"><a th:href="@{/createProjectUrl(projectId=${projectUrl.project.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Add a URL/Domain</button></a></div>
                                 		<div class="col-md-4" style="text-align:center"><a th:href="@{/createSeoStrategy(projectUrlId=${projectUrl.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Create a New SEO Strategy</button></a></div>
-                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/seoplayhouse}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Go to the Dashboard</button></a></div>                                		
+                                		<div class="col-md-4" style="text-align:center"><a th:href="@{/projectView(projectId=${projectUrl.project.id})}"><button type="button" class="btn btn-primary" style="margin-bottom:5px">Back to Project</button></a></div>                                		
                                 	</div>
 								</div>
 							</div>
@@ -625,6 +629,10 @@
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
+		    <div id="loadingDiv" style="position:fixed;top:50%;left:50%;margin-top:-75px;margin-left:-75px;display:none">
+				<img th:src="@{/images/gears.gif}"/>
+			</div>
+
             <!-- END CONTENT -->
         </div>
         <!-- END CONTAINER -->
@@ -638,12 +646,14 @@
         <script th:src="@{/assets/global/plugins/flot/jquery.flot.crosshair.min.js}" type="text/javascript"></script>
         <script th:src="@{/assets/global/plugins/flot/jquery.flot.axislabels.js}" type="text/javascript"></script>
         <script th:src="@{/assets/pages/scripts/charts-flotcharts.min.js}" type="text/javascript"></script>
+        <script th:src="@{/assets/global/plugins/bootbox/bootbox.min.js}" type="text/javascript"></script>
+        <script th:src="@{/assets/pages/scripts/ui-bootbox.min.js}" type="text/javascript"></script>
         <!-- END FOOTER -->
         
-        <th:block th:if="${anchorTextData != null}">
+        <th:block th:if="${topAnchorTexts != null}">
         <script>
         var data = [
-			<th:block th:each="anchorText,iterationStatus : ${anchorTextData}">
+			<th:block th:each="anchorText,iterationStatus : ${topAnchorTexts}">
             			{ label: '<th:block th:text="${anchorText.anchorTextDisplay}"></th:block>',  data: <th:block th:text="${anchorText.totalLinks}"></th:block>},
             </th:block>			
             		];

@@ -2,6 +2,7 @@ package com.careydevelopment.twitterautomation.jpa.entity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,33 +42,33 @@ public class SeoStrategy {
 	private ProjectUrl projectUrl;
 	
 	@Column(name = "start_date")
-	private Date startDate;
+	private Date startDate = new Date();
 	
 	@Size(min = 3, max = 32, message = "Name must be between 3 and 32 characters")
 	@Column(name = "name")
-	private String name;
+	private String name = "";
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "seoStrategy")
 	private List<StrategyKeyword> strategyKeywords;
 
 	@Column(name = "strategy_type")
-	private String strategyType;
+	private String strategyType = "";
 	
 	//purchased or self
 	@Column(name = "strategy_source")
-	private String strategySource;
+	private String strategySource = "";
 
 	@Column(name = "purchased_name")
-	private String purchasedName;
+	private String purchasedName = "";
 	
 	@Column(name = "purchased_url")
-	private String purchasedUrl;
+	private String purchasedUrl = "";
 
 	@Column(name = "strategy_description")
-	private String strategyDescription;
+	private String strategyDescription = "";
 
 	@Column(name = "strategy_status")
-	private String strategyStatus;
+	private String strategyStatus = "";
 	
 	@Column(name = "strategy_success")
 	private String strategySuccess = "";
@@ -89,7 +90,7 @@ public class SeoStrategy {
 	}
 
 	public Date getStartDate() {
-		return startDate;
+		return (startDate == null) ? new Date() : startDate;
 	}
 
 	public void setStartDate(Date startDate) {
@@ -97,7 +98,7 @@ public class SeoStrategy {
 	}
 
 	public String getName() {
-		return name;
+		return (name == null) ? "" : name;
 	}
 
 	public void setName(String name) {
@@ -105,7 +106,7 @@ public class SeoStrategy {
 	}
 
 	public List<StrategyKeyword> getStrategyKeywords() {
-		return strategyKeywords;
+		return (strategyKeywords == null) ? new ArrayList<StrategyKeyword>() : strategyKeywords;
 	}
 
 	public void setStrategyKeywords(List<StrategyKeyword> strategyKeywords) {
@@ -113,7 +114,7 @@ public class SeoStrategy {
 	}
 
 	public String getStrategyType() {
-		return strategyType;
+		return (strategyType == null) ? "" : strategyType;
 	}
 
 	public void setStrategyType(String strategyType) {
@@ -121,7 +122,7 @@ public class SeoStrategy {
 	}
 
 	public String getStrategySource() {
-		return strategySource;
+		return (strategySource == null) ? "" : strategySource;
 	}
 
 	public void setStrategySource(String strategySource) {
@@ -129,7 +130,7 @@ public class SeoStrategy {
 	}
 
 	public String getPurchasedName() {
-		return purchasedName;
+		return (purchasedName == null) ? "" : purchasedName;
 	}
 
 	public void setPurchasedName(String purchasedName) {
@@ -137,7 +138,7 @@ public class SeoStrategy {
 	}
 
 	public String getPurchasedUrl() {
-		return purchasedUrl;
+		return (purchasedUrl == null) ? "" : purchasedUrl;
 	}
 
 	public void setPurchasedUrl(String purchasedUrl) {
@@ -145,7 +146,7 @@ public class SeoStrategy {
 	}
 
 	public String getStrategyDescription() {
-		return strategyDescription;
+		return (strategyDescription == null) ? "" : strategyDescription;
 	}
 
 	public void setStrategyDescription(String strategyDescription) {
@@ -153,7 +154,7 @@ public class SeoStrategy {
 	}
 
 	public String getStrategyStatus() {
-		return strategyStatus;
+		return (strategyStatus == null) ? "" : strategyStatus;
 	}
 
 	public void setStrategyStatus(String strategyStatus) {
@@ -181,7 +182,7 @@ public class SeoStrategy {
 	}
 
 	public String getStrategySuccess() {
-		return strategySuccess;
+		return (strategySuccess == null) ? "" : strategySuccess;
 	}
 
 	public void setStrategySuccess(String strategySuccess) {

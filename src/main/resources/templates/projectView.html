@@ -33,6 +33,7 @@
         	var message = "Are you sure you want to delete " + name + "?";
             bootbox.confirm(message, function(result) {
             	if (result) {
+            		$("#loadingDiv").show();
             		document.location = "./deleteProjectUrl?projectUrlId=" + id;	
             	}
             });
@@ -109,6 +110,7 @@
 	                                        </thead>
 	                                        <tbody>
 	                                        	<tr th:each="url,iterationStatus : ${urls}">
+	                                    			<th:block th:if="${url.pageSpeedInsights != null and url.indexItemInfo != null}">
 	                                        		<td style="vertical-align:middle"><a th:href="${url.url}" target="_blank" th:text="${url.displayUrl}"></a></td>
 	                                        		<td style="vertical-align:middle;text-align:center">
 	                                        		<th:block th:if="${url.pageSpeedInsights.mobileSpeed != null}">
@@ -138,6 +140,7 @@
                                                          <a th:attr="href='javascript:deleteUrl(' + ${url.id} + ',\'' + ${url.url} + '\');'" class="btn dark btn-sm btn-outline sbold uppercase">
                                                                 <i class="fa fa-close"></i> Delete </a>
                                                     </td>												
+                                                    </th:block>
                                                 </tr>		                                        
 	                                        </tbody>
 	                                    </table>
@@ -167,6 +170,9 @@
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
+            <div id="loadingDiv" style="position:fixed;top:50%;left:50%;margin-top:-75px;margin-left:-75px;display:none">
+				<img th:src="@{/images/gears.gif}"/>
+			</div>
             <!-- END CONTENT -->
         </div>
         <!-- END CONTAINER -->
