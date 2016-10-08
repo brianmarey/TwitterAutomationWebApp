@@ -27,8 +27,10 @@
         		
         		var totalKeywords = 0;
         		
+        		var parts = addedKeywords.split(",");
+
         		if (selectedKeywords) totalKeywords+=selectedKeywords.length;
-        		if (addedKeywords) totalKeywords+=addedKeywords.length;
+        		if (addedKeywords) totalKeywords+=parts.length;
         		
         		if (totalKeywords > 10) {
         			displayError("Please do not add more than 10 keywords.");
