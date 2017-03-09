@@ -14,6 +14,7 @@
             	});	
         	}
         	
+        	//test
         	
         	function displayMessage(errorMessage) {
                 $.bootstrapGrowl(errorMessage, {
