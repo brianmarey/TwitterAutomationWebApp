@@ -123,7 +123,7 @@ public class SeoStrategyViewController {
     	}
     	
     	model.addAttribute("keywords",keywords);
-    	    	
+    	
     	List<DomainSearchKeyword> domainMobileSearchKeywords = domainSearchKeywordRepository.findLatestByType(projectUrl, DomainSearchKeyword.ORGANIC_MOBILE);
     	
     	List<StrategyKeyword> mobileKeywords = seoStrategy.getStrategyKeywords();

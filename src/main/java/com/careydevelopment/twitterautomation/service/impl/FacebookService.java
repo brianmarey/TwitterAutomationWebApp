@@ -23,8 +23,15 @@ public class FacebookService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FacebookService.class);
 	
+	private String accessToken;
+	
 	public FacebookService() {
-		// TODO Auto-generated constructor stub
+		try {
+			Properties props = PropertiesFactory.getProperties(PropertiesFile.FACEBOOK_PROPERTIES);
+			accessToken = props.getProperty("access.token");
+		} catch (Exception e) {
+			LOGGER.error("Unable to obtain Facebook token!",e);
+		}
 	}
 	
 	
@@ -113,17 +120,9 @@ public class FacebookService {
 		return builder.toString();
 	}
 	
-	
-	private String getAccessToken() throws PropertiesFactoryException {
-		/*Properties props = PropertiesFactory.getProperties(PropertiesFile.FACEBOOK_PROPERTIES);
-		String accessToken = props.getProperty("access.token");
-		return accessToken;*/
-		return "";
-	}
-	
-	
 	private JsonParser getFeed(String page) throws PropertiesFactoryException {
 		String feedUrl = getFeedUrl(page);
+		System.err.println(feedUrl);
 		JsonParser reader = new JsonParser(feedUrl);
 		return reader;
 	}
@@ -135,7 +134,7 @@ public class FacebookService {
 		builder.append("https://graph.facebook.com/v2.6/");
 		builder.append(page);
 		builder.append("/feed?access_token=");
-		builder.append(getAccessToken());
+		builder.append(accessToken);
 		builder.append("&fields=id,message,status_type,shares&limit=100");
 		
 		return builder.toString();

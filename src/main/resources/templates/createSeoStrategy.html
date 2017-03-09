@@ -146,7 +146,7 @@
 	                                <div class="form-group" th:classappend="${#fields.hasErrors('purchasedUrl')} ? has-error : ''">
 	                                    <label class="control-label col-md-3"> Outsource URL</label>
 	                                    <div class="col-md-4">
-	                                        <input type="text" class="form-control" maxlength="32" th:value="*{purchasedUrl}" th:field="*{purchasedUrl}"/>
+	                                        <input type="text" class="form-control" maxlength="512" th:value="*{purchasedUrl}" th:field="*{purchasedUrl}"/>
 	                                        <span th:if="${#fields.hasErrors('purchasedUrl')}" class="help-block" th:errors="*{purchasedUrl}"></span>
 	                                        <span th:unless="${#fields.hasErrors('purchasedUrl')}" class="help-block"> Enter a link to the person or company performing the SEO work.</span>
 	                                    </div>
@@ -191,7 +191,7 @@
                                     	<button type="button" id="submitButton" class="btn btn-primary" style="margin-bottom:5px" onclick="submitForm()">Submit Strategy</button>
                                     </div>
                                 </div>
-                             </div>
+                            </div>
                         </form>
                      </div>
                 </div>

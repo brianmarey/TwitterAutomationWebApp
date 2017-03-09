@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.careydevelopment.twitterautomation.jpa.entity.ViralTweet;
 import com.careydevelopment.twitterautomation.jpa.repository.ViralTweetRepository;
@@ -47,7 +45,7 @@ public class ViralTweetProcessor extends Thread {
 	
 	private void processFunnyTweets() {
 		try {
-			/*List<Status> tweets = TwitterLaughs.getInstance().getLaughs();
+			List<Status> tweets = TwitterLaughs.getInstance().getLaughs();
 			
 			for (Status tweet : tweets) {
 				ViralTweet foundTweet = viralTweetRepository.findByTweetId(tweet.getId());
@@ -60,7 +58,7 @@ public class ViralTweetProcessor extends Thread {
 					foundTweet.setRetweets(tweet.getRetweetCount());
 					viralTweetRepository.save(foundTweet);
 				}
-			}*/
+			}
 		} catch (Exception e) {
 			LOGGER.error("Problem getting funny tweets!",e);
 		}

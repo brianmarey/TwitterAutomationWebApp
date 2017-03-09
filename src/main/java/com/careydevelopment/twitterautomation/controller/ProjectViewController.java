@@ -72,6 +72,7 @@ public class ProjectViewController {
     	model.addAttribute("project",project);
     	
     	model.addAttribute("urls",project.getProjectUrls());
+    	
     	if (project.getProjectUrls() == null || project.getProjectUrls().size() == 0) {
     		model.addAttribute("noUrls",true);
     	}

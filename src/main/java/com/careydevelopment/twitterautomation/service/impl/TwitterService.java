@@ -437,10 +437,10 @@ public class TwitterService {
 	public Twitter getFullyCredentialedTwitter() {
 		try {
 			Properties props = PropertiesFactory.getProperties(PropertiesFile.TWITTER_PROPERTIES);		
-			String consumerKey=props.getProperty("connews.consumerKey");
-			String consumerSecret=props.getProperty("connews.consumerSecret");
-			String accessToken=props.getProperty("connews.accessToken");
-			String accessSecret=props.getProperty("connews.accessSecret");
+			String consumerKey=props.getProperty("brianmcarey.consumerKey");
+			String consumerSecret=props.getProperty("brianmcarey.consumerSecret");
+			String accessToken=props.getProperty("brianmcarey.accessToken");
+			String accessSecret=props.getProperty("brianmcarey.accessSecret");
 	    	
 	    	ConfigurationBuilder builder = new ConfigurationBuilder();
 	    	builder.setOAuthConsumerKey(consumerKey);

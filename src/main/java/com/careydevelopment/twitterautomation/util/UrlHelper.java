@@ -6,10 +6,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,32 @@ public class UrlHelper {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UrlHelper.class);
 	
 	
+	public static String encodeUrl(String url) {
+        StringBuilder resultStr = new StringBuilder();
+        for (char ch : url.toCharArray()) {
+            if (isUnsafe(ch)) {
+                resultStr.append('%');
+                resultStr.append(toHex(ch / 16));
+                resultStr.append(toHex(ch % 16));
+            } else {
+                resultStr.append(ch);
+            }
+        }
+        return resultStr.toString();
+	}
+	
+	
+    private static char toHex(int ch) {
+        return (char) (ch < 10 ? '0' + ch : 'A' + ch - 10);
+    }
+
+    
+    private static boolean isUnsafe(char ch) {
+        if (' ' == ch) return true;
+        else return false;
+    }
+	
+    
 	public static String getFormattedUrl(String url) {
 		if (!url.startsWith("http://") && !url.startsWith("https://")) {
 			url = "http://" + url;
