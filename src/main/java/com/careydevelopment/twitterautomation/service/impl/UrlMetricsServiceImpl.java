@@ -26,9 +26,11 @@ import com.careydevelopment.twitterautomation.jpa.repository.DomainRankRepositor
 import com.careydevelopment.twitterautomation.jpa.repository.DomainSearchKeywordRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.IndexItemInfoRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.PageSpeedInsightsRepository;
+import com.careydevelopment.twitterautomation.model.SerpBookKeyword;
 import com.careydevelopment.twitterautomation.service.MajesticService;
 import com.careydevelopment.twitterautomation.service.PageSpeedInsightsService;
 import com.careydevelopment.twitterautomation.service.SEMRushService;
+import com.careydevelopment.twitterautomation.service.SerpBookService;
 import com.careydevelopment.twitterautomation.service.UrlMetricsService;
 import com.careydevelopment.twitterautomation.util.AnchorTextDataParser;
 import com.careydevelopment.twitterautomation.util.BacklinkDataParser;
@@ -60,6 +62,9 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 	SEMRushService semRushService;
 	
 	@Autowired
+	SerpBookService serpBookService;
+	
+	@Autowired
 	DomainRankRepository domainRankRepository;
 	
 	@Autowired
@@ -68,6 +73,7 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 	@Autowired
 	CompetitorSearchRepository competitorSearchRepository;
 	
+	int keywordCount = 0;
 	
 	@Override
 	public void saveUrlMetrics(ProjectUrl url) {
@@ -171,6 +177,24 @@ public class UrlMetricsServiceImpl implements UrlMetricsService {
 								existingKeyword.setSearchVolume(key.getSearchVolume());
 								existingKeyword.setTrafficCostPercent(key.getTrafficCostPercent());
 								existingKeyword.setTrafficPercent(key.getTrafficPercent());
+
+								if (existingKeyword.getDailyRank() == 1) {
+									//if we get here, it's an seo strategy keyword and we need a daily rank update
+									List<SerpBookKeyword> serpKeywords = serpBookService.fetchKeywordsByCategory(url);
+									
+									for (SerpBookKeyword serpKeyword : serpKeywords) {
+										LOGGER.info("comparing serp " + serpKeyword.getKeyword() + " to " + existingKeyword.getKeyword());
+										
+										if (serpKeyword.getKeyword().equals(existingKeyword.getKeyword())) {
+											LOGGER.info("MATCH: Setting rank to " + serpKeyword.getGrank());
+											existingKeyword.setPosition(serpKeyword.getGrank());
+											existingKeyword.setPreviousPosition(serpKeyword.getStart());
+											existingKeyword.setPosition(serpKeyword.getGrank() - serpKeyword.getStart());
+											existingKeyword.setDailyRank(1);
+											break;
+										}
+									}
+								}
 								
 								domainSearchKeywordRepository.save(existingKeyword);
 								theseKeys.add(key.getKeyword());

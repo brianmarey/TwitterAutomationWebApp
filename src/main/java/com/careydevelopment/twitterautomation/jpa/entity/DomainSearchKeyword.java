@@ -1,6 +1,7 @@
 package com.careydevelopment.twitterautomation.jpa.entity;
 
 import java.math.BigInteger;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,6 +65,11 @@ public class DomainSearchKeyword {
 	@Column(name="url")
 	private String url = "";
 	
+	@Column(name="last_update")
+	private Date lastUpdate;
+	
+	@Column(name="daily_rank")
+	private int dailyRank = 0;
 	
 	public String getType() {
 		return (type == null) ? "organic" : type;
@@ -150,6 +156,13 @@ public class DomainSearchKeyword {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 	public String getKeywordDisplay() {
 		String keywordDisplay = keyword;
 		
@@ -195,6 +208,15 @@ public class DomainSearchKeyword {
 		
 		return equals;
 	}
+	
+	public int getDailyRank() {
+		return dailyRank;
+	}
+	public void setDailyRank(int dailyRank) {
+		this.dailyRank = dailyRank;
+	}
+	
+	
 }
 
 

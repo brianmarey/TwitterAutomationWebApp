@@ -29,8 +29,11 @@ import com.careydevelopment.twitterautomation.jpa.repository.ProjectRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.SeoStrategyRepository;
 import com.careydevelopment.twitterautomation.jpa.repository.StrategyKeywordRepository;
+import com.careydevelopment.twitterautomation.model.SerpBookKeyword;
+import com.careydevelopment.twitterautomation.service.SerpBookService;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
+import com.careydevelopment.twitterautomation.util.Pause;
 import com.careydevelopment.twitterautomation.util.RecaptchaHelper;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
 
@@ -55,6 +58,9 @@ public class CreateSeoStrategyController {
 	
 	@Autowired
 	StrategyKeywordRepository strategyKeywordRepository;
+	
+	@Autowired
+	SerpBookService serpBookService;
 	
     @RequestMapping(value="/createSeoStrategy", method=RequestMethod.GET)
     public String createProjectUrl(HttpServletRequest request, Model model,
@@ -210,6 +216,9 @@ public class CreateSeoStrategyController {
         
         seoStrategyRepository.save(seoStrategy);
         
+        List<StrategyKeyword> strategyKeywords = new ArrayList<StrategyKeyword>();
+        
+        //selected keywords
         for (String key : selectedOnes) {
         	StrategyKeyword sk = new StrategyKeyword();
         	sk.setKeyword(key);
@@ -217,9 +226,12 @@ public class CreateSeoStrategyController {
         	sk.setOriginalMobileRank(getOriginalRank(key,mobileKeywords));
         	sk.setSeoStrategy(seoStrategy);
         	
-        	strategyKeywordRepository.save(sk);
+        	strategyKeywords.add(strategyKeywordRepository.save(sk));
+        	
+        	serpBookService.addKeyword(projectUrl, key);
         }
 
+        //manually added keywords
         if (addedKeywords != null) {
         	String[] keys = addedKeywords.split(",");
         	for (String key : keys) {
@@ -230,7 +242,36 @@ public class CreateSeoStrategyController {
                 	sk.setOriginalMobileRank(getOriginalRank(key,mobileKeywords));
                 	sk.setSeoStrategy(seoStrategy);
                 	
-                	strategyKeywordRepository.save(sk);
+                	strategyKeywords.add(strategyKeywordRepository.save(sk));
+                	
+                	serpBookService.addKeyword(projectUrl, key);
+        		}
+        	}
+        }
+        
+        //take a break while serpbook gathers the original rank
+        Pause.sleep(90000l);
+
+        List<SerpBookKeyword> serpKeys = serpBookService.fetchKeywordsByCategory(projectUrl);
+        
+        for (SerpBookKeyword serpKey : serpKeys) {
+        	for (StrategyKeyword sk : strategyKeywords) {
+        		System.err.println("Comparing " + serpKey.getKeyword() + " to " + sk.getKeyword());
+        		if (serpKey.getKeyword().equals(sk.getKeyword())) {
+        			System.err.println("updating rank to " + serpKey.getGrank());
+        			sk.setOriginalRank(serpKey.getGrank());
+        			strategyKeywordRepository.save(sk);
+        			break;
+        		}
+        	}
+        	
+        	for (DomainSearchKeyword dsk : keywords) {
+        		System.err.println("Comparing " + serpKey.getKeyword() + " to domain " + dsk.getKeyword());
+        		if (serpKey.getKeyword().equals(dsk.getKeyword())) {        	
+        			System.err.println("Updating to " + serpKey.getGrank());
+        			dsk.setPosition(serpKey.getGrank());
+        			domainSearchKeywordRepository.save(dsk);
+        			break;
         		}
         	}
         }
@@ -243,6 +284,11 @@ public class CreateSeoStrategyController {
     	for (DomainSearchKeyword keyword : keywords) {
     		if (keyword.getKeyword().equals(key)) {
     			rank = keyword.getPosition();
+    			
+    			//set it to daily update for seo strategy
+    			keyword.setDailyRank(1);
+    			domainSearchKeywordRepository.save(keyword);
+    			
     			break;
     		}
     	}

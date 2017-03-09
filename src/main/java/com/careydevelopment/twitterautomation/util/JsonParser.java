@@ -15,9 +15,12 @@ public class JsonParser {
 	
 	public JsonParser(String url) {
 		try {
-			URL jsonUrl = new URL(url);
+			String formattedUrl = UrlHelper.encodeUrl(url);
+			
+			URL jsonUrl = new URL(formattedUrl);
 			
 			JSONParser parser = new JSONParser(jsonUrl.openStream());
+			
 			json = (JSONObject)parser.nextValue();
 		} catch (Exception e) {
 			LOGGER.error("Problem parsing JSON: " + e.getMessage());
@@ -27,4 +30,5 @@ public class JsonParser {
 	public JSONObject getJson() {
 		return json;
 	}
+	
 }

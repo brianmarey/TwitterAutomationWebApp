@@ -16,6 +16,7 @@ import com.careydevelopment.twitterautomation.jpa.entity.Project;
 import com.careydevelopment.twitterautomation.jpa.entity.ProjectUrl;
 import com.careydevelopment.twitterautomation.jpa.entity.TwitterUser;
 import com.careydevelopment.twitterautomation.jpa.repository.ProjectUrlRepository;
+import com.careydevelopment.twitterautomation.service.SerpBookService;
 import com.careydevelopment.twitterautomation.service.impl.LoginService;
 import com.careydevelopment.twitterautomation.util.Constants;
 import com.careydevelopment.twitterautomation.util.RoleHelper;
@@ -29,7 +30,10 @@ public class DeleteProjectUrlController {
 	
 	@Autowired
 	ProjectUrlRepository projectUrlRepository;
-		
+	
+	@Autowired
+	SerpBookService serpBookService;
+	
     @RequestMapping(value="/deleteProjectUrl", method=RequestMethod.GET)
     public String createProjectUrl(HttpServletRequest request, Model model,
     	@RequestParam(value="projectUrlId", required=true) Long projectUrlId,
@@ -75,7 +79,8 @@ public class DeleteProjectUrlController {
     	if (!project.getOwner().getId().equals(user.getId())) {
     		return "redirect:notAuthorized";
     	}
-
+    	
+    	serpBookService.deleteCategory(projectUrl);
     	projectUrlRepository.delete(projectUrl);
     	
         return "redirect:projectView?projectId=" + project.getId();
