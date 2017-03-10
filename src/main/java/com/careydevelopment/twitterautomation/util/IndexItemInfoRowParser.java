@@ -17,7 +17,7 @@ public class IndexItemInfoRowParser {
 			}
 		}
 		
-		System.err.println("for " + name + " returning " + val);
+		//System.err.println("for " + name + " returning " + val);
 		
 		return val;
 	}
@@ -29,9 +29,9 @@ public class IndexItemInfoRowParser {
 			String[] parts = row.split("\\|");
 			if (parts != null && parts.length > 40) {
 				String heads[] = headers.split("\\|");
-				for (int i=0;i<heads.length;i++) {
-					System.err.println("" + i + " " + heads[i] + " " + parts[i]);
-				}
+//				for (int i=0;i<heads.length;i++) {
+//					System.err.println("" + i + " " + heads[i] + " " + parts[i]);
+//				}
 				
 				iir.setItemNum(new Integer(parts[0]));
 				iir.setItem(parts[getIndex("Item",heads)]);

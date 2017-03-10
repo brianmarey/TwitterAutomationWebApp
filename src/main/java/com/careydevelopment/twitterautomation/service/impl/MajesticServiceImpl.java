@@ -30,6 +30,7 @@ public class MajesticServiceImpl implements MajesticService {
 	private static final int REQUEST_INDEX_ITEM_INFO = 1;
 	private static final int REQUEST_BACKLINK_DATA = 2;
 	private static final int REQUEST_ANCHOR_TEXT_DATA = 3;
+	private static final int REQUEST_INDEX_ITEM_INFO_URL = 4;
 
 	
 	String apiKey = "";
@@ -49,6 +50,33 @@ public class MajesticServiceImpl implements MajesticService {
 		MajesticResults iir = null;
 		
 		String response = getResponse(url, REQUEST_INDEX_ITEM_INFO);
+		StringReader reader = new StringReader(response);
+		
+		/*StringReader reader = new StringReader("<?xml version=\"1.0\" encoding=\"utf-8\"?>"+
+			"<Result Code=\"OK\" ErrorMessage=\"\" FullError=\"\">"+
+			"<GlobalVars FirstBackLinkDate=\"2014-01-29\" IndexBuildDate=\"2014-04-30 23:18:43\" IndexType=\"1\" MostRecentBackLinkDate=\"2014-04-29\" ServerBuild=\"2014-04-30 22:34:53\" ServerName=\"QUACKYO\" ServerVersion=\"1.0.5233.38846\" UniqueIndexID=\"20140430231843-FRESH\"/>"+
+			"<DataTables Count=\"1\">"+
+			"<DataTable Name=\"Results\" RowsCount=\"1\" Headers=\"ItemNum|Item|ResultCode|Status|ExtBackLinks|RefDomains|AnalysisResUnitsCost|ACRank|ItemType|IndexedURLs|GetTopBackLinksAnalysisResUnitsCost|DownloadBacklinksAnalysisResUnitsCost|RefIPs|RefSubNets|RefDomainsEDU|ExtBackLinksEDU|RefDomainsGOV|ExtBackLinksGOV|RefDomainsEDU_Exact|ExtBackLinksEDU_Exact|RefDomainsGOV_Exact|ExtBackLinksGOV_Exact|CrawledFlag|LastCrawlDate|LastCrawlResult|RedirectFlag|FinalRedirectResult|OutDomainsExternal|OutLinksExternal|OutLinksInternal|LastSeen|Title|RedirectTo|CitationFlow|TrustFlow|TrustMetric|TopicalTrustFlow_Topic_0|TopicalTrustFlow_Value_0|TopicalTrustFlow_Topic_1|TopicalTrustFlow_Value_1|TopicalTrustFlow_Topic_2|TopicalTrustFlow_Value_2\">"+
+			"<Row>0|http://www.majestic.com/|OK|Found|510654|6382|510654|10|3|1|5000|510655|5354|4396|52|641|1|1|4|16|1|1|True|2014-04-28|DownloadedSuccessfully|False| |5|5|60| |Majestic : Backlink Checker Site Explorer| |91|52|52|Computers/Internet/Web Design and Development|41|Computers/Software/Online Training|39|Computers/Computer Science/Distributed Computing|39</Row>"+
+			"</DataTable></DataTables></Result>");
+			*/
+		try {
+			JAXBContext jc = JAXBContext.newInstance(MajesticResults.class);
+			Unmarshaller un = jc.createUnmarshaller();
+			iir = (MajesticResults)un.unmarshal(reader);
+		} catch (Exception e) {
+			LOGGER.error("Problem retrieving Majestic data!",e);
+		}
+		
+		return iir;
+	}
+	
+	
+	@Override
+	public MajesticResults getIndexItemInfoUrl(String url) {
+		MajesticResults iir = null;
+		
+		String response = getResponse(url, REQUEST_INDEX_ITEM_INFO_URL);
 		StringReader reader = new StringReader(response);
 		
 		/*StringReader reader = new StringReader("<?xml version=\"1.0\" encoding=\"utf-8\"?>"+
@@ -151,12 +179,20 @@ public class MajesticServiceImpl implements MajesticService {
 			case REQUEST_BACKLINK_DATA:
 				sb.append("GetBackLinkData&item=");
 				sb.append(url);
-				sb.append("&Count=100&MaxSameSourceURLs=1&Mode=1&datasource=fresh");
+				sb.append("&Count=100&MaxSourceURLsPerRefDomain=1&Mode=1&datasource=fresh");
 				break;
 			case REQUEST_ANCHOR_TEXT_DATA:
 				sb.append("GetAnchorText&item=");
 				sb.append(url);
 				sb.append("&Count=20&datasource=fresh");
+				break;
+			case REQUEST_INDEX_ITEM_INFO_URL:
+				sb.append("GetIndexItemInfo&items=2&item0=");
+				sb.append(url);
+				sb.append("&item1=");
+				sb.append("www.");
+				sb.append(url);
+				sb.append("&datasource=fresh");
 				break;
 		}
 
@@ -166,7 +202,7 @@ public class MajesticServiceImpl implements MajesticService {
 		response = response.trim().replaceFirst("^([\\W]+)<","<");
 		//response = response.replaceAll( "([\\ud800-\\udbff\\udc00-\\udfff])", "");
 		
-		System.err.println("Response is " + response);
+		//System.err.println("Response is " + response);
 		
 		return response;
 	}

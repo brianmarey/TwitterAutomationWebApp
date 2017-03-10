@@ -14,8 +14,6 @@
             	});	
         	}
         	
-        	//test
-        	
         	function displayMessage(errorMessage) {
                 $.bootstrapGrowl(errorMessage, {
                     ele: 'body', // which element to append to
